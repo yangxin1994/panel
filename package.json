@@ -16,5 +16,10 @@
     "mercury"
   ],
   "author": "dev@mixpanel.com",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dom-delegator": "13.1.0",
+    "main-loop": "3.2.0",
+    "virtual-dom": "2.1.1"
+  }
 }
