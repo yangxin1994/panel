@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "virtual-dom view management and routing",
   "main": "build/index.js",
   "scripts": {
