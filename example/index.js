@@ -44,5 +44,4 @@ class CounterView extends View {
   }
 }
 
-const app = new CounterApp('app', {$screen: 'about', counter: 1});
-app.navigate(window.location.hash);
+new CounterApp('app', {$screen: 'about', counter: 1}).start();
