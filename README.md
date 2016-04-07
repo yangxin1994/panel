@@ -25,7 +25,7 @@ class CounterView extends View {
   }
 }
 
-new CounterApp('app', {$screen: 'about', counter: 1}).start();
+new CounterApp('app', {$screen: 'counter', counter: 1}).start();
 ```
 ```jade
 .counter
