@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mixpanel/panel.svg?branch=master)](https://travis-ci.org/mixpanel/panel)
 # panel
 
 A no-frills ES2015 microframework for virtual-dom view management and routing
