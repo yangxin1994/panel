@@ -1,4 +1,4 @@
-import { App } from '../build';
+import { App } from '../lib';
 import expect from 'expect.js';
 import document from 'min-document';
 import h from 'virtual-dom/virtual-hyperscript';
