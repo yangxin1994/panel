@@ -1,6 +1,7 @@
 import { App } from '../lib';
 import expect from 'expect.js';
 import document from 'min-document';
+import raf from 'raf';
 import h from 'virtual-dom/virtual-hyperscript';
 
 const windowStub = {
@@ -54,6 +55,24 @@ describe('renderer', function() {
       expect(el.childNodes).to.have.length(1);
       const animalEl = el.childNodes[0]
       expect(animalEl.className).to.eql('animal');
+      expect(animalEl.childNodes[0].data).to.eql('Hello wombat');
+    });
+
+    it('updates DOM after app state changes', function() {
+      const animalEl = el.childNodes[0]
+      expect(animalEl.className).to.eql('animal');
+      expect(animalEl.childNodes[0].data).to.eql('Hello wombat');
+      app.update({animal: 'llama'});
+      raf(() => {
+        expect(animalEl.childNodes[0].data).to.eql('Hello llama');
+      });
+    });
+
+    it('does not update DOM before next repaint', function() {
+      const animalEl = el.childNodes[0]
+      expect(animalEl.className).to.eql('animal');
+      expect(animalEl.childNodes[0].data).to.eql('Hello wombat');
+      app.update({animal: 'llama'});
       expect(animalEl.childNodes[0].data).to.eql('Hello wombat');
     });
   });
