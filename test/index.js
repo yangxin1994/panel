@@ -1,7 +1,7 @@
-const document = require('min-document');
-const expect = require('expect.js');
-const h = require('virtual-dom/virtual-hyperscript');
-const panel = require('../build');
+import { App } from '../build';
+import expect from 'expect.js';
+import document from 'min-document';
+import h from 'virtual-dom/virtual-hyperscript';
 
 const windowStub = {
   addEventListener: () => {},
@@ -9,7 +9,7 @@ const windowStub = {
   location: {},
 };
 
-class SampleApp extends panel.App {
+class SampleApp extends App {
   get SCREENS() {
     return {hello: this.viewFromTemplate(state => h('div.hello'))};
   }
