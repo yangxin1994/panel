@@ -10,7 +10,7 @@ const windowStub = {
   location: {},
 };
 
-describe('renderer', function() {
+describe('App instance', function() {
   context('in basic usage', function() {
     class ConstantApp extends App {
       get SCREENS() {
@@ -36,7 +36,7 @@ describe('renderer', function() {
     });
   });
 
-  context('with dynamic app state', function() {
+  context('with dynamic state', function() {
     class StatefulApp extends App {
       get SCREENS() {
         return {hello: App.viewFromTemplate(state => h('.animal', `Hello ${state.animal}`))};
