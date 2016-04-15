@@ -5,7 +5,7 @@ import h from 'virtual-dom/virtual-hyperscript';
 describe('View instance', function() {
   class SampleView extends View {
     get TEMPLATE() {
-      return state => h('div.animal', `Hello ${state.animal}`);
+      return state => h('.animal', `Hello ${state.animal}`);
     }
   }
 

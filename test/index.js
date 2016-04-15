@@ -14,7 +14,7 @@ describe('renderer', function() {
   context('in basic usage', function() {
     class ConstantApp extends App {
       get SCREENS() {
-        return {hello: this.viewFromTemplate(state => h('div.hello'))};
+        return {hello: this.viewFromTemplate(state => h('.hello'))};
       }
     }
 
@@ -39,7 +39,7 @@ describe('renderer', function() {
   context('with dynamic app state', function() {
     class StatefulApp extends App {
       get SCREENS() {
-        return {hello: this.viewFromTemplate(state => h('div.animal', `Hello ${state.animal}`))};
+        return {hello: this.viewFromTemplate(state => h('.animal', `Hello ${state.animal}`))};
       }
     }
 
