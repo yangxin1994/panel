@@ -2,7 +2,23 @@ import { App, View } from '../lib';
 import expect from 'expect.js';
 import h from 'virtual-dom/virtual-hyperscript';
 
+const windowStub = {
+  addEventListener: () => {},
+  history: {},
+  location: {},
+};
+
 describe('View instance', function() {
+  class StubApp extends App {
+    get SCREENS() { return {}; }
+  }
+
+  let stubApp;
+
+  beforeEach(function() {
+    stubApp = new StubApp(null, {}, {window: windowStub});
+  });
+
   it('renders with given state', function() {
     class SampleView extends View {
       get TEMPLATE() {
@@ -10,7 +26,7 @@ describe('View instance', function() {
       }
     }
 
-    const view = new SampleView();
+    const view = new SampleView(stubApp);
     const vnode = view.render({animal: 'gerbil'});
     expect(vnode.properties.className).to.eql('animal');
     expect(vnode.children).to.have.length(1);
@@ -21,8 +37,8 @@ describe('View instance', function() {
     class ViewWithChildren extends View {
       get VIEWS() {
         return {
-          Foo: App.viewFromTemplate(state => h('.foo', `Foo ${state.name}`)),
-          Bar: App.viewFromTemplate(state => h('.bar', `Bar ${state.name}`)),
+          Foo: this.viewFromTemplate(state => h('.foo', `Foo ${state.name}`)),
+          Bar: this.viewFromTemplate(state => h('.bar', `Bar ${state.name}`)),
         }
       }
 
@@ -34,7 +50,7 @@ describe('View instance', function() {
       }
     }
 
-    const view = new ViewWithChildren();
+    const view = new ViewWithChildren(stubApp);
     const vnode = view.render({name: 'Ariadne'});
     expect(vnode.properties.className).to.eql('parent-view');
     expect(vnode.children).to.have.length(2);
