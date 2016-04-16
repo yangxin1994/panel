@@ -13,7 +13,7 @@ class CounterApp extends App {
 
   get SCREENS() {
     return {
-      counter: new CounterView(),
+      counter: new CounterView(this),
       about:   this.viewFromTemplate(aboutTemplate),
     };
   }

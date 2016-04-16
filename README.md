@@ -9,7 +9,7 @@ import counterTemplate from './counter.jade';
 
 class CounterApp extends App {
   get SCREENS() {
-    return {counter: new CounterView()};
+    return {counter: new CounterView(this)};
   }
 }
 
