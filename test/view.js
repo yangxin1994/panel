@@ -57,4 +57,37 @@ describe('View instance', function() {
     expect(vnode.children[0].children[0].text).to.eql('Foo Ariadne');
     expect(vnode.children[1].children[0].text).to.eql('Bar Ariadne');
   });
+
+  it('can group subviews in arrays', function() {
+    class ViewWithArrayChildren extends View {
+      get VIEWS() {
+        return {
+          Foo: this.viewFromTemplate(state => h('.foo', `Foo ${state.name}`)),
+          MyList: [
+            this.viewFromTemplate(state => h('.bar', `Bar ${state.name}`)),
+            this.viewFromTemplate(state => h('.baz', `Baz ${state.name}`)),
+          ],
+        }
+      }
+
+      get TEMPLATE() {
+        return state => h('.parent-view', [
+          state.views.Foo(state),
+          h('.list', state.views.MyList.map(view => view(state))),
+        ]);
+      }
+    }
+
+    const view = new ViewWithArrayChildren(stubApp);
+    const vnode = view.render({name: 'Ariadne'});
+    expect(vnode.properties.className).to.eql('parent-view');
+    expect(vnode.children).to.have.length(2);
+    expect(vnode.children[0].children[0].text).to.eql('Foo Ariadne');
+
+    const listNode = vnode.children[1];
+    expect(listNode.properties.className).to.eql('list');
+    expect(listNode.children).to.have.length(2);
+    expect(listNode.children[0].children[0].text).to.eql('Bar Ariadne');
+    expect(listNode.children[1].children[0].text).to.eql('Baz Ariadne');
+  });
 });
