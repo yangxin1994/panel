@@ -90,4 +90,40 @@ describe('View instance', function() {
     expect(listNode.children[0].children[0].text).to.eql('Bar Ariadne');
     expect(listNode.children[1].children[0].text).to.eql('Baz Ariadne');
   });
+
+  it('can group subviews in objects', function() {
+    class ViewWithObjectChildren extends View {
+      get VIEWS() {
+        return {
+          Foo: this.viewFromTemplate(state => h('.foo', `Foo ${state.name}`)),
+          MyObj: {
+            Bar: this.viewFromTemplate(state => h('.bar', `Bar ${state.name}`)),
+            Baz: this.viewFromTemplate(state => h('.baz', `Baz ${state.name}`)),
+          },
+        }
+      }
+
+      get TEMPLATE() {
+        return state => h('.parent-view', [
+          state.views.Foo(state),
+          h('.map', [
+            state.views.MyObj.Bar(state),
+            state.views.MyObj.Baz(state),
+          ]),
+        ]);
+      }
+    }
+
+    const view = new ViewWithObjectChildren(stubApp);
+    const vnode = view.render({name: 'Ariadne'});
+    expect(vnode.properties.className).to.eql('parent-view');
+    expect(vnode.children).to.have.length(2);
+    expect(vnode.children[0].children[0].text).to.eql('Foo Ariadne');
+
+    const listNode = vnode.children[1];
+    expect(listNode.properties.className).to.eql('map');
+    expect(listNode.children).to.have.length(2);
+    expect(listNode.children[0].children[0].text).to.eql('Bar Ariadne');
+    expect(listNode.children[1].children[0].text).to.eql('Baz Ariadne');
+  });
 });
