@@ -33,6 +33,24 @@ describe('View instance', function() {
     expect(vnode.children[0].text).to.eql('Hello gerbil');
   });
 
+  it('passes the state object itself to templates', function() {
+    // this is important in order to be able to pass the state
+    // object to subviews when using templating engines like
+    // virtual-jade
+
+    class SampleView extends View {
+      get TEMPLATE() {
+        return state => h('.animal', `Hello ${state.state.animal}`);
+      }
+    }
+
+    const view = new SampleView(stubApp);
+    const vnode = view.render({animal: 'gerbil'});
+    expect(vnode.properties.className).to.eql('animal');
+    expect(vnode.children).to.have.length(1);
+    expect(vnode.children[0].text).to.eql('Hello gerbil');
+  });
+
   it('can render subviews', function() {
     class ViewWithChildren extends View {
       get VIEWS() {
