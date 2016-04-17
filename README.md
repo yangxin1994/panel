@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/mixpanel/panel.svg?branch=master)](https://travis-ci.org/mixpanel/panel)
 # panel
 
-A no-frills ES2015 microframework for virtual-dom view management and routing
+A no-frills ES2015 microframework for virtual-dom view management and routing. Because coding UIs shouldn't be rocket science.
 
 ```javascript
 import { App, View } from 'panel';
