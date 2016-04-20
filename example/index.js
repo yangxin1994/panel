@@ -5,9 +5,9 @@ import counterTemplate from './counter.jade';
 class CounterApp extends App {
   get ROUTES() {
     return {
-      'counter': this.counter,
-      'about':   this.about,
-      '':        this.about,
+      'counter': () => ({$screen: 'counter'}),
+      'about':   () => ({$screen: 'about'}),
+      '':        'about',
     };
   }
 
@@ -16,14 +16,6 @@ class CounterApp extends App {
       counter: new CounterView(this),
       about:   this.viewFromTemplate(aboutTemplate),
     };
-  }
-
-  about() {
-    return {$screen: 'about'};
-  }
-
-  counter() {
-    return {$screen: 'counter'};
   }
 
   changeCounter(offset) {
