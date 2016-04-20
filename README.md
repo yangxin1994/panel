@@ -20,13 +20,13 @@ class CounterView extends View {
 
   get templateHandlers() {
     return {
-      incr: () => this.app.update({counter: this.app.state.counter + 1}),
-      decr: () => this.app.update({counter: this.app.state.counter - 1}),
+      incr: () => this.app.update({counter: this.app.state.countVal + 1}),
+      decr: () => this.app.update({counter: this.app.state.countVal - 1}),
     }
   }
 }
 
-new CounterApp('app', {$screen: 'counter', counter: 1}).start();
+new CounterApp('app', {$screen: 'counter', countVal: 1}).start();
 ```
 ```jade
 .counter

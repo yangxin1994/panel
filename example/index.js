@@ -19,7 +19,7 @@ class CounterApp extends App {
   }
 
   changeCounter(offset) {
-    this.update({counter: this.state.counter + offset});
+    this.update({countVal: this.state.countVal + offset});
   }
 }
 
@@ -36,4 +36,4 @@ class CounterView extends View {
   }
 }
 
-new CounterApp('app', {$screen: 'about', counter: 1}).start();
+new CounterApp('app', {$screen: 'about', countVal: 1}).start();
