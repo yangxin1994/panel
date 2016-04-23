@@ -32,7 +32,7 @@ class CounterView extends View {
     return {
       incr: () => this.app.changeCounter(1),
       decr: () => this.app.changeCounter(-1),
-    }
+    };
   }
 }
 
