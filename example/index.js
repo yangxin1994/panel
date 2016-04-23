@@ -17,10 +17,6 @@ class CounterApp extends App {
       about:   this.viewFromTemplate(aboutTemplate),
     };
   }
-
-  changeCounter(offset) {
-    this.update({countVal: this.state.countVal + offset});
-  }
 }
 
 class CounterView extends View {
@@ -30,9 +26,13 @@ class CounterView extends View {
 
   get templateHandlers() {
     return {
-      incr: () => this.app.changeCounter(1),
-      decr: () => this.app.changeCounter(-1),
+      incr: () => this.changeCounter(1),
+      decr: () => this.changeCounter(-1),
     };
+  }
+
+  changeCounter(offset) {
+    this.app.update({countVal: this.app.state.countVal + offset});
   }
 }
 
