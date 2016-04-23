@@ -36,4 +36,4 @@ class CounterView extends View {
   }
 }
 
-new CounterApp('app', {$screen: 'about', countVal: 1}).start();
+new CounterApp('counter-app', {$screen: 'about', countVal: 1}).start();
