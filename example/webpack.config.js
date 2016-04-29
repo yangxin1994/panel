@@ -36,7 +36,10 @@ var webpackConfig = {
     new webpack.DefinePlugin({
       APP_ENV: JSON.stringify(process.env.NODE_ENV),
     }),
-    new HtmlWebpackPlugin({template: 'index.template.html'}),
+    new HtmlWebpackPlugin({
+      inject: 'head',
+      template: 'index.template.html',
+    }),
   ],
   resolveLoader: {
     root: path.join(__dirname, 'node_modules'),

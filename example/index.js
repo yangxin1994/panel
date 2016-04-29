@@ -1,39 +1,55 @@
-import { App, View } from '../build';
-import aboutTemplate from './about.jade';
-import counterTemplate from './counter.jade';
+import { component } from '../lib';
+import h from 'virtual-dom/virtual-hyperscript';
 
-class CounterApp extends App {
-  get ROUTES() {
-    return {
-      'counter': () => ({$screen: 'counter'}),
-      'about':   () => ({$screen: 'about'}),
-      '':        'about',
-    };
-  }
+component('counter-app', {
+  initialState: {countVal: 1},
+  template: state => h('.counter', `Count: ${state.countVal}`),
+});
 
-  get SCREENS() {
-    return {
-      counter: new CounterView(this),
-      about:   this.viewFromTemplate(aboutTemplate),
-    };
-  }
-}
+window.setInterval(() => {
+  const el = document.getElementsByTagName('counter-app')[0];
+  el.update({countVal: el.state.countVal + 1});
+}, 1000);
 
-class CounterView extends View {
-  get TEMPLATE() {
-    return counterTemplate;
-  }
 
-  get templateHandlers() {
-    return {
-      incr: () => this.changeCounter(1),
-      decr: () => this.changeCounter(-1),
-    };
-  }
+// import { App, View } from '../lib';
+// import aboutTemplate from './about.jade';
+// import counterTemplate from './counter.jade';
 
-  changeCounter(offset) {
-    this.app.update({countVal: this.app.state.countVal + offset});
-  }
-}
+// class CounterApp extends App {
+//   get ROUTES() {
+//     return {
+//       'counter': () => ({$screen: 'counter'}),
+//       'about':   () => ({$screen: 'about'}),
+//       '':        'about',
+//     };
+//   }
 
-new CounterApp('counter-app', {$screen: 'about', countVal: 1}).start();
+//   get SCREENS() {
+//     return {
+//       counter: new CounterView(this),
+//       about:   this.viewFromTemplate(aboutTemplate),
+//     };
+//   }
+// }
+
+// class CounterView extends View {
+//   get TEMPLATE() {
+//     return counterTemplate;
+//   }
+
+//   get templateHandlers() {
+//     return {
+//       incr: () => this.changeCounter(1),
+//       decr: () => this.changeCounter(-1),
+//     };
+//   }
+
+//   changeCounter(offset) {
+//     this.app.update({countVal: this.app.state.countVal + offset});
+//   }
+// }
+
+// window.addEventListener('load', () => {
+//   new CounterApp('counter-app', {$screen: 'about', countVal: 1}).start();
+// });
