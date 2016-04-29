@@ -6,23 +6,14 @@ registerComponent(class extends Component {
     return 'counter-app';
   }
 
-  attachedCallback() {
-    super.attachedCallback();
-    console.log('attached');
-  }
-
-  get initialState() {
-    return {countVal: 1};
-  }
-
   template(state) {
-    return h('.counter', `Count: ${state.countVal}`);
+    return h('.counter', `Count: ${state.count}`);
   }
 });
 
 window.setInterval(() => {
   const el = document.getElementsByTagName('counter-app')[0];
-  el.update({countVal: el.state.countVal + 1});
+  el.update({count: el.state.count + 1});
 }, 1000);
 
 
