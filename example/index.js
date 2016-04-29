@@ -1,9 +1,23 @@
-import { component } from '../lib';
+import { Component, registerComponent } from '../lib';
 import h from 'virtual-dom/virtual-hyperscript';
 
-component('counter-app', {
-  initialState: {countVal: 1},
-  template: state => h('.counter', `Count: ${state.countVal}`),
+registerComponent(class extends Component {
+  static get tagName() {
+    return 'counter-app';
+  }
+
+  attachedCallback() {
+    super.attachedCallback();
+    console.log('attached');
+  }
+
+  get initialState() {
+    return {countVal: 1};
+  }
+
+  template(state) {
+    return h('.counter', `Count: ${state.countVal}`);
+  }
 });
 
 window.setInterval(() => {
