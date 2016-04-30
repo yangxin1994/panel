@@ -3,19 +3,40 @@ import 'webcomponents.js';
 import { Component, registerComponent } from '../lib';
 import h from 'virtual-dom/virtual-hyperscript';
 
-registerComponent('counter-header', class extends Component {
-  $template() {
-    return h('.header', [
-      h('span', {onclick: () => this.navigate('about')  }, 'About ' ),
-      h('span', {onclick: () => this.navigate('counter')}, 'Counter'),
+registerComponent('counter-app', class extends Component {
+  get $defaultState() {
+    return {
+      $view: 'about',
+      count: 5,
+    };
+  }
+
+  $template(state) {
+    return h('.app', [
+      h('counter-header'),
+      h('view-about'),
+      h('view-counter'),
     ]);
   }
 });
 
-registerComponent('counter-app', class extends Component {
+registerComponent('view-about', class extends Component {
+  shouldDisplay() {
+    return this.state.$view === 'about';
+  }
+
+  $template() {
+    return h('.about', 'This is a sample app.');
+  }
+});
+
+registerComponent('view-counter', class extends Component {
+  shouldDisplay() {
+    return this.state.$view === 'counter';
+  }
+
   $template(state) {
     return h('.counter', [
-      h('counter-header'),
       h('.val', `Counter: ${state.count}`),
       h('button.decr', {onclick: () => this.updateCount(-1)}, '-'),
       h('button.incr', {onclick: () => this.updateCount(1) }, '+'),
@@ -24,6 +45,19 @@ registerComponent('counter-app', class extends Component {
 
   updateCount(offset) {
     this.update({count: this.state.count + offset});
+  }
+});
+
+registerComponent('counter-header', class extends Component {
+  navigate($view) {
+    this.update({$view});
+  }
+
+  $template() {
+    return h('.header', [
+      h('span', {onclick: () => this.navigate('about')  }, 'About ' ),
+      h('span', {onclick: () => this.navigate('counter')}, 'Counter'),
+    ]);
   }
 });
 
