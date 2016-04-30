@@ -12,10 +12,18 @@ registerComponent('counter-app', class extends Component {
 
   $template(state) {
     return h('.app', [
-      this.child('counter-header'),
+      h('.header', [
+        h('span', {onclick: () => this.navigate('about')  }, 'About ' ),
+        h('span', {onclick: () => this.navigate('counter')}, 'Counter'),
+      ]),
       this.child('view-about'),
       this.child('view-counter'),
     ]);
+  }
+
+  // TODO add router
+  navigate($view) {
+    this.update({$view});
   }
 });
 
@@ -50,19 +58,6 @@ registerComponent('view-counter', class extends Component {
 
   updateCount(offset) {
     this.update({count: this.state.count + offset});
-  }
-});
-
-registerComponent('counter-header', class extends Component {
-  navigate($view) {
-    this.update({$view});
-  }
-
-  $template() {
-    return h('.header', [
-      h('span', {onclick: () => this.navigate('about')  }, 'About ' ),
-      h('span', {onclick: () => this.navigate('counter')}, 'Counter'),
-    ]);
   }
 });
 
