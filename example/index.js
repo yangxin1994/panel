@@ -7,7 +7,6 @@ registerComponent('counter-app', class extends Component {
   get $defaultState() {
     return {
       $view: 'about',
-      count: 5,
     };
   }
 
@@ -21,7 +20,7 @@ registerComponent('counter-app', class extends Component {
 });
 
 registerComponent('view-about', class extends Component {
-  shouldDisplay() {
+  $shouldDisplay() {
     return this.state.$view === 'about';
   }
 
@@ -31,7 +30,13 @@ registerComponent('view-about', class extends Component {
 });
 
 registerComponent('view-counter', class extends Component {
-  shouldDisplay() {
+  get $defaultState() {
+    return {
+      count: 5,
+    };
+  }
+
+  $shouldDisplay() {
     return this.state.$view === 'counter';
   }
 
