@@ -12,9 +12,9 @@ registerComponent('counter-app', class extends Component {
 
   $template(state) {
     return h('.app', [
-      h('counter-header'),
-      h('view-about'),
-      h('view-counter'),
+      this.child('counter-header'),
+      this.child('view-about'),
+      this.child('view-counter'),
     ]);
   }
 });
