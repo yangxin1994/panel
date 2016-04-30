@@ -1,20 +1,36 @@
+import 'webcomponents.js';
+
 import { Component, registerComponent } from '../lib';
 import h from 'virtual-dom/virtual-hyperscript';
 
-registerComponent(class extends Component {
-  static get tagName() {
-    return 'counter-app';
-  }
-
-  template(state) {
-    return h('.counter', `Count: ${state.count}`);
+registerComponent('counter-header', class extends Component {
+  $template() {
+    return h('.header', [
+      h('span', {onclick: () => this.navigate('about')  }, 'About ' ),
+      h('span', {onclick: () => this.navigate('counter')}, 'Counter'),
+    ]);
   }
 });
 
-window.setInterval(() => {
-  const el = document.getElementsByTagName('counter-app')[0];
-  el.update({count: el.state.count + 1});
-}, 1000);
+registerComponent('counter-app', class extends Component {
+  $template(state) {
+    return h('.counter', [
+      h('counter-header'),
+      h('.val', `Counter: ${state.count}`),
+      h('button.decr', {onclick: () => this.updateCount(-1)}, '-'),
+      h('button.incr', {onclick: () => this.updateCount(1) }, '+'),
+    ]);
+  }
+
+  updateCount(offset) {
+    this.update({count: this.state.count + offset});
+  }
+});
+
+// window.setInterval(() => {
+//   const el = document.getElementsByTagName('counter-app')[0];
+//   el.update({count: el.state.count + 1});
+// }, 1000);
 
 
 // import { App, View } from '../lib';
