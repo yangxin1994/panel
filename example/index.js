@@ -10,20 +10,23 @@ registerComponent('counter-app', class extends Component {
     };
   }
 
+  get $routes() {
+    return {
+      'counter': () => ({$view: 'counter'}),
+      'about':   () => ({$view: 'about'}),
+      '':        'about',
+    };
+  }
+
   $template(state) {
     return h('.app', [
       h('.header', [
-        h('span', {onclick: () => this.navigate('about')  }, 'About ' ),
-        h('span', {onclick: () => this.navigate('counter')}, 'Counter'),
+        h('a', {href: '#about'},   'About'  ),
+        h('a', {href: '#counter'}, 'Counter'),
       ]),
       this.child('view-about'),
       this.child('view-counter'),
     ]);
-  }
-
-  // TODO add router
-  navigate($view) {
-    this.update({$view});
   }
 });
 
