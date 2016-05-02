@@ -1,7 +1,11 @@
-import 'webcomponents.js';
+import 'webcomponents.js'; // polyfill
 
 import {Component} from '../lib';
 import h from 'virtual-dom/virtual-hyperscript';
+
+import aboutTemplate from './about.jade';
+import appTemplate from './app.jade';
+import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
   get $defaultState() {
@@ -18,21 +22,14 @@ document.registerElement('counter-app', class extends Component {
     };
   }
 
-  $template(state) {
-    return h('.app', [
-      h('.header', [
-        h('a', {href: '#about'},   'About'  ),
-        h('a', {href: '#counter'}, 'Counter'),
-      ]),
-      this.child('view-about'),
-      this.child('view-counter'),
-    ]);
+  get $template() {
+    return appTemplate;
   }
 });
 
 document.registerElement('view-about', class extends Component {
-  $template() {
-    return h('.about', 'This is a sample app.');
+  get $template() {
+    return aboutTemplate;
   }
 
   get $view() {
@@ -47,19 +44,18 @@ document.registerElement('view-counter', class extends Component {
     };
   }
 
-  $template(state) {
-    return h('.counter', [
-      h('.val', `Counter: ${state.count}`),
-      h('button.decr', {onclick: () => this.updateCount(-1)}, '-'),
-      h('button.incr', {onclick: () => this.updateCount(1) }, '+'),
-    ]);
+  get $template() {
+    return counterTemplate;
   }
 
   get $view() {
     return 'counter';
   }
 
-  updateCount(offset) {
-    this.update({count: this.state.count + offset});
+  get handlers() {
+    return {
+      decr: () => this.update({count: this.state.count - 1}),
+      incr: () => this.update({count: this.state.count + 1}),
+    }
   }
 });
