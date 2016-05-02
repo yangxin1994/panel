@@ -1,4 +1,4 @@
-import { App } from '../lib';
+import App from '../lib/app';
 import expect from 'expect.js';
 import document from 'min-document';
 import raf from 'raf';

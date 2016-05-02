@@ -1,4 +1,5 @@
-import { App, View } from '../lib';
+import App from '../lib/app';
+import View from '../lib/view';
 import expect from 'expect.js';
 import h from 'virtual-dom/virtual-hyperscript';
 
