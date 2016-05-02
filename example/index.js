@@ -1,9 +1,9 @@
 import 'webcomponents.js';
 
-import { Component, registerComponent } from '../lib';
+import {Component} from '../lib';
 import h from 'virtual-dom/virtual-hyperscript';
 
-registerComponent('counter-app', class extends Component {
+document.registerElement('counter-app', class extends Component {
   get $defaultState() {
     return {
       $view: 'about',
@@ -30,7 +30,7 @@ registerComponent('counter-app', class extends Component {
   }
 });
 
-registerComponent('view-about', class extends Component {
+document.registerElement('view-about', class extends Component {
   $template() {
     return h('.about', 'This is a sample app.');
   }
@@ -40,7 +40,7 @@ registerComponent('view-about', class extends Component {
   }
 });
 
-registerComponent('view-counter', class extends Component {
+document.registerElement('view-counter', class extends Component {
   get $defaultState() {
     return {
       count: 5,
