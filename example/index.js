@@ -31,10 +31,6 @@ document.registerElement('view-about', class extends Component {
   get $template() {
     return aboutTemplate;
   }
-
-  get $view() {
-    return 'about';
-  }
 });
 
 document.registerElement('view-counter', class extends Component {
@@ -46,10 +42,6 @@ document.registerElement('view-counter', class extends Component {
 
   get $template() {
     return counterTemplate;
-  }
-
-  get $view() {
-    return 'counter';
   }
 
   get handlers() {
