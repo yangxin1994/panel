@@ -1,7 +1,6 @@
 import 'webcomponents.js'; // polyfill
 
 import {Component} from '../lib';
-import h from 'virtual-dom/virtual-hyperscript';
 
 import aboutTemplate from './about.jade';
 import appTemplate from './app.jade';
