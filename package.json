@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel lib -d build",
     "prepublish": "npm run build",
-    "test": "mocha --require babel-core/register test",
+    "test": "wct",
     "test-debug": "mocha debug --require babel-core/register test"
   },
   "repository": {
@@ -37,6 +37,9 @@
     "expect.js": "^0.3.1",
     "min-document": "^2.18.0",
     "mocha": "^2.4.5",
-    "raf": "^3.2.0"
+    "raf": "^3.2.0",
+    "web-component-tester": "4.2.2",
+    "webcomponents.js": "0.7.22",
+    "webpack": "1.13.0"
   }
 }
