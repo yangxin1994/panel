@@ -1,8 +1,12 @@
 describe('Component', function() {
   var el;
 
-  before(function() {
-    el = document.getElementById('test-app-fixture');
+  beforeEach(function(done) {
+    el = document.createElement('test-app');
+    document.body.appendChild(el);
+    window.requestAnimationFrame(function() {
+      done();
+    });
   });
 
   it('renders to the DOM when attached', function() {
