@@ -8,7 +8,31 @@
     "sauce": {
       "disabled": true,
       "browsers": [
-        "OS X 10.10/chrome"
+        {
+          "browserName": "chrome",
+          "version": "latest",
+          "platform": "OS X 10.11"
+        },
+        {
+          "browserName": "chrome",
+          "version": "45.0",
+          "platform": "OS X 10.10"
+        },
+        {
+          "browserName": "firefox",
+          "version": "latest",
+          "platform": "OS X 10.11"
+        },
+        {
+          "browserName": "microsoftedge",
+          "version": "",
+          "platform": "Windows 10"
+        },
+        {
+          "browserName": "safari",
+          "version": "9.0",
+          "platform": "OS X 10.11"
+        }
       ]
     }
   }
