@@ -7,7 +7,7 @@
     "build": "babel lib -d build",
     "prepublish": "npm run build",
     "test": "wct",
-    "test-debug": "mocha debug --require babel-core/register test"
+    "test-sauce": "wct --plugin sauce"
   },
   "repository": {
     "type": "git",

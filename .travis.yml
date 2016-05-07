@@ -1,5 +1,13 @@
 language: node_js
 node_js:
-  - "5"
-  - "4"
-  - "4.2"
+  - '5'
+  - '4'
+  - '4.2'
+script:
+  - npm run test-sauce
+env:
+  global:
+    - secure: >-
+        jE9aliGuLo5PHRuG5+sT7IPj6sit9Omiytx3AygtC+xGqm2YwtkyCtK64KW1jheRS+BSPIqYl7chjNZPeDc11GTS0lWdlKrUKNNLEnzigQrbdYCTFcP9uGYwFDAVsgcn+W/F4TbboVppYOQuPV8AfJV1qZbOIVIGY8goCq0fDICiD+zSenwMTibVzzWuiSmBa/BVL2r7mRklUjZkQm1+/dUoMk64oweSyH1xm0ewo8TMr0R85IruAKacts4wk1Vz5DAS9hGHWEOJ+HBV9zkeXWrSRZctqK4sG3NybGTPqf4J5bDxIYW2pP8tbG5Hc5WD3O/vcMntm1e/sXPR24IWP/ac31/I/dn1bMuBfLMXQhhx4QEi/Fyd65ikG0O3QRP1ukUCvWRVmZF+mQho3XIxrgAxSxhRWwVfcMk+1G38yy6pOG21e0wkyHUnRbN4O1F/x9cZrscxBAKExut2LALs0gD1fa++R8FhmGONfJ1j3kxXcVsaSFD4XRHqxHiCt9icBBzT+A6bv43qoyAjJdGRFk3USndjavx/gbQSMdIA+QBiCsTuz4a2+RiMq3xxbDjH+CNQz3yC35ipXY/00nhL1i/7yblCq63LwQF3h48/iiFXkIyYnVcGqcBTyA73M2HhZenbqQ2hG2OB8jWiP/3Nh8/RYrqpcnKrZgZRFe/iRV4=
+    - secure: >-
+        f66vk0gkRYlF6dLwqkLOM/CUD9qbzIIOg8GQ056jxBlLmPuu9cDIAAZ+wmp3+oNBaqpfrtfmbr/zQl0pcd2bSQVfcZRRobYlefAFCGpc695gSXVMQaie2hI0avHLQs7FuoA36Ed0PUppV0Lar9qLDdDKXbys6IhV7pW95Kxa1/56Q4yTlTS9auHgGowffz4RTw7DgN12wQdx9+gu8SKIgypNEKGxZuEcu7J9ghwzgLoECdD9KllhulXI3AmxevD9v829QFxZQrf3aFfV5bbdTKReZnHJJOzAHlyhIuKFd9Fd7nNZ2bsaak02KMON6OoIbLokbFaHLUrqkKbl0RHjqkvC1smI289lddNRHb0VWdcOEH1pjUr+bdDDYzxfi8fhGMssn5UebTzNqsy/ZsoxjCu40uImETe6OVz4FDnqdaWjsdtOcfBwqABWFE9UdHoDRuSulOLf4Ov+TCwNKgZWWpeQAvQs8P0JNMgQ3jaHs9yysDGCwNOgrrl/wXar8aqNe/sj+dKbqZIqk5taYmwtPKIXtBm6n2GKXMrQlyBmZjwOiYkWLYkVla5bH5aV2+LlZiuTiskvB0cWrdvK5k7sO9FsVdLUxwhHoYeCgboDTFO7L0qi3q4802Qt0IGrhAjVwxhRAqNaJ6FnOnpJ3pCadE6ySb4l557HbRcTIENcpb8=
