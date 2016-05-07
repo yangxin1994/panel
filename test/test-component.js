@@ -13,4 +13,13 @@ describe('Component', function() {
   it('injects default state into templates', function() {
     expect(el.textContent.trim()).to.equal('Value of foo: bar');
   });
+
+  it('renders when state is updated', function(done) {
+    expect(el.textContent.trim()).to.equal('Value of foo: bar');
+    el.update({foo: 'new value'});
+    window.requestAnimationFrame(function() {
+      expect(el.textContent.trim()).to.equal('Value of foo: new value');
+      done();
+    });
+  });
 });
