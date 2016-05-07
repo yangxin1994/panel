@@ -3,7 +3,7 @@ var path = require('path');
 var webpackConfig = {
   entry: path.join(__dirname, 'index.js'),
   output: {
-    filename: 'build.js',
+    filename: path.join(__dirname, 'build.js'),
   },
   module: {
     loaders: [
@@ -16,9 +16,6 @@ var webpackConfig = {
         },
       },
     ],
-  },
-  resolveLoader: {
-    root: path.join(__dirname, '../../node_modules'),
   },
 };
 
