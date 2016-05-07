@@ -3,6 +3,8 @@ node_js:
   - '5'
   - '4'
   - '4.2'
+before_script:
+  - npm run build-test
 script:
   - npm run test-sauce
 env:
