@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel lib -d build",
     "prepublish": "npm run build",
-    "test": "wct",
+    "test": "wct --plugin local",
     "test-sauce": "wct --plugin sauce"
   },
   "repository": {
