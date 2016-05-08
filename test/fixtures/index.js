@@ -23,7 +23,7 @@ document.registerElement('nested-app', class extends Component {
   get $template() {
     return state => h('.nested-foo', [
       h('h1', `Nested app: ${state.title}`),
-      this.child('nested-child'),
+      this.child('nested-child', {attributes: {'state-animal': 'llama'}}),
     ]);
   }
 });

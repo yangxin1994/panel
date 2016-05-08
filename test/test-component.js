@@ -44,13 +44,14 @@ describe('Simple Component instance', function() {
 });
 
 describe('Nested Component instance', function() {
-  var el;
+  var el, childEl;
 
   beforeEach(function(done) {
     document.body.innerHTML = '';
     el = document.createElement('nested-app');
     document.body.appendChild(el);
     window.requestAnimationFrame(function() {
+      childEl = el.getElementsByTagName('nested-child')[0];
       done();
     });
   });
@@ -63,12 +64,14 @@ describe('Nested Component instance', function() {
 
   it('renders the child component', function() {
     expect(document.getElementsByClassName('nested-foo-child')).to.have.lengthOf(1);
-    var childEl = el.getElementsByTagName('nested-child')[0];
     expect(childEl.children[0].className).to.equal('nested-foo-child');
   });
 
   it('passes parent state to the child component', function() {
-    var childEl = el.getElementsByTagName('nested-child')[0];
     expect(childEl.textContent).to.include('parent title: test');
+  });
+
+  it('passes attributes to the child component', function() {
+    expect(childEl.textContent).to.include('animal: llama');
   });
 });
