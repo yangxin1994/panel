@@ -74,4 +74,24 @@ describe('Nested Component instance', function() {
   it('passes attributes to the child component', function() {
     expect(childEl.textContent).to.include('animal: llama');
   });
+
+  it('passes state updates from parent to child', function(done) {
+    expect(childEl.textContent).to.include('animal: llama');
+    el.update({animal: 'capybara'});
+    window.requestAnimationFrame(function() {
+      expect(childEl.textContent).to.include('animal: capybara');
+      done();
+    });
+  });
+
+  it('passes state updates from child to parent', function(done) {
+    expect(el.textContent).to.include('Nested app: test');
+    expect(childEl.textContent).to.include('parent title: test');
+    childEl.update({title: 'new title'});
+    window.requestAnimationFrame(function() {
+      expect(el.textContent).to.include('Nested app: new title');
+      expect(childEl.textContent).to.include('parent title: new title');
+      done();
+    });
+  });
 });
