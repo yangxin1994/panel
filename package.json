@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/mixpanel/panel#readme",
   "dependencies": {
-    "dom-delegator": "git://github.com/ilyakamens/dom-delegator.git#f49fffc94ad7343e0c5af3e6a79bea427c5ae94e",
     "main-loop": "3.2.0",
     "virtual-dom": "2.1.1",
     "webcomponent": "0.1.2"
