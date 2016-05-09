@@ -1,46 +1,46 @@
 [![Build Status](https://travis-ci.org/mixpanel/panel.svg?branch=master)](https://travis-ci.org/mixpanel/panel)
 # panel
 
-A no-frills ES2015 microframework for virtual-dom view management and routing. Because coding UIs shouldn't be rocket science.
+Apps made of composable, manageable Web Components. Because coding UIs shouldn't be rocket science.
 
 ```javascript
-import { App, View } from 'panel';
+import {Component} from 'panel';
 import counterTemplate from './counter.jade';
 
-class CounterApp extends App {
-  get SCREENS() {
-    return {counter: new CounterView(this)};
+document.registerElement('counter-app', class extends Component {
+  get $defaultState() {
+    return {count: 1};
   }
-}
 
-class CounterView extends View {
-  get TEMPLATE() {
+  get $template() {
     return counterTemplate;
   }
 
-  get templateHandlers() {
+  get handlers() {
     return {
-      incr: () => this.app.update({counter: this.app.state.countVal + 1}),
-      decr: () => this.app.update({counter: this.app.state.countVal - 1}),
+      incr: () => this.update({count: this.state.count + 1}),
+      decr: () => this.update({count: this.state.count - 1}),
     }
   }
-}
+});
 
-new CounterApp('counter-app', {$screen: 'counter', countVal: 1}).start();
+document.body.appendChild(document.createElement('counter-app'));
 ```
 ```jade
 .counter
-  .val Counter: #{counter}
+  .val Counter: #{count}
   .controls
-    button.decr(ev-click=handlers.decr) -
-    button.incr(ev-click=handlers.incr) +
+    button.decr(onclick=$component.handlers.decr) -
+    button.incr(onclick=$component.handlers.incr) +
 ```
 
 ## Motivation and technologies
 
-Inspired by aspects of [Mercury](https://github.com/Raynos/mercury), [React](https://facebook.github.io/react/), [Redux](http://redux.js.org/), and [Cycle](http://cycle.js.org/), with an emphasis on simple pragmatism over functional purity thanks to Henrik Joreteg's ["Feather" app demo](https://github.com/HenrikJoreteg/feather-app). Strips out the opaque abstractions and data flow management layers to provide a straightforward, largely imperative, state-based rendering cycle. Gone are Mercury's channels, React's stores, Cycle's observables, Backbone's event soup and DOM dependencies - a Plain Old Javascript Object represents state, you update it with `App.update()`, and the DOM gets updated according to the diff. If you really need more fine-grained state management, you can plug in Redux seamlessly (hint: in most apps, you just don't need it).
+Panel makes [Web Components](http://webcomponents.org/) suitable for constructing full web UIs, not just low-level building blocks. It does so by providing an easy-to-use state management and rendering layer built on [virtual-dom](https://github.com/Matt-Esch/virtual-dom), modeled on the core rendering technology of [React](https://facebook.github.io/react/).
 
-Magic is kept to a minimum. Core components are [virtual-dom](https://github.com/Matt-Esch/virtual-dom) for mapping state to DOM, [main-loop](https://github.com/Raynos/main-loop) for batching updates efficiently, and [dom-delegator](https://github.com/Raynos/dom-delegator) for attaching event handlers to virtual-dom nodes. `panel` glues these together while adding some facilities for effectively nesting views, standardizing event handlers/template helpers, and providing out-of-the-box routing (based on the [Backbone Router](http://backbonejs.org/#Router)). View templates can be made with anything that produces [Hyperscript](https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript), including raw hyperscript code or Jade or JSX. Close control of component lifecycle events and DOM rendering can be achieved through use of [Web Components](http://webcomponents.org/) or [virtual-dom widgets](https://github.com/Matt-Esch/virtual-dom/blob/master/docs/widget.md).
+Each Panel application is a Web Component, composed of DOM elements and potentially arbitrarily nested child components, each of which is technically an app in its own right. Parent and child components can share `state`, in the form of Plain Old JavaScript Objects which are passed to templates for rendering. When `update()` is called on a component with state changes, the DOM gets updated according to the diff. Templates can be in any format that produces [(virtual-)hyperscript](https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript), including raw Hyperscript code or Jade or JSX.
+
+The architecture of Panel draws upon aspects of and technologies from [Mercury](https://github.com/Raynos/mercury), [Polymer](https://www.polymer-project.org), [React](https://facebook.github.io/react/), [Redux](http://redux.js.org/), [Cycle](http://cycle.js.org/), and [Backbone](http://backbonejs.org/), with an emphasis on simple pragmatism over functional purity thanks to Henrik Joreteg's ["Feather" app demo](https://github.com/HenrikJoreteg/feather-app). Panel eschews opaque abstractions and data flow management layers to provide a straightforward, largely imperative, state-based rendering cycle. There are no built-in data flow abstractions like Mercury's channels, Flux/React's stores, Cycle's observables, Backbone's event soup and DOM dependencies. More complex state management systems such as Redux and RxJS can plug in to Panel seamlessly if desired (hint: in most apps, you just don't need it). A built-in router (based on the [Backbone Router](http://backbonejs.org/#Router)) can sync URL updates and HTML5 History with a Panel app's `state` for automatic updating and view-swapping.
 
 ## Installation
 
@@ -48,6 +48,12 @@ Magic is kept to a minimum. Core components are [virtual-dom](https://github.com
 
 ## Running tests
 
+Tests run with Selenium through [web-component-tester](https://github.com/Polymer/web-component-tester).
+
+#### Run with locally installed browsers
 `npm test`
 
-With debugger: `npm run test-debug`
+#### Tunnel to [Sauce Labs](https://saucelabs.com/)
+`npm run test-sauce`
+
+Set credentials with environment variables `SAUCE_USERNAME` and `SAUCE_ACCESS_KEY`. The default browser/OS matrix is defined in `wct.conf.json`.
