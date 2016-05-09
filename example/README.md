@@ -1,5 +1,7 @@
 # Let's build an app!
 
+`TODO: Update for Component architecture`
+
 The example in this directory is a simple two-view "dynamic counter" app demonstrating the basics of Panel's view and routing conventions.
 
 ### 1. Static page
