@@ -20,7 +20,7 @@ document.registerElement('counter-app', class extends Component {
     return {
       incr: () => this.update({count: this.state.count + 1}),
       decr: () => this.update({count: this.state.count - 1}),
-    }
+    };
   }
 });
 
