@@ -1,7 +1,7 @@
 {
   "name": "panel",
   "version": "0.5.5",
-  "description": "virtual-dom view management and routing",
+  "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "scripts": {
     "build": "babel lib -d build",
@@ -15,7 +15,9 @@
     "url": "git@github.com/mixpanel/panel.git"
   },
   "keywords": [
+    "web components",
     "virtual-dom",
+    "react",
     "jade",
     "mercury"
   ],
