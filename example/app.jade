@@ -1,7 +1,1 @@
-.app
-  .header
-    a(href='#about') About
-    a(href='#counter') Counter
-  case $view
-    when 'about': div= $component.child('view-about')
-    when 'counter': div= $component.child('view-counter')
+.app= $component.child($view + '-view')

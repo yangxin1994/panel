@@ -1,15 +1,16 @@
 import 'webcomponents.js'; // polyfill
 
-import {Component} from '../lib';
+import { Component } from '../lib';
 
+import template from './app.jade';
 import aboutTemplate from './about.jade';
-import appTemplate from './app.jade';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
   get $defaultState() {
     return {
       $view: 'about',
+      count: 1,
     };
   }
 
@@ -22,31 +23,29 @@ document.registerElement('counter-app', class extends Component {
   }
 
   get $template() {
-    return appTemplate;
+    return template;
   }
 });
 
-document.registerElement('view-about', class extends Component {
+document.registerElement('about-view', class extends Component {
   get $template() {
     return aboutTemplate;
   }
 });
 
-document.registerElement('view-counter', class extends Component {
-  get $defaultState() {
-    return {
-      count: 5,
-    };
-  }
-
+document.registerElement('counter-view', class extends Component {
   get $template() {
     return counterTemplate;
   }
 
   get handlers() {
     return {
-      decr: () => this.update({count: this.state.count - 1}),
-      incr: () => this.update({count: this.state.count + 1}),
-    }
+      decr: () => this.changeCounter(-1),
+      incr: () => this.changeCounter(1),
+    };
+  }
+
+  changeCounter(offset) {
+    this.update({count: this.state.count + offset});
   }
 });
