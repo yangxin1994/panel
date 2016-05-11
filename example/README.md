@@ -119,7 +119,7 @@ document.registerElement('counter-view', class extends Component {
 Since components have access to the parent app (as well as parent views, for deeper view hierarchies), such helpers can be added to the main app or individual views as appropriate - they're just methods in plain JavaScript classes.
 
 ### 4. Routing
-We have two 'views', `about` and `counter`, but currently no way to switch between them. Panel's built-in router can help handle navigate between views, by allowing URL/history changes to effect state changes:
+We have two 'views', `about` and `counter`, but currently no way to switch between them. Panel's built-in router can help handle navigation between views, by allowing URL/history changes to effect state changes:
 ```javascript
 document.registerElement('counter-app', class extends Component {
   get $defaultState() {
