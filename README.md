@@ -57,3 +57,7 @@ Tests run with Selenium through [web-component-tester](https://github.com/Polyme
 `npm run test-sauce`
 
 Set credentials with environment variables `SAUCE_USERNAME` and `SAUCE_ACCESS_KEY`. The default browser/OS matrix is defined in `wct.conf.json`.
+
+## License
+
+MIT
