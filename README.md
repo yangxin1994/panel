@@ -4,7 +4,7 @@
 Apps made of composable, manageable Web Components. Because coding UIs shouldn't be rocket science.
 
 ```javascript
-import {Component} from 'panel';
+import { Component } from 'panel';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
@@ -45,6 +45,8 @@ The architecture of Panel draws upon aspects of and technologies from [Mercury](
 ## Installation
 
 `npm install --save panel`
+
+If your target environment does not implement HTML custom elements natively, you must supply a polyfill, such as [webcomponents.js](https://github.com/webcomponents/webcomponentsjs).
 
 ## Running tests
 
