@@ -29,14 +29,20 @@ describe('Simple Component instance', function() {
     });
 
     it('injects default state into templates', function() {
-      expect(el.textContent.trim()).to.equal('Value of foo: bar');
+      expect(el.textContent).to.contain('Value of foo: bar');
+    });
+
+    it('injects helpers into templates', function() {
+      expect(el.textContent).to.contain('Foo capitalized: Bar');
     });
 
     it('re-renders when state is updated', function(done) {
-      expect(el.textContent.trim()).to.equal('Value of foo: bar');
+      expect(el.textContent).to.contain('Value of foo: bar');
+      expect(el.textContent).to.contain('Foo capitalized: Bar');
       el.update({foo: 'new value'});
       window.requestAnimationFrame(function() {
-        expect(el.textContent.trim()).to.equal('Value of foo: new value');
+        expect(el.textContent).to.contain('Value of foo: new value');
+        expect(el.textContent).to.contain('Foo capitalized: New value');
         done();
       });
     });
