@@ -6,11 +6,23 @@ describe('Simple Component instance', function() {
     el = document.createElement('simple-app');
   });
 
-  it('does not affect the DOM until attached', function(done) {
-    expect(document.getElementsByClassName('foo')).to.be.empty;
-    window.requestAnimationFrame(function() {
+  context('before attached to DOM', function() {
+    it('does not affect the DOM', function(done) {
       expect(document.getElementsByClassName('foo')).to.be.empty;
-      done();
+      window.requestAnimationFrame(function() {
+        expect(document.getElementsByClassName('foo')).to.be.empty;
+        done();
+      });
+    });
+
+    it('allows state setting', function(done) {
+      el.state = {foo: 'not bar'};
+      document.body.appendChild(el);
+      expect(el.state.foo).to.equal('not bar');
+      window.requestAnimationFrame(function() {
+        expect(el.state.foo).to.equal('not bar');
+        done();
+      });
     });
   });
 
