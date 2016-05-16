@@ -16,7 +16,7 @@ document.registerElement('counter-app', class extends Component {
     return counterTemplate;
   }
 
-  get handlers() {
+  get $helpers() {
     return {
       incr: () => this.update({count: this.state.count + 1}),
       decr: () => this.update({count: this.state.count - 1}),
@@ -30,8 +30,8 @@ document.body.appendChild(document.createElement('counter-app'));
 .counter
   .val Counter: #{count}
   .controls
-    button.decr(onclick=$component.handlers.decr) -
-    button.incr(onclick=$component.handlers.incr) +
+    button.decr(onclick=$helpers.decr) -
+    button.incr(onclick=$helpers.incr) +
 ```
 
 ## Motivation and technologies

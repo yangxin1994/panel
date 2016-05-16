@@ -87,12 +87,12 @@ document.registerElement('counter-view', class extends Component {
   get $template() {
     return state => h('.counter', [
       h('.val', `Counter: ${state.count}`),
-      h('button.decr', {onclick: state.$component.handlers.decr}, '-'),
-      h('button.incr', {onclick: state.$component.handlers.incr}, '+'),
+      h('button.decr', {onclick: state.$helpers.decr}, '-'),
+      h('button.incr', {onclick: state.$helpers.incr}, '+'),
     ]);
   }
 
-  get handlers() {
+  get $helpers() {
     return {
       decr: () => this.update({count: this.state.count - 1}),
       incr: () => this.update({count: this.state.count + 1}),
@@ -104,7 +104,7 @@ Now when the user clicks on the + button, the view's `incr` handler function is 
 ```javascript
 document.registerElement('counter-view', class extends Component {
   // ...
-  get handlers() {
+  get $helpers() {
     return {
       decr: () => this.changeCounter(-1),
       incr: () => this.changeCounter(1),
@@ -160,8 +160,8 @@ document.registerElement('counter-view', class extends Component {
     return state => h('.counter', [
       h('.val', `Counter: ${state.count}`),
       h('.controls', [
-        h('button.decr', {onclick: state.$component.handlers.decr}, '-'),
-        h('button.incr', {onclick: state.$component.handlers.incr}, '+'),
+        h('button.decr', {onclick: state.$helpers.decr}, '-'),
+        h('button.incr', {onclick: state.$helpers.incr}, '+'),
       ]),
       h('a', {href: '#about'}, 'About'),
     ]);
@@ -257,7 +257,7 @@ document.registerElement('counter-view', class extends Component {
     return counterTemplate;
   }
 
-  get handlers() {
+  get $helpers() {
     return {
       decr: () => this.changeCounter(-1),
       incr: () => this.changeCounter(1),

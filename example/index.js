@@ -38,7 +38,7 @@ document.registerElement('counter-view', class extends Component {
     return counterTemplate;
   }
 
-  get handlers() {
+  get $helpers() {
     return {
       decr: () => this.changeCounter(-1),
       incr: () => this.changeCounter(1),
