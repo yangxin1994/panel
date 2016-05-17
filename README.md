@@ -11,11 +11,13 @@ document.registerElement('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {count: 1},
-      template: counterTemplate,
+
       helpers: {
         decr: () => this.changeCounter(-1),
         incr: () => this.changeCounter(1),
       },
+
+      template: counterTemplate,
     };
   }
 
