@@ -31,8 +31,10 @@ import { Component } from 'panel';
 import h from 'virtual-dom/virtual-hyperscript';
 
 document.registerElement('counter-app', class extends Component {
-  get $template() {
-    return () => h('.about', 'This is a sample app.');
+  get config() {
+    return {
+      template: () => h('.about', 'This is a sample app.'),
+    };
   }
 });
 ```
@@ -43,31 +45,35 @@ Hurray! The `<counter-app>` element in our HTML will now be populated with a sta
 Let's split the app into two views: the 'about' screen defined above, and a 'counter' screen which will display a dynamic value `count`. Defining the 'counter' view looks quite like what we did in the previous section to define the app element:
 ```javascript
 document.registerElement('counter-view', class extends Component {
-  get $template() {
-    return state => h('.counter', `Counter: ${state.count}`);
+  get config() {
+    return {
+      template: state => h('.counter', `Counter: ${state.count}`),
+    };
   }
 });
 ```
 The 'about' view is similar:
 ```javascript
 document.registerElement('about-view', class extends Component {
-  get $template() {
-    return () => h('.about', 'This is a sample app.');
+  get config() {
+    return {
+      template: () => h('.about', 'This is a sample app.'),
+    };
   }
 });
 ```
-Now let's show them both simultaneously in the app. The `$defaultState` property defines a starting state object for the app. The `this.child()` call inserts the subcomponents, taking care of hooking them up to the parent app/component so that they all share a single state:
+Now let's show them both simultaneously in the app. The `defaultState` property defines a starting state object for the app. The `this.child()` call inserts the subcomponents, taking care of hooking them up to the parent app/component so that they all share a single state:
 ```javascript
 document.registerElement('counter-app', class extends Component {
-  get $defaultState() {
-    return {count: 1};
-  }
+  get config() {
+    return {
+      defaultState: {count: 1},
 
-  get $template() {
-    return () => h('.app', [
-      this.child('about-view'),
-      this.child('counter-view'),
-    ]);
+      template: () => h('.app', [
+        this.child('about-view'),
+        this.child('counter-view'),
+      ]),
+    };
   }
 });
 ```
@@ -84,18 +90,18 @@ window.setInterval(() => {
 Instead of updating the counter automatically and relentlessly, we'll now add + and - buttons so the user can control the counter:
 ```javascript
 document.registerElement('counter-view', class extends Component {
-  get $template() {
-    return state => h('.counter', [
-      h('.val', `Counter: ${state.count}`),
-      h('button.decr', {onclick: state.$helpers.decr}, '-'),
-      h('button.incr', {onclick: state.$helpers.incr}, '+'),
-    ]);
-  }
-
-  get $helpers() {
+  get config() {
     return {
-      decr: () => this.update({count: this.state.count - 1}),
-      incr: () => this.update({count: this.state.count + 1}),
+      template: state => h('.counter', [
+        h('.val', `Counter: ${state.count}`),
+        h('button.decr', {onclick: state.$helpers.decr}, '-'),
+        h('button.incr', {onclick: state.$helpers.incr}, '+'),
+      ]),
+
+      helpers: {
+        decr: () => this.update({count: this.state.count - 1}),
+        incr: () => this.update({count: this.state.count + 1}),
+      },
     };
   }
 });
@@ -103,11 +109,13 @@ document.registerElement('counter-view', class extends Component {
 Now when the user clicks on the + button, the view's `incr` handler function is called, which updates the state. We can extract the counter-updating logic into a separate helper:
 ```javascript
 document.registerElement('counter-view', class extends Component {
-  // ...
-  get $helpers() {
+  get config() {
     return {
-      decr: () => this.changeCounter(-1),
-      incr: () => this.changeCounter(1),
+      // ...
+      helpers: {
+        decr: () => this.changeCounter(-1),
+        incr: () => this.changeCounter(1),
+      },
     };
   }
 
@@ -122,23 +130,21 @@ Since components have access to the parent app (as well as parent views, for dee
 We have two 'views', `about` and `counter`, but currently no way to switch between them. Panel's built-in router can help handle navigation between views, by allowing URL/history changes to effect state changes:
 ```javascript
 document.registerElement('counter-app', class extends Component {
-  get $defaultState() {
+  get config() {
     return {
-      $view: 'about',
-      count: 1,
-    };
-  }
+      defaultState: {
+        $view: 'about',
+        count: 1,
+      },
 
-  get $routes() {
-    return {
-      'counter': () => ({$view: 'counter'}),
-      'about':   () => ({$view: 'about'}),
-      '':        'about',
-    };
-  }
+      routes: {
+        'counter': () => ({$view: 'counter'}),
+        'about':   () => ({$view: 'about'}),
+        '':        'about',
+      },
 
-  get $template() {
-    return state => this.child(`${state.$view}-view`);
+      template: state => this.child(`${state.$view}-view`),
+    };
   }
 });
 ```
@@ -147,24 +153,29 @@ Now visiting a URL with location hash `#counter` will switch to the `counter` vi
 Plain old HTML `anchor` tags with `href` values `#counter` and `#about` can now navigate between the views:
 ```javascript
 document.registerElement('about-view', class extends Component {
-  get $template() {
-    return () => h('.about', [
-      h('p', 'This is a sample app.'),
-      h('a', {href: '#counter'}, 'Counter'),
-    ]);
+  get config() {
+    return {
+      template: () => h('.about', [
+        h('p', 'This is a sample app.'),
+        h('a', {href: '#counter'}, 'Counter'),
+      ]),
+    };
   }
 });
 
 document.registerElement('counter-view', class extends Component {
-  get $template() {
-    return state => h('.counter', [
-      h('.val', `Counter: ${state.count}`),
-      h('.controls', [
-        h('button.decr', {onclick: state.$helpers.decr}, '-'),
-        h('button.incr', {onclick: state.$helpers.incr}, '+'),
+  get config() {
+    return {
+      // ...
+      template: state => h('.counter', [
+        h('.val', `Counter: ${state.count}`),
+        h('.controls', [
+          h('button.decr', {onclick: state.$helpers.decr}, '-'),
+          h('button.incr', {onclick: state.$helpers.incr}, '+'),
+        ]),
+        h('a', {href: '#about'}, 'About'),
       ]),
-      h('a', {href: '#about'}, 'About'),
-    ]);
+    };
   }
   // ...
 });
@@ -187,8 +198,8 @@ View templates can be constructed separately from the Component modules, as long
 .counter
   .val Counter: #{countVal}
   .controls
-    button.decr(ev-click=handlers.decr) -
-    button.incr(ev-click=handlers.incr) +
+    button.decr(ev-click=$helpers.decr) -
+    button.incr(ev-click=$helpers.incr) +
   a(href='#about') About
 ```
 ```javascript
@@ -197,21 +208,28 @@ import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
-  // ...
-  get $template() {
-    return template;
+  get config() {
+    return {
+      // ...
+      template,
+    };
   }
 });
 
 document.registerElement('about-view', class extends Component {
-  get $template() {
-    return aboutTemplate;
+  get config() {
+    return {
+      template: aboutTemplate,
+    };
   }
 });
 
 document.registerElement('counter-view', class extends Component {
-  get $template() {
-    return counterTemplate;
+  get config() {
+    return {
+      // ...
+      template: counterTemplate,
+    };
   }
   // ...
 });
@@ -226,41 +244,39 @@ import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
-  get $defaultState() {
+  get config() {
     return {
-      $view: 'about',
-      count: 1,
-    };
-  }
+      defaultState: {
+        $view: 'about',
+        count: 1,
+      },
 
-  get $routes() {
-    return {
-      'counter': () => ({$view: 'counter'}),
-      'about':   () => ({$view: 'about'}),
-      '':        'about',
-    };
-  }
+      routes: {
+        'counter': () => ({$view: 'counter'}),
+        'about':   () => ({$view: 'about'}),
+        '':        'about',
+      },
 
-  get $template() {
-    return template;
+      template,
+    };
   }
 });
 
 document.registerElement('about-view', class extends Component {
-  get $template() {
-    return aboutTemplate;
+  get config() {
+    return {template: aboutTemplate};
   }
 });
 
 document.registerElement('counter-view', class extends Component {
-  get $template() {
-    return counterTemplate;
-  }
-
-  get $helpers() {
+  get config() {
     return {
-      decr: () => this.changeCounter(-1),
-      incr: () => this.changeCounter(1),
+      helpers: {
+        decr: () => this.changeCounter(-1),
+        incr: () => this.changeCounter(1),
+      },
+
+      template: counterTemplate,
     };
   }
 
