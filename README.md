@@ -8,19 +8,19 @@ import { Component } from 'panel';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
-  get $defaultState() {
-    return {count: 1};
-  }
-
-  get $template() {
-    return counterTemplate;
-  }
-
-  get $helpers() {
+  get $config() {
     return {
-      incr: () => this.update({count: this.state.count + 1}),
-      decr: () => this.update({count: this.state.count - 1}),
+      defaultState: {count: 1},
+      template: counterTemplate,
+      helpers: {
+        decr: () => this.changeCounter(-1),
+        incr: () => this.changeCounter(1),
+      },
     };
+  }
+
+  changeCounter(offset) {
+    this.update({count: this.state.count + offset});
   }
 });
 
