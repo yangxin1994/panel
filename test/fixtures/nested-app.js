@@ -2,7 +2,7 @@ import { Component } from '../../lib';
 import h from 'virtual-dom/virtual-hyperscript';
 
 document.registerElement('nested-app', class extends Component {
-  get $config() {
+  get config() {
     return {
       defaultState: {
         title: 'test',
@@ -17,7 +17,7 @@ document.registerElement('nested-app', class extends Component {
 });
 
 document.registerElement('nested-child', class extends Component {
-  get $config() {
+  get config() {
     return {
       template: state => h('.nested-foo-child', [
         h('p', `parent title: ${state.title}`),

@@ -2,7 +2,7 @@ import { Component } from '../../lib';
 import h from 'virtual-dom/virtual-hyperscript';
 
 document.registerElement('simple-app', class extends Component {
-  get $config() {
+  get config() {
     return {
       defaultState: {
         foo: 'bar',

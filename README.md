@@ -8,7 +8,7 @@ import { Component } from 'panel';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
-  get $config() {
+  get config() {
     return {
       defaultState: {count: 1},
       template: counterTemplate,

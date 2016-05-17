@@ -7,7 +7,7 @@ import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
-  get $config() {
+  get config() {
     return {
       defaultState: {
         $view: 'about',
@@ -26,13 +26,13 @@ document.registerElement('counter-app', class extends Component {
 });
 
 document.registerElement('about-view', class extends Component {
-  get $config() {
+  get config() {
     return {template: aboutTemplate};
   }
 });
 
 document.registerElement('counter-view', class extends Component {
-  get $config() {
+  get config() {
     return {
       helpers: {
         decr: () => this.changeCounter(-1),
