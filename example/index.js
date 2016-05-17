@@ -7,41 +7,39 @@ import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
 document.registerElement('counter-app', class extends Component {
-  get $defaultState() {
+  get $config() {
     return {
-      $view: 'about',
-      count: 1,
-    };
-  }
+      defaultState: {
+        $view: 'about',
+        count: 1,
+      },
 
-  get $routes() {
-    return {
-      'counter': () => ({$view: 'counter'}),
-      'about':   () => ({$view: 'about'}),
-      '':        'about',
-    };
-  }
+      routes: {
+        'counter': () => ({$view: 'counter'}),
+        'about':   () => ({$view: 'about'}),
+        '':        'about',
+      },
 
-  get $template() {
-    return template;
+      template,
+    };
   }
 });
 
 document.registerElement('about-view', class extends Component {
-  get $template() {
-    return aboutTemplate;
+  get $config() {
+    return {template: aboutTemplate};
   }
 });
 
 document.registerElement('counter-view', class extends Component {
-  get $template() {
-    return counterTemplate;
-  }
-
-  get $helpers() {
+  get $config() {
     return {
-      decr: () => this.changeCounter(-1),
-      incr: () => this.changeCounter(1),
+      helpers: {
+        decr: () => this.changeCounter(-1),
+        incr: () => this.changeCounter(1),
+      },
+
+      template: counterTemplate,
     };
   }
 
