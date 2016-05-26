@@ -60,6 +60,9 @@ A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is availab
 
 Tests run with Selenium through [web-component-tester](https://github.com/Polymer/web-component-tester).
 
+#### Build test fixtures
+`npm run build-test`
+
 #### Run with locally installed browsers
 `npm test`
 
