@@ -24,6 +24,18 @@ describe('Simple Component instance', function() {
         done();
       });
     });
+
+    it('allows updating', function(done) {
+      el.update({foo: 'not bar'});
+      document.body.appendChild(el);
+      expect(el.state.foo).to.equal('not bar');
+      window.requestAnimationFrame(function() {
+        expect(el.state.foo).to.equal('not bar');
+        expect(el.textContent).to.contain('Value of foo: not bar');
+        expect(el.textContent).to.contain('Foo capitalized: Not bar');
+        done();
+      });
+    });
   });
 
   context('when attached to DOM', function() {
