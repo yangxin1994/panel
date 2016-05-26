@@ -24,6 +24,18 @@ describe('Simple Component instance', function() {
         done();
       });
     });
+
+    it('allows updates and applies them when attached', function(done) {
+      el.update({foo: 'not bar'});
+      document.body.appendChild(el);
+      expect(el.state.foo).to.equal('not bar');
+      window.requestAnimationFrame(function() {
+        expect(el.state.foo).to.equal('not bar');
+        expect(el.textContent).to.contain('Value of foo: not bar');
+        expect(el.textContent).to.contain('Foo capitalized: Not bar');
+        done();
+      });
+    });
   });
 
   context('when attached to DOM', function() {
@@ -64,52 +76,82 @@ describe('Simple Component instance', function() {
 describe('Nested Component instance', function() {
   var el, childEl;
 
-  beforeEach(function(done) {
-    document.body.innerHTML = '';
-    el = document.createElement('nested-app');
-    document.body.appendChild(el);
-    window.requestAnimationFrame(function() {
-      childEl = el.getElementsByTagName('nested-child')[0];
-      done();
+  context('before attached to DOM', function() {
+    beforeEach(function(done) {
+      document.body.innerHTML = '';
+      el = document.createElement('nested-app');
+    });
+
+    it('passes state updates from parent to child', function(done) {
+      el.update({animal: 'capybara'});
+      document.body.appendChild(el);
+      expect(childEl.state.animal).to.equal('capybara');
+      window.requestAnimationFrame(function() {
+        expect(childEl.textContent).to.include('animal: capybara');
+        done();
+      });
+    });
+
+    it('passes state updates from child to parent', function(done) {
+      childEl.update({title: 'new title'});
+      document.body.appendChild(el);
+      expect(el.state.title).to.equal('new title');
+      window.requestAnimationFrame(function() {
+        expect(el.textContent).to.include('Nested app: new title');
+        expect(childEl.textContent).to.include('parent title: new title');
+        done();
+      });
     });
   });
 
-  it('renders the parent component', function() {
-    expect(document.getElementsByClassName('nested-foo')).to.have.lengthOf(1);
-    expect(el.children).to.have.lengthOf(1);
-    expect(el.children[0].className).to.equal('nested-foo');
-  });
-
-  it('renders the child component', function() {
-    expect(document.getElementsByClassName('nested-foo-child')).to.have.lengthOf(1);
-    expect(childEl.children[0].className).to.equal('nested-foo-child');
-  });
-
-  it('passes parent state to the child component', function() {
-    expect(childEl.textContent).to.include('parent title: test');
-  });
-
-  it('passes attributes to the child component', function() {
-    expect(childEl.textContent).to.include('animal: llama');
-  });
-
-  it('passes state updates from parent to child', function(done) {
-    expect(childEl.textContent).to.include('animal: llama');
-    el.update({animal: 'capybara'});
-    window.requestAnimationFrame(function() {
-      expect(childEl.textContent).to.include('animal: capybara');
-      done();
+  context('when attached to DOM', function() {
+    beforeEach(function(done) {
+      document.body.innerHTML = '';
+      el = document.createElement('nested-app');
+      document.body.appendChild(el);
+      window.requestAnimationFrame(function() {
+        childEl = el.getElementsByTagName('nested-child')[0];
+        done();
+      });
     });
-  });
 
-  it('passes state updates from child to parent', function(done) {
-    expect(el.textContent).to.include('Nested app: test');
-    expect(childEl.textContent).to.include('parent title: test');
-    childEl.update({title: 'new title'});
-    window.requestAnimationFrame(function() {
-      expect(el.textContent).to.include('Nested app: new title');
-      expect(childEl.textContent).to.include('parent title: new title');
-      done();
+    it('renders the parent component', function() {
+      expect(document.getElementsByClassName('nested-foo')).to.have.lengthOf(1);
+      expect(el.children).to.have.lengthOf(1);
+      expect(el.children[0].className).to.equal('nested-foo');
+    });
+
+    it('renders the child component', function() {
+      expect(document.getElementsByClassName('nested-foo-child')).to.have.lengthOf(1);
+      expect(childEl.children[0].className).to.equal('nested-foo-child');
+    });
+
+    it('passes parent state to the child component', function() {
+      expect(childEl.textContent).to.include('parent title: test');
+    });
+
+    it('passes attributes to the child component', function() {
+      expect(childEl.textContent).to.include('animal: llama');
+    });
+
+    it('passes state updates from parent to child', function(done) {
+      expect(childEl.textContent).to.include('animal: llama');
+      el.update({animal: 'capybara'});
+      window.requestAnimationFrame(function() {
+        expect(childEl.textContent).to.include('animal: capybara');
+        done();
+      });
+    });
+
+    it('passes state updates from child to parent', function(done) {
+      expect(el.textContent).to.include('Nested app: test');
+      expect(childEl.textContent).to.include('parent title: test');
+      childEl.update({title: 'new title'});
+      window.requestAnimationFrame(function() {
+        expect(el.textContent).to.include('Nested app: new title');
+        expect(childEl.textContent).to.include('parent title: new title');
+        done();
+      });
     });
   });
 });
