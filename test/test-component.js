@@ -25,7 +25,7 @@ describe('Simple Component instance', function() {
       });
     });
 
-    it('allows updating', function(done) {
+    it('allows updates and applies them when attached', function(done) {
       el.update({foo: 'not bar'});
       document.body.appendChild(el);
       expect(el.state.foo).to.equal('not bar');
