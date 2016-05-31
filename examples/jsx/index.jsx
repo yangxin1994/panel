@@ -1,6 +1,6 @@
 import 'webcomponents.js'; // polyfill
 
-import { Component } from '../lib';
+import { Component } from '../../lib';
 import h from './jsx-h';
 
 document.registerElement('counter-app', class extends Component {

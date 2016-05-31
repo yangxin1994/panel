@@ -1,6 +1,6 @@
 import 'webcomponents.js'; // polyfill
 
-import { Component } from '../lib';
+import { Component } from '../../lib';
 
 import template from './app.jade';
 import aboutTemplate from './about.jade';
