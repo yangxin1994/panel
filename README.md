@@ -52,7 +52,9 @@ If your target environment does not implement HTML custom elements natively, you
 
 ## Examples
 
-A brief tutorial is available in the [example](https://github.com/mixpanel/panel/tree/master/example) directory. The sample app accompanying the tutorial features routing, Jade templating, and infrastructure for practical usage such as Webpack/Babel configuration and inclusion of a Web Components polyfill.
+See [examples/](https://github.com/mixpanel/panel/tree/master/examples).
+
+A brief tutorial is available in the [examples/tutorial](https://github.com/mixpanel/panel/tree/master/examples/tutorial) directory. The sample app accompanying the tutorial features routing, Jade templating, and infrastructure for practical usage such as Webpack/Babel configuration and inclusion of a Web Components polyfill.
 
 A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is available at [https://github.com/tdumitrescu/todomvc-panel](https://github.com/tdumitrescu/todomvc-panel).
 
