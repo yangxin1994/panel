@@ -2,7 +2,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 var webpackConfig = {
-  entry: './index.js',
+  entry: './index.jsx',
   module: {
     loaders: [
       {
@@ -10,6 +10,17 @@ var webpackConfig = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
+          presets: ['es2015'],
+        },
+      },
+      {
+        test: /\.jsx$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          plugins: [
+            ['transform-react-jsx', {'pragma': 'h'}],
+          ],
           presets: ['es2015'],
         },
       },

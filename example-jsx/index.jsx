@@ -13,11 +13,7 @@ document.registerElement('counter-app', class extends Component {
         incr: () => this.changeCounter(1),
       },
 
-      template: state => h('.counter', [
-        h('.val', `Counter: ${state.count}`),
-        h('button.decr', {onclick: state.$helpers.decr}, '-'),
-        h('button.incr', {onclick: state.$helpers.incr}, '+'),
-      ]),
+      template: () => <div>Hello world</div>,
     };
   }
 
