@@ -18,4 +18,9 @@ document.registerElement('simple-app', class extends Component {
       ]),
     };
   }
+
+  shouldUpdate(state) {
+    // I simply refuse to say "Value of foo: meow"
+    return state.foo !== 'meow';
+  }
 });

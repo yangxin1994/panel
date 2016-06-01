@@ -70,6 +70,21 @@ describe('Simple Component instance', function() {
         done();
       });
     });
+
+    it('does not re-render if shouldUpdate() returns false', function(done) {
+      expect(el.textContent).to.contain('Value of foo: bar');
+
+      el.update({foo: 'meow'});
+      window.requestAnimationFrame(function() {
+        expect(el.textContent).to.contain('Value of foo: bar'); // no change
+
+        el.update({foo: 'something else'});
+        window.requestAnimationFrame(function() {
+          expect(el.textContent).to.contain('Value of foo: something else');
+          done();
+        });
+      });
+    });
   });
 });
 
