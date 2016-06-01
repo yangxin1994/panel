@@ -76,20 +76,21 @@ describe('Simple Component instance', function() {
 describe('Nested Component instance', function() {
   var el, childEl;
 
-  context('before attached to DOM', function() {
+  context('before child is rendered', function() {
     beforeEach(function() {
       document.body.innerHTML = '';
+      childEl = null;
       el = document.createElement('nested-app');
     });
 
-    it('passes state updates from parent to child', function(done) {
-      el.update({animal: 'capybara'});
-      document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
-        expect(childEl.state.animal).to.equal('capybara');
-        expect(childEl.textContent).to.include('animal: capybara');
-        done();
-      });
+    it('passes state updates from child to parent', function() {
+      el.attachedCallback();
+      childEl = document.createElement('nested-child');
+      childEl.setAttribute('panel-parent', el.panelID);
+      childEl.$panelParent = childEl.$panelRoot = el;
+      childEl.attachedCallback();
+      childEl.update({animal: 'capybara'});
+      expect(el.state.animal).to.equal('capybara');
     });
   });
 
