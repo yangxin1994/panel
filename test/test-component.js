@@ -77,7 +77,7 @@ describe('Nested Component instance', function() {
   var el, childEl;
 
   context('before attached to DOM', function() {
-    beforeEach(function(done) {
+    beforeEach(function() {
       document.body.innerHTML = '';
       el = document.createElement('nested-app');
     });
@@ -85,20 +85,9 @@ describe('Nested Component instance', function() {
     it('passes state updates from parent to child', function(done) {
       el.update({animal: 'capybara'});
       document.body.appendChild(el);
-      expect(childEl.state.animal).to.equal('capybara');
       window.requestAnimationFrame(function() {
+        expect(childEl.state.animal).to.equal('capybara');
         expect(childEl.textContent).to.include('animal: capybara');
-        done();
-      });
-    });
-
-    it('passes state updates from child to parent', function(done) {
-      childEl.update({title: 'new title'});
-      document.body.appendChild(el);
-      expect(el.state.title).to.equal('new title');
-      window.requestAnimationFrame(function() {
-        expect(el.textContent).to.include('Nested app: new title');
-        expect(childEl.textContent).to.include('parent title: new title');
         done();
       });
     });
