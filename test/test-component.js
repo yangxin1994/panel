@@ -36,6 +36,15 @@ describe('Simple Component instance', function() {
         done();
       });
     });
+
+    it('caches the last template once rendered', function(done) {
+      expect(el._rendered).to.be.undefined;
+      document.body.appendChild(el);
+      window.requestAnimationFrame(function() {
+        expect(el._rendered).to.be.an('object');
+        done();
+      });
+    });
   });
 
   context('when attached to DOM', function() {
