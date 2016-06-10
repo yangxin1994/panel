@@ -110,6 +110,39 @@ describe('Simple Component instance', function() {
       expect(el.shadowRoot).to.be.ok;
     });
 
+    it('successfully finds the panel root when top level uses shadow dom', function(done) {
+      childEl = document.createElement('nested-child');
+      window.requestAnimationFrame(function() {
+        childEl.setAttribute('panel-parent', el.panelID);
+        el.shadowRoot.appendChild(childEl);
+        window.requestAnimationFrame(function() {
+          childEl.attachedCallback();
+          expect(childEl.$panelRoot).to.equal(el);
+          done();
+        });
+      });
+    });
+
+    it('successfully finds the panel root when a nested child uses shadow dom', function(done) {
+      rootEl = document.createElement('nested-app');
+      document.body.appendChild(rootEl);
+      window.requestAnimationFrame(function() {
+        level1El = document.createElement('shadow-dom-app');
+        level1El.setAttribute('panel-parent', rootEl.panelID);
+        rootEl.appendChild(level1El);
+        window.requestAnimationFrame(function() {
+          level2El = document.createElement('nested-child');
+          level2El.setAttribute('panel-parent', level1El.panelID);
+          level1El.shadowRoot.appendChild(level2El);
+          window.requestAnimationFrame(function() {
+            expect(level2El.$panelParent).to.equal(level1El);
+            expect(level2El.$panelRoot).to.equal(rootEl);
+            done();
+          });
+        });
+      });
+    });
+
     it('renders its template', function() {
       expect(document.getElementsByClassName('foo')).to.have.lengthOf(0);
       expect(el.children).to.have.lengthOf(0);
@@ -147,6 +180,19 @@ describe('Nested Component instance', function() {
       childEl = null;
       el = document.createElement('nested-app');
     });
+
+    it('successfully finds the panel root', function(done) {
+      document.body.appendChild(el);
+      window.requestAnimationFrame(function(){
+        childEl = document.createElement('nested-child');
+        childEl.setAttribute('panel-parent', el.panelID);
+        el.appendChild(childEl);
+        window.requestAnimationFrame(function() {
+          expect(childEl.$panelRoot).to.equal(el);
+          done();
+        });
+      })
+    })
 
     it('passes state updates from child to parent', function() {
       el.attachedCallback();
