@@ -62,14 +62,11 @@ A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is availab
 
 Tests run with Selenium through [web-component-tester](https://github.com/Polymer/web-component-tester).
 
-#### Build test fixtures
-`npm run build-test`
-
 #### Run with locally installed browsers
 `npm test`
 
 #### Tunnel to [Sauce Labs](https://saucelabs.com/)
-`npm run test-sauce`
+`npm run build-test && npm run test-sauce`
 
 Set credentials with environment variables `SAUCE_USERNAME` and `SAUCE_ACCESS_KEY`. The default browser/OS matrix is defined in `wct.conf.json`.
 

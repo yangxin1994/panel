@@ -7,7 +7,8 @@
     "build": "babel lib -d build",
     "build-test": "webpack --config test/fixtures/webpack.config.js",
     "prepublish": "npm run build",
-    "test": "wct --plugin local",
+    "test": "npm run build-test && npm run test-local",
+    "test-local": "wct --plugin local",
     "test-sauce": "wct --plugin sauce"
   },
   "repository": {
