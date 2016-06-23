@@ -1,5 +1,4 @@
-import { Component } from '../../lib';
-import h from 'virtual-dom/virtual-hyperscript';
+import { Component, h } from '../../lib';
 
 var ShadowDomApp = document.registerElement('css-no-shadow-app', class extends Component {
   get config() {

@@ -1,5 +1,4 @@
-import { Component } from '../../lib';
-import h from 'virtual-dom/virtual-hyperscript';
+import { Component, h } from '../../lib';
 
 document.registerElement('simple-app', class extends Component {
   get config() {
