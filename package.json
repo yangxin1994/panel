@@ -8,8 +8,8 @@
     "build-test": "webpack --config test/fixtures/webpack.config.js",
     "prepublish": "npm run build",
     "test": "npm run build-test && npm run test-local",
-    "test-local": "wct --plugin local",
-    "test-sauce": "wct --plugin sauce"
+    "test-local": "wct --plugin local test/index.html",
+    "test-sauce": "wct --plugin sauce test/index.html"
   },
   "repository": {
     "type": "git",
