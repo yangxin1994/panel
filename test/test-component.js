@@ -262,3 +262,27 @@ describe('Nested Component instance', function() {
     });
   });
 });
+
+
+describe('Rendering exception', function() {
+  var el;
+
+  beforeEach(function(done) {
+    document.body.innerHTML = '';
+    el = document.createElement('breakable-app');
+    el.logError = sinon.spy();
+    document.body.appendChild(el);
+    window.requestAnimationFrame(function() {
+      done();
+    });
+  });
+
+  it('does not prevent component from initializing', function() {
+    expect(el.initialized).to.be.ok;
+  });
+
+  it('logs an error', function() {
+    expect(el.logError.getCall(0).args[0]).to.contain('Error while rendering');
+    expect(el.logError.getCall(0).args[0]).to.contain('BREAKABLE-APP');
+  });
+});
