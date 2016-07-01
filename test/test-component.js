@@ -6,6 +6,12 @@ describe('Simple Component instance', function() {
     el = document.createElement('simple-app');
   });
 
+  describe('toString()', function() {
+    it('includes the tag name', function() {
+      expect(el.toString()).to.contain('SIMPLE-APP');
+    });
+  });
+
   context('before attached to DOM', function() {
     it('does not affect the DOM', function(done) {
       expect(document.getElementsByClassName('foo')).to.be.empty;
