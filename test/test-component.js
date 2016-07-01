@@ -285,4 +285,13 @@ describe('Rendering exception', function() {
     expect(el.logError.getCall(0).args[0]).to.contain('Error while rendering');
     expect(el.logError.getCall(0).args[0]).to.contain('BREAKABLE-APP');
   });
+
+  it('does not prevent further updates from rendering', function(done) {
+    expect(el.textContent).not.to.contain('Value of foo.bar');
+    el.update({foo: {bar: 'later success'}});
+    window.requestAnimationFrame(function() {
+      expect(el.textContent).to.contain('Value of foo.bar: later success');
+      done();
+    });
+  });
 });
