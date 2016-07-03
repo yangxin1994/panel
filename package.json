@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel lib -d build",
     "build-test": "webpack --config test/fixtures/webpack.config.js",
-    "doc": "jsdoc lib/component.js -d doc",
+    "doc": "rm -rf doc && jsdoc lib -R README.md -d doc",
     "prepublish": "npm run build",
     "test": "npm run build-test && npm run test-local",
     "test-local": "wct --plugin local test/index.html",

@@ -42,6 +42,50 @@
 
 
 
+    <section>
+        <article><p><a href="https://travis-ci.org/mixpanel/panel"><img src="https://travis-ci.org/mixpanel/panel.svg?branch=master" alt="Build Status"></a></p>
+<h1>panel</h1><p>Apps made of composable, manageable Web Components. Because coding UIs shouldn't be rocket science.</p>
+<pre class="prettyprint source lang-javascript"><code>import { Component } from 'panel';
+import counterTemplate from './counter.jade';
+
+document.registerElement('counter-app', class extends Component {
+  get config() {
+    return {
+      defaultState: {count: 1},
+
+      helpers: {
+        decr: () => this.changeCounter(-1),
+        incr: () => this.changeCounter(1),
+      },
+
+      template: counterTemplate,
+    };
+  }
+
+  changeCounter(offset) {
+    this.update({count: this.state.count + offset});
+  }
+});
+
+document.body.appendChild(document.createElement('counter-app'));</code></pre><pre class="prettyprint source lang-jade"><code>.counter
+  .val Counter: #{count}
+  .controls
+    button.decr(onclick=$helpers.decr) -
+    button.incr(onclick=$helpers.incr) +</code></pre><h2>Motivation and technologies</h2><p>Panel makes <a href="http://webcomponents.org/">Web Components</a> suitable for constructing full web UIs, not just low-level building blocks. It does so by providing an easy-to-use state management and rendering layer built on <a href="https://github.com/Matt-Esch/virtual-dom">virtual-dom</a>, modeled on the core rendering technology of <a href="https://facebook.github.io/react/">React</a>.</p>
+<p>Each Panel application is a Web Component, composed of DOM elements and potentially arbitrarily nested child components, each of which is technically an app in its own right. Parent and child components can share <code>state</code>, in the form of Plain Old JavaScript Objects which are passed to templates for rendering. When <code>update()</code> is called on a component with state changes, the DOM gets updated according to the diff. Templates can be in any format that produces <a href="https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript">(virtual-)hyperscript</a>, including raw Hyperscript code or Jade or JSX.</p>
+<p>The architecture of Panel draws upon aspects of and technologies from <a href="https://github.com/Raynos/mercury">Mercury</a>, <a href="https://www.polymer-project.org">Polymer</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="http://redux.js.org/">Redux</a>, <a href="http://cycle.js.org/">Cycle</a>, and <a href="http://backbonejs.org/">Backbone</a>, with an emphasis on simple pragmatism over functional purity thanks to Henrik Joreteg's <a href="https://github.com/HenrikJoreteg/feather-app">&quot;Feather&quot; app demo</a>. Panel eschews opaque abstractions and data flow management layers to provide a straightforward, largely imperative, state-based rendering cycle. There are no built-in data flow abstractions like Mercury's channels, Flux/React's stores, Cycle's observables, Backbone's event soup and DOM dependencies. More complex state management systems such as Redux and RxJS can plug in to Panel seamlessly if desired (hint: in most apps, you just don't need it). A built-in router (based on the <a href="http://backbonejs.org/#Router">Backbone Router</a>) can sync URL updates and HTML5 History with a Panel app's <code>state</code> for automatic updating and view-swapping.</p>
+<h2>Installation</h2><p><code>npm install --save panel</code></p>
+<p>If your target environment does not implement HTML custom elements natively, you must supply a polyfill, such as <a href="https://github.com/webcomponents/webcomponentsjs">webcomponents.js</a>.</p>
+<h2>Examples</h2><p>See <a href="https://github.com/mixpanel/panel/tree/master/examples">examples/</a>.</p>
+<p>A brief tutorial is available in the <a href="https://github.com/mixpanel/panel/tree/master/examples/tutorial">examples/tutorial</a> directory. The sample app accompanying the tutorial features routing, Jade templating, and infrastructure for practical usage such as Webpack/Babel configuration and inclusion of a Web Components polyfill.</p>
+<p>A Panel implementation of the <a href="http://todomvc.com/">TodoMVC</a> app spec is available at <a href="https://github.com/tdumitrescu/todomvc-panel">https://github.com/tdumitrescu/todomvc-panel</a>.</p>
+<h2>Running tests</h2><p>Tests run with Selenium through <a href="https://github.com/Polymer/web-component-tester">web-component-tester</a>.</p>
+<h4>Run with locally installed browsers</h4><p><code>npm test</code></p>
+<h4>Tunnel to <a href="https://saucelabs.com/">Sauce Labs</a></h4><p><code>npm run build-test &amp;&amp; npm run test-sauce</code></p>
+<p>Set credentials with environment variables <code>SAUCE_USERNAME</code> and <code>SAUCE_ACCESS_KEY</code>. The default browser/OS matrix is defined in <code>wct.conf.json</code>.</p>
+<h2>License</h2><p>MIT</p></article>
+    </section>
+
 
 
 
@@ -50,13 +94,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-panel.html">panel</a></li></ul><h3>Classes</h3><ul><li><a href="Component.html">Component</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Jul 02 2016 23:25:42 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jul 03 2016 14:38:55 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
