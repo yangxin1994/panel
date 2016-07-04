@@ -7,6 +7,7 @@
     "build": "babel lib -d build",
     "build-test": "webpack --config test/fixtures/webpack.config.js",
     "doc": "rm -rf doc && jsdoc lib -R README-API.md -d doc",
+    "doc-publish": "test -z \"$(git status --porcelain)\" && git branch -d gh-pages && git branch gh-pages && git push --force origin gh-pages",
     "prepublish": "npm run build",
     "test": "npm run build-test && npm run test-local",
     "test-local": "wct --plugin local test/index.html",
