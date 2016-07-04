@@ -1,5 +1,8 @@
-[![Build Status](https://travis-ci.org/mixpanel/panel.svg?branch=master)](https://travis-ci.org/mixpanel/panel)
 # panel
+
+[![Build Status](https://travis-ci.org/mixpanel/panel.svg?branch=master)](https://travis-ci.org/mixpanel/panel)
+
+[![Build Status](https://saucelabs.com/browser-matrix/panel.svg)](https://saucelabs.com/open_sauce/user/panel)
 
 Apps made of composable, manageable Web Components. Because coding UIs shouldn't be rocket science.
 
