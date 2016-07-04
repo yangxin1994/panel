@@ -50,17 +50,15 @@ The architecture of Panel draws upon aspects of and technologies from [Mercury](
 
 If your target environment does not implement HTML custom elements natively, you must supply a polyfill, such as [webcomponents.js](https://github.com/webcomponents/webcomponentsjs).
 
-## Examples
+## Documentation and examples
 
-See [examples/](https://github.com/mixpanel/panel/tree/master/examples).
+API docs can be found at [http://mixpanel.github.io/panel/doc/](http://mixpanel.github.io/panel/doc/). NB these are still in progress and currently cover only the most important aspects of configuring Panel apps.
+
+For some sample apps with explanations see [examples/](https://github.com/mixpanel/panel/tree/master/examples).
 
 A brief tutorial is available in the [examples/tutorial](https://github.com/mixpanel/panel/tree/master/examples/tutorial) directory. The sample app accompanying the tutorial features routing, Jade templating, and infrastructure for practical usage such as Webpack/Babel configuration and inclusion of a Web Components polyfill.
 
 A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is available at [https://github.com/tdumitrescu/todomvc-panel](https://github.com/tdumitrescu/todomvc-panel).
-
-## API documentation
-
-API docs can be found at [http://mixpanel.github.io/panel/doc/](http://mixpanel.github.io/panel/doc/). NB these are still in progress and currently cover only the most important aspects of configuring Panel apps.
 
 ## Running tests
 
