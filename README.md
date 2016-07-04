@@ -58,6 +58,10 @@ A brief tutorial is available in the [examples/tutorial](https://github.com/mixp
 
 A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is available at [https://github.com/tdumitrescu/todomvc-panel](https://github.com/tdumitrescu/todomvc-panel).
 
+## API documentation
+
+API docs can be found at [http://mixpanel.github.io/panel/doc/](http://mixpanel.github.io/panel/doc/). NB these are still in progress and currently cover only the most important aspects of configuring Panel apps.
+
 ## Running tests
 
 Tests run with Selenium through [web-component-tester](https://github.com/Polymer/web-component-tester).
