@@ -8,9 +8,9 @@
     "build-test": "webpack --config test/browser/fixtures/webpack.config.js",
     "docs": "rm -rf docs && jsdoc lib -t node_modules/minami -R README-API.md -d docs",
     "prepublish": "npm run build",
-    "test": "npm run build-test && npm run test-local",
-    "test-local": "wct --plugin local test/browser/index.html",
-    "test-sauce": "wct --plugin sauce test/browser/index.html",
+    "test": "npm run build-test && npm run test-server && npm run test-browser-local",
+    "test-browser-local": "wct --plugin local test/browser/index.html",
+    "test-browser-sauce": "wct --plugin sauce test/browser/index.html",
     "test-server": "mocha --require babel-core/register test/server"
   },
   "repository": {
