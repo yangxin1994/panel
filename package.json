@@ -10,7 +10,8 @@
     "prepublish": "npm run build",
     "test": "npm run build-test && npm run test-local",
     "test-local": "wct --plugin local test/browser/index.html",
-    "test-sauce": "wct --plugin sauce test/browser/index.html"
+    "test-sauce": "wct --plugin sauce test/browser/index.html",
+    "test-server": "mocha --require babel-core/register test/server"
   },
   "repository": {
     "type": "git",
