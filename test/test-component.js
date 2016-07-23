@@ -200,6 +200,19 @@ describe('Nested Component instance', function() {
       })
     })
 
+    it('successfully finds a panel parent node by a given tag name', function(done) {
+      document.body.appendChild(el);
+      window.requestAnimationFrame(function(){
+        childEl = document.createElement('nested-child');
+        childEl.setAttribute('panel-parent', el.panelID);
+        el.appendChild(childEl);
+        window.requestAnimationFrame(function() {
+          expect(childEl.findPanelParentByTagName('nested-app')).to.equal(el);
+          done();
+        });
+      })
+    })
+
     it('passes state updates from child to parent', function() {
       el.attachedCallback();
       childEl = document.createElement('nested-child');
