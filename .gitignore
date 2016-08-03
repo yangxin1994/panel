@@ -1,4 +1,4 @@
 node_modules
 build
-test/browser/fixtures/build.js
+test/fixtures/build.js
 npm-debug.log

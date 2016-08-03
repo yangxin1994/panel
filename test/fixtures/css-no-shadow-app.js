@@ -1,4 +1,4 @@
-import { Component, h } from '../../../lib';
+import { Component, h } from '../../lib';
 
 var ShadowDomApp = document.registerElement('css-no-shadow-app', class extends Component {
   get config() {

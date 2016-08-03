@@ -1,4 +1,4 @@
-import { Component, h } from '../../../lib';
+import { Component, h } from '../../lib';
 
 document.registerElement('breakable-app', class extends Component {
   get config() {

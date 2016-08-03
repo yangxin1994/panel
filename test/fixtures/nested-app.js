@@ -1,4 +1,4 @@
-import { Component, h } from '../../../lib';
+import { Component, h } from '../../lib';
 
 document.registerElement('nested-app', class extends Component {
   get config() {
