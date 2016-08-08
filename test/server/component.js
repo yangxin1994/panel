@@ -3,8 +3,9 @@ import { expect } from 'chai';
 
 import '../fixtures';
 
-describe('Component', function() {
-  it('runs chai assertions', function() {
-    expect(true).to.be.ok;
+describe('Server-side component renderer', function() {
+  it('can register and create components with document.createElement', function() {
+    const el = document.createElement('simple-app');
+    expect(el.state).to.eql({foo: 'bar'});
   });
 });
