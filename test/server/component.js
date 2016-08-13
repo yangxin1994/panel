@@ -1,4 +1,5 @@
-import { componentToHTML } from '../../lib/isorender';
+import '../../lib/isorender/dom-shims';
+
 import { expect } from 'chai';
 
 import '../fixtures';
