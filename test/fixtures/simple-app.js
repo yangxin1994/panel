@@ -1,6 +1,6 @@
 import { Component, h } from '../../lib';
 
-document.registerElement('simple-app', class extends Component {
+export class SimpleApp extends Component {
   get config() {
     return {
       defaultState: {
@@ -22,4 +22,4 @@ document.registerElement('simple-app', class extends Component {
     // I simply refuse to say "Value of foo: meow"
     return state.foo !== 'meow';
   }
-});
+}

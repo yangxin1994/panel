@@ -1,6 +1,6 @@
 import { Component, h } from '../../lib';
 
-document.registerElement('nested-app', class extends Component {
+export class NestedApp extends Component {
   get config() {
     return {
       defaultState: {
@@ -13,9 +13,9 @@ document.registerElement('nested-app', class extends Component {
       ]),
     };
   }
-});
+}
 
-document.registerElement('nested-child', class extends Component {
+export class NestedChild extends Component {
   get config() {
     return {
       template: state => h('.nested-foo-child', [
@@ -24,4 +24,4 @@ document.registerElement('nested-child', class extends Component {
       ]),
     };
   }
-});
+}

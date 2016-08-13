@@ -1,6 +1,6 @@
 import { Component, h } from '../../lib';
 
-document.registerElement('breakable-app', class extends Component {
+export class BreakableApp extends Component {
   get config() {
     return {
       template: state => h('.foo', [
@@ -9,4 +9,4 @@ document.registerElement('breakable-app', class extends Component {
       ]),
     };
   }
-});
+}

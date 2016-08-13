@@ -1,5 +1,12 @@
-import './breakable-app';
-import './css-no-shadow-app';
-import './nested-app';
-import './shadow-dom-app';
-import './simple-app';
+import { BreakableApp } from './breakable-app';
+import { CssNoShadowApp } from './css-no-shadow-app';
+import { NestedApp, NestedChild } from './nested-app';
+import { ShadowDomApp } from './shadow-dom-app';
+import { SimpleApp } from './simple-app';
+
+document.registerElement('breakable-app', BreakableApp);
+document.registerElement('css-no-shadow-app', CssNoShadowApp);
+document.registerElement('nested-app', NestedApp);
+document.registerElement('nested-child', NestedChild);
+document.registerElement('shadow-dom-app', ShadowDomApp);
+document.registerElement('simple-app', SimpleApp);

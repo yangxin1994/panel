@@ -1,6 +1,6 @@
 import { Component, h } from '../../lib';
 
-var ShadowDomApp = document.registerElement('shadow-dom-app', class extends Component {
+export class ShadowDomApp extends Component {
   get config() {
     return {
       css: 'color: blue;',
@@ -12,4 +12,4 @@ var ShadowDomApp = document.registerElement('shadow-dom-app', class extends Comp
       useShadowDom: true,
     };
   }
-});
+}
