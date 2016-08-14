@@ -1,6 +1,7 @@
 import '../../lib/isorender/dom-shims';
 
 import { expect } from 'chai';
+import requestAnimationFrame from 'raf';
 
 import { SimpleApp } from '../fixtures/simple-app';
 document.registerElement('simple-app', SimpleApp);
@@ -18,5 +19,18 @@ describe('Server-side component renderer', function() {
     expect(el.state).to.eql({});
     el.attachedCallback();
     expect(el.state).to.eql({foo: 'bar'});
+  });
+
+  it('renders a simple component', function(done) {
+    const el = new SimpleApp();
+    expect(el.state).to.eql({});
+    el.attachedCallback();
+    requestAnimationFrame(function() {
+      const html = el.innerHTML;
+      expect(html).to.contain('<DIV class="foo">');
+      expect(html).to.contain('Value of foo: bar');
+      expect(html).to.contain('Foo capitalized: Bar');
+      done();
+    });
   });
 });

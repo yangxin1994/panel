@@ -45,6 +45,7 @@
     "jsdoc": "^3.4.0",
     "minami": "^1.1.1",
     "mocha": "^2.5.3",
+    "raf": "^3.2.0",
     "web-component-tester": "4.2.2",
     "webcomponents.js": "0.7.22",
     "webpack": "1.13.0"
