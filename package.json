@@ -4,7 +4,7 @@
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "scripts": {
-    "build": "babel lib -d build",
+    "build": "babel lib -d build && cp -r build/isorender .",
     "build-test": "webpack --config test/fixtures/webpack.config.js",
     "docs": "rm -rf docs && jsdoc lib -t node_modules/minami -R README-API.md -d docs",
     "prepublish": "npm run build",
