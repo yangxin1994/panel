@@ -57,7 +57,7 @@ If your target environment does not implement HTML custom elements natively, you
 
 API docs can be found at [http://mixpanel.github.io/panel/doc/](http://mixpanel.github.io/panel/doc/).
 
-For some sample apps with explanations see [examples/](https://github.com/mixpanel/panel/tree/master/examples).
+For some sample apps with explanations see [examples/](https://github.com/mixpanel/panel/tree/master/examples). These include demonstrations of using Panel with JSX and Redux.
 
 A brief tutorial is available in the [examples/tutorial](https://github.com/mixpanel/panel/tree/master/examples/tutorial) directory. The sample app accompanying the tutorial features routing, Jade templating, and infrastructure for practical usage such as Webpack/Babel configuration and inclusion of a Web Components polyfill.
 
