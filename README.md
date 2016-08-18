@@ -55,7 +55,7 @@ If your target environment does not implement HTML custom elements natively, you
 
 ## Documentation and examples
 
-API docs can be found at [http://mixpanel.github.io/panel/doc/](http://mixpanel.github.io/panel/doc/).
+API docs can be found at [http://mixpanel.github.io/panel/](http://mixpanel.github.io/panel/).
 
 For some sample apps with explanations see [examples/](https://github.com/mixpanel/panel/tree/master/examples). These include demonstrations of using Panel with JSX and Redux.
 
