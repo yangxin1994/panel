@@ -60,6 +60,17 @@ describe('Server-side component renderer', function() {
 
     await requestAnimationFrame();
 
+    // check DOM structure
+    expect(el.childNodes).to.have.lengthOf(1);
+    expect(el.childNodes[0].className).to.equal('nested-foo');
+    expect(el.childNodes[0].childNodes).to.have.lengthOf(2);
+
+    const nestedChild = el.childNodes[0].childNodes[1];
+    expect(nestedChild.childNodes).to.have.lengthOf(1);
+    expect(nestedChild.childNodes[0].className).to.equal('nested-foo-child');
+    expect(nestedChild.childNodes[0].childNodes).to.have.lengthOf(2);
+
+    // check content/HTML output
     const html = el.innerHTML;
     expect(html).to.contain('<DIV class="nested-foo">');
     expect(html).to.contain('Nested app: test');
