@@ -78,4 +78,26 @@ describe('Server-side component renderer', function() {
     expect(html).to.contain('parent title: test');
     expect(html).to.contain('animal: llama');
   });
+
+  it('updates nested components', async function() {
+    const el = new NestedApp();
+    el.attachedCallback();
+
+    await requestAnimationFrame();
+
+    const nestedChild = el.childNodes[0].childNodes[1];
+    expect(nestedChild.state.title).to.equal('test');
+    nestedChild.update({title: 'meow'});
+
+    await requestAnimationFrame();
+
+    expect(el.state.title).to.equal('meow');
+    expect(el.innerHTML).to.contain('Nested app: meow');
+    expect(nestedChild.innerHTML).to.contain('parent title: meow');
+    el.update({title: 'something else'});
+
+    await requestAnimationFrame();
+
+    expect(nestedChild.innerHTML).to.contain('parent title: something else');
+  });
 });
