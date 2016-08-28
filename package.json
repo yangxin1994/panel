@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/mixpanel/panel",
   "dependencies": {
-    "html-element": "https://github.com/tdumitrescu/html-element#16f54d24",
+    "html-element": "^2.1.0",
     "main-loop": "3.2.0",
     "raf": "^3.2.0",
     "virtual-dom": "2.1.1",
