@@ -114,4 +114,19 @@ describe('Server-side component renderer', function() {
     expect(html).to.contain('<DIV class="attr-app">');
     expect(html).to.contain('Value of attribute wombats: 15');
   });
+
+  it('reacts to attribute updates', async function() {
+    const el = new AttrReflectionApp();
+    el.setAttribute('wombats', '15');
+    el.attachedCallback();
+
+    await requestAnimationFrame();
+
+    expect(el.innerHTML).to.contain('Value of attribute wombats: 15');
+    el.setAttribute('wombats', '32');
+
+    await requestAnimationFrame();
+
+    expect(el.innerHTML).to.contain('Value of attribute wombats: 32');
+  });
 });
