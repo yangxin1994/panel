@@ -5,9 +5,11 @@ import requestAnimationFrameCB from 'raf';
 
 import { SimpleApp } from '../fixtures/simple-app';
 import { NestedApp, NestedChild } from '../fixtures/nested-app';
+import { AttrReflectionApp } from '../fixtures/attr-reflection-app';
 document.registerElement('nested-app', NestedApp);
 document.registerElement('nested-child', NestedChild);
 document.registerElement('simple-app', SimpleApp);
+document.registerElement('attr-reflection-app', AttrReflectionApp);
 
 const requestAnimationFrame = () => new Promise(requestAnimationFrameCB);
 
@@ -99,5 +101,17 @@ describe('Server-side component renderer', function() {
     await requestAnimationFrame();
 
     expect(nestedChild.innerHTML).to.contain('parent title: something else');
+  });
+
+  it('renders attributes', async function() {
+    const el = new AttrReflectionApp();
+    el.setAttribute('wombats', '15');
+    el.attachedCallback();
+
+    await requestAnimationFrame();
+
+    const html = el.innerHTML;
+    expect(html).to.contain('<DIV class="attr-app">');
+    expect(html).to.contain('Value of attribute wombats: 15');
   });
 });
