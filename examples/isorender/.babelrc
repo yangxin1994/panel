@@ -1,0 +1,4 @@
+{
+  "plugins": ["babel-plugin-virtual-jade"],
+  "presets": ["es2015"]
+}
