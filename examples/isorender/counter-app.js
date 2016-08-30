@@ -2,8 +2,7 @@
 // import { Component } from 'panel';
 import { Component } from '../../lib';
 
-// import template from './counter-app.jade';
-import h from 'virtual-dom/virtual-hyperscript'; // TMP
+import template from './counter-app.jade';
 
 document.registerElement('counter-app', class extends Component {
   get config() {
@@ -12,7 +11,7 @@ document.registerElement('counter-app', class extends Component {
         count: 1,
       },
 
-      template: state => h('.counter', `Counter: ${state.count}`),
+      template,
     };
   }
 });
