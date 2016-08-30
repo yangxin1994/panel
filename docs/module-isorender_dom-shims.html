@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>panel - Documentation</title>
+    <title>isorender/dom-shims - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">panel</h1>
+    <h1 class="page-title">isorender/dom-shims</h1>
     
 
     
@@ -50,7 +50,12 @@
     <div class="container-overview">
     
         
-            <div class="description">Entry point for Panel apps and components</div>
+            <div class="description">Node.js polyfill for rendering Panel components without a browser.
+Makes the following objects globally available:
+Comment, document, Document, Element, HTMLElement, Node, requestAnimationFrame, Text.
+Most of the available DOM API functionality is provided by
+<a href="https://github.com/1N50MN14/html-element">html-element</a>, with some patches for
+the Web Components API.</div>
         
 
         
@@ -99,7 +104,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+        <a href="isorender_dom-shims.js.html">isorender/dom-shims.js</a>, <a href="isorender_dom-shims.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -126,10 +131,15 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import { Component } from 'panel';
+        <p class="code-caption">Rendering app HTML to stdout</p>
+    
+    <pre class="prettyprint"><code>import 'panel/isorender/dom-shims';
 document.registerElement('my-widget', class extends Component {
   // app definition
-});</code></pre>
+});
+const myWidget = document.createElement('my-widget');
+document.body.appendChild(myWidget);
+requestAnimationFrame(() => console.log(myWidget.outerHTML));</code></pre>
 
 
 
@@ -147,135 +157,6 @@ document.registerElement('my-widget', class extends Component {
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".Component"><span class="type-signature">(static) </span>Component<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <a href="Component.html">Component</a> class, to be subclassed by apps
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line17">line 17</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id=".h"><span class="type-signature">(static) </span>h<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <a href="https://github.com/Matt-Esch/virtual-dom">virtual-dom</a> function to create Hyperscript nodes,
-exported here for user convenience
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line23">line 23</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
     
 
     
