@@ -128,5 +128,6 @@ describe('Server-side component renderer', function() {
     await requestAnimationFrame();
 
     expect(el.innerHTML).to.contain('Value of attribute wombats: 32');
+    expect(el.innerHTML).not.to.contain('15');
   });
 });
