@@ -8,7 +8,7 @@ var webpackConfig = {
       {
         test: /\.jade$/,
         exclude: /node_modules/,
-        loader: 'virtual-jade',
+        loader: 'virtual-jade?vdom=snabbdom',
       },
       {
         test: /\.js$/,

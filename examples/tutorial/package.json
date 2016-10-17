@@ -10,7 +10,7 @@
   "author": "dev@mixpanel.com",
   "license": "MIT",
   "dependencies": {
-    "virtual-dom": "^2.1.1",
+    "snabbdom": "^0.5.3",
     "webcomponents.js": "^0.7.22"
   },
   "devDependencies": {
