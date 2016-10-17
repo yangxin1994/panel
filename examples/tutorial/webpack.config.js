@@ -8,7 +8,7 @@ var webpackConfig = {
       {
         test: /\.jade$/,
         exclude: /node_modules/,
-        loader: 'virtual-jade?vdom=snabbdom',
+        loader: 'virtual-jade',
       },
       {
         test: /\.js$/,
@@ -28,6 +28,9 @@ var webpackConfig = {
   ],
   resolveLoader: {
     root: path.join(__dirname, 'node_modules'),
+  },
+  virtualJadeLoader: {
+    vdom: 'snabbdom',
   },
 };
 
