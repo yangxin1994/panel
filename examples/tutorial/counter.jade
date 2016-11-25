@@ -1,6 +1,6 @@
 .counter
   .val Counter: #{count}
   .controls
-    button.decr(onclick=$helpers.decr) -
-    button.incr(onclick=$helpers.incr) +
-  a(href='#about') About
+    button.decr(on={click: $helpers.decr}) -
+    button.incr(on={click: $helpers.incr}) +
+  a(attrs={href: '#about'}) About
