@@ -35,8 +35,8 @@ document.body.appendChild(document.createElement('counter-app'));
 .counter
   .val Counter: #{count}
   .controls
-    button.decr(onclick=$helpers.decr) -
-    button.incr(onclick=$helpers.incr) +
+    button.decr(on={click: $helpers.decr}) -
+    button.incr(on={click: $helpers.incr}) +
 ```
 
 ## Motivation and technologies
