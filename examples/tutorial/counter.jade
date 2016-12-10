@@ -6,13 +6,9 @@
   a(attrs={href: '#about'}) About
   if count > 0
     .boxes
-      - const boxColor = count % 2 ? 'red' : 'green'
       each box in Array(count).fill()
-        .box(
-          class={
-            [`box-${boxColor}`]: true,
-            visible: false,
-            delayed: {visible: true},
-            remove: {visible: false, delayRemove: 500},
-          }
-        )
+        .box(class={
+          visible: false,
+          delayed: {visible: true},
+          remove:  {visible: false, delayRemove: 500},
+        })
