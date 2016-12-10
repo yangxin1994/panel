@@ -8,7 +8,7 @@
     .boxes
       each box in Array(count).fill()
         .box(class={
-          visible: false,
-          delayed: {visible: true},
-          remove:  {visible: false, delayRemove: 500},
+          'box-visible': false,
+          delayed: {'box-visible': true},
+          remove:  {'box-visible': false, delayRemove: 500},
         })
