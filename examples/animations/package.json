@@ -1,7 +1,7 @@
 {
-  "name": "panel-example",
+  "name": "panel-example-animations",
   "version": "1.0.0",
-  "description": "Usage example app for panel",
+  "description": "Panel example with animations",
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --inline",
