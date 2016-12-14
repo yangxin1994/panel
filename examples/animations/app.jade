@@ -1,0 +1,9 @@
+.app
+  .app-view(
+    key=$view
+    class={
+      'view-visible': false,
+      delayed: {'view-visible': true},
+      remove:  {'view-visible': false, delayRemove: 250},
+    }
+  )= $component.child(`${$view}-view`)
