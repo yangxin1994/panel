@@ -8,8 +8,6 @@ import template from './app.jade';
 import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
-import './index.styl';
-
 document.registerElement('counter-app', class extends Component {
   get config() {
     return {

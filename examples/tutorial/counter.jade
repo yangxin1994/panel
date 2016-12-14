@@ -4,11 +4,3 @@
     button.decr(on={click: $helpers.decr}) -
     button.incr(on={click: $helpers.incr}) +
   a(attrs={href: '#about'}) About
-  if count >= 0
-    .boxes
-      each box in Array(count).fill()
-        .box(class={
-          'box-visible': false,
-          delayed: {'box-visible': true},
-          remove:  {'box-visible': false, delayRemove: 500},
-        })
