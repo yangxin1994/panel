@@ -3,10 +3,14 @@
 import { Component } from '../../../../lib';
 
 import template from './index.jade';
-// import css from './index.styl';
+import css from './index.styl';
 
 document.registerElement('about-view', class extends Component {
   get config() {
-    return {template};
+    return {
+      template,
+      css,
+      useShadowDom: true,
+    };
   }
 });
