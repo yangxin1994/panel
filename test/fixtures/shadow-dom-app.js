@@ -5,7 +5,7 @@ export class ShadowDomApp extends Component {
     return {
       css: 'color: blue;',
 
-      template: state => h('.foo', [
+      template: state => h('div', {class: {foo: true}}, [
         h('p', `Hello`),
       ]),
 

@@ -11,7 +11,7 @@ export class SimpleApp extends Component {
         capitalize: s => s[0].toUpperCase() + s.slice(1),
       },
 
-      template: state => h('.foo', [
+      template: state => h('div', {class: {foo: true}}, [
         h('p', `Value of foo: ${state.foo}`),
         h('p', `Foo capitalized: ${state.$helpers.capitalize(state.foo)}`),
       ]),
