@@ -35,7 +35,7 @@ describe('Server-side component renderer', function() {
     await requestAnimationFrame();
 
     const html = el.innerHTML;
-    expect(html).to.contain('<DIV class="foo">');
+    expect(html.toLowerCase()).to.contain('<div class="foo">');
     expect(html).to.contain('Value of foo: bar');
     expect(html).to.contain('Foo capitalized: Bar');
   });
@@ -74,9 +74,9 @@ describe('Server-side component renderer', function() {
 
     // check content/HTML output
     const html = el.innerHTML;
-    expect(html).to.contain('<DIV class="nested-foo">');
+    expect(html.toLowerCase()).to.contain('<div class="nested-foo">');
     expect(html).to.contain('Nested app: test');
-    expect(html).to.contain('<DIV class="nested-foo-child">');
+    expect(html.toLowerCase()).to.contain('<div class="nested-foo-child">');
     expect(html).to.contain('parent title: test');
     expect(html).to.contain('animal: llama');
   });
@@ -111,7 +111,7 @@ describe('Server-side component renderer', function() {
     await requestAnimationFrame();
 
     const html = el.innerHTML;
-    expect(html).to.contain('<DIV class="attr-app">');
+    expect(html.toLowerCase()).to.contain('<div class="attr-app">');
     expect(html).to.contain('Value of attribute wombats: 15');
   });
 
