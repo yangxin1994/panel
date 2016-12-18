@@ -31,9 +31,9 @@
   },
   "homepage": "https://github.com/mixpanel/panel",
   "dependencies": {
-    "html-element": "^2.1.1",
-    "raf": "^3.2.0",
-    "snabbdom": "^0.5.3",
+    "html-element": "2.2.0",
+    "raf": "3.2.0",
+    "snabbdom": "0.5.3",
     "webcomponent": "0.1.2"
   },
   "devDependencies": {
