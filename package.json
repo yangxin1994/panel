@@ -34,6 +34,7 @@
     "html-element": "2.2.0",
     "raf": "3.2.0",
     "snabbdom": "0.5.3",
+    "snabbdom-delayed-class": "0.1.1",
     "webcomponent": "0.1.2"
   },
   "devDependencies": {
