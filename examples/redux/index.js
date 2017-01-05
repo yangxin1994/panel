@@ -1,11 +1,10 @@
 import 'webcomponents.js'; // polyfill
 
 // import from the same repo. in a different repo you'd use:
-// import { Component } from 'panel';
-import { Component } from '../../lib';
+// import { Component, h } from 'panel';
+import { Component, h } from '../../lib';
 
 import { createStore } from 'redux';
-import h from 'virtual-dom/virtual-hyperscript';
 
 // action creators
 const incrCounter = () => ({type: 'INCREMENT'});
@@ -30,11 +29,11 @@ document.registerElement('counter-app', class extends Component {
     return {
       defaultState: store.getState(),
 
-      template: props => h('.counter', [
-        h('.val', `Counter: ${props.count}`),
-        h('.controls', [
-          h('button.decr', {onclick: () => store.dispatch(decrCounter())}, '-'),
-          h('button.incr', {onclick: () => store.dispatch(incrCounter())}, '+'),
+      template: props => h('div.counter', [
+        h('div.val', `Counter: ${props.count}`),
+        h('div.controls', [
+          h('button.decr', {on: {click: () => store.dispatch(decrCounter())}}, '-'),
+          h('button.incr', {on: {click: () => store.dispatch(incrCounter())}}, '+'),
         ]),
       ]),
     };
