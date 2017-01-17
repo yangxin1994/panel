@@ -12,6 +12,18 @@ describe('Simple Component instance', function() {
     });
   });
 
+  describe('config', function() {
+    it('returns config object via getter', function() {
+      expect(el.config).to.be.an.instanceof(Object);
+      expect(el.config.helpers).to.be.an.instanceof(Object);
+    });
+
+    it('exposes helpers via a top-level getter', function() {
+      expect(el.helpers).to.be.an.instanceof(Object);
+      expect(el.helpers.capitalize).to.be.an.instanceof(Function);
+    });
+  });
+
   context('before attached to DOM', function() {
     it('does not affect the DOM', function(done) {
       expect(document.getElementsByClassName('foo')).to.be.empty;
