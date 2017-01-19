@@ -12,6 +12,15 @@ describe('Simple Component instance', function() {
     });
   });
 
+  describe('panelID', function() {
+    it('is unique for each component instance', function() {
+      const ids = Array(5).fill()
+        .map(() => document.createElement('simple-app'))
+        .map(el => el.panelID);
+      expect(ids).to.have.lengthOf(new Set(ids).size);
+    });
+  });
+
   describe('config', function() {
     it('returns config object via getter', function() {
       expect(el.config).to.be.an.instanceof(Object);
