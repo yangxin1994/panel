@@ -140,7 +140,7 @@ describe('Simple Component instance', function() {
     it('successfully finds the panel root when top level uses shadow dom', function(done) {
       childEl = document.createElement('nested-child');
       window.requestAnimationFrame(function() {
-        childEl.setAttribute('panel-parent', el.panelID);
+        childEl.$panelParentID = el.panelID;
         el.shadowRoot.appendChild(childEl);
         window.requestAnimationFrame(function() {
           childEl.attachedCallback();
@@ -155,11 +155,11 @@ describe('Simple Component instance', function() {
       document.body.appendChild(rootEl);
       window.requestAnimationFrame(function() {
         level1El = document.createElement('shadow-dom-app');
-        level1El.setAttribute('panel-parent', rootEl.panelID);
+        level1El.$panelParentID = rootEl.panelID;
         rootEl.appendChild(level1El);
         window.requestAnimationFrame(function() {
           level2El = document.createElement('nested-child');
-          level2El.setAttribute('panel-parent', level1El.panelID);
+          level2El.$panelParentID = level1El.panelID;
           level1El.shadowRoot.appendChild(level2El);
           window.requestAnimationFrame(function() {
             expect(level2El.$panelParent).to.equal(level1El);
@@ -212,7 +212,7 @@ describe('Nested Component instance', function() {
       document.body.appendChild(el);
       window.requestAnimationFrame(function(){
         childEl = document.createElement('nested-child');
-        childEl.setAttribute('panel-parent', el.panelID);
+        childEl.$panelParentID = el.panelID;
         el.appendChild(childEl);
         window.requestAnimationFrame(function() {
           expect(childEl.$panelRoot).to.equal(el);
@@ -225,7 +225,7 @@ describe('Nested Component instance', function() {
       document.body.appendChild(el);
       window.requestAnimationFrame(function(){
         childEl = document.createElement('nested-child');
-        childEl.setAttribute('panel-parent', el.panelID);
+        childEl.$panelParentID = el.panelID;
         el.appendChild(childEl);
         window.requestAnimationFrame(function() {
           expect(childEl.findPanelParentByTagName('nested-app')).to.equal(el);
@@ -237,7 +237,7 @@ describe('Nested Component instance', function() {
     it('passes state updates from child to parent', function() {
       el.attachedCallback();
       childEl = document.createElement('nested-child');
-      childEl.setAttribute('panel-parent', el.panelID);
+      childEl.$panelParentID = el.panelID;
       childEl.$panelParent = childEl.$panelRoot = el;
       childEl.attachedCallback();
       childEl.update({animal: 'capybara'});
