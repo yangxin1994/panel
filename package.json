@@ -10,6 +10,7 @@
     "prepublish": "npm run build",
     "test": "npm run build-test && npm run test-server && npm run test-browser-local",
     "test-browser-local": "wct --plugin local test/browser/index.html",
+    "test-browser-p": "wct --plugin local --persistent test/browser/index.html",
     "test-browser-sauce": "wct --plugin sauce test/browser/index.html",
     "test-server": "NODE_ENV=test mocha --require babel-core/register --require babel-polyfill test/server"
   },
