@@ -15,8 +15,8 @@ describe('Simple Component instance', function() {
   describe('panelID', function() {
     it('is unique for each component instance', function() {
       const ids = Array(5).fill()
-        .map(() => document.createElement('simple-app'))
-        .map(el => el.panelID);
+        .map(function()   { return document.createElement('simple-app'); })
+        .map(function(el) { return el.panelID; });
       expect(ids).to.have.lengthOf(new Set(ids).size);
     });
   });
