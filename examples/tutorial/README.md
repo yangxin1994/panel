@@ -27,8 +27,7 @@ document.registerElement('counter-app', class extends Component {
 
 The only property which an app must define is its view template. In this example, we use Hyperscript for the template, but later we'll switch to Jade:
 ```javascript
-import { Component } from 'panel';
-import h from 'virtual-dom/virtual-hyperscript';
+import { Component, h } from 'panel';
 
 document.registerElement('counter-app', class extends Component {
   get config() {
