@@ -109,7 +109,7 @@ either by including the tag in HTML markup, or by using the DOM API method
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line42">line 42</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -270,7 +270,7 @@ either by including the tag in HTML markup, or by using the DOM API method
                 </td>
             
 
-            <td class="description last">function transforming state object to virtual-dom tree</td>
+            <td class="description last">function transforming state object to virtual dom tree</td>
         </tr>
 
     
@@ -345,6 +345,44 @@ either by including the tag in HTML markup, or by using the DOM API method
             
 
             <td class="description last">object mapping string route expressions to handler functions</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateSync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">whether to apply updates to DOM
+immediately, instead of batching to one update per frame</td>
         </tr>
 
     
@@ -457,7 +495,7 @@ either by including the tag in HTML markup, or by using the DOM API method
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line64">line 64</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -488,6 +526,86 @@ either by including the tag in HTML markup, or by using the DOM API method
 
 
         
+            
+<h4 class="name" id="helpers"><span class="type-signature"></span>helpers<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    Template helper functions defined in config object, and exposed to template code
+as $helpers. This getter uses the component's internal config cache.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>{
+  myHelper: () => 'some return value',
+}</code></pre>
+
+
+
+        
     
 
     
@@ -498,7 +616,7 @@ either by including the tag in HTML markup, or by using the DOM API method
 
     
 
-    <h4 class="name" id="child"><span class="type-signature"></span>child<span class="signature">(tagName, attrs<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="child"><span class="type-signature"></span>child<span class="signature">(tagName, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
@@ -582,7 +700,7 @@ to be created</td>
 
         <tr>
             
-                <td class="name"><code>attrs</code></td>
+                <td class="name"><code>config</code></td>
             
 
             <td class="type">
@@ -614,7 +732,7 @@ to be created</td>
                 </td>
             
 
-            <td class="description last">HTML attributes to assign to the child</td>
+            <td class="description last">snabbdom node config (second argument of h())</td>
         </tr>
 
     
@@ -655,7 +773,7 @@ to be created</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line78">line 78</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -682,7 +800,7 @@ to be created</td>
 
         
 <div class="param-desc">
-    virtual-dom node
+    snabbdom vnode
 </div>
 
 
@@ -814,7 +932,7 @@ given type (HTML tag name).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line93">line 93</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -985,7 +1103,7 @@ values supplied in the config() getter and defaults applied automatically).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line111">line 111</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -1188,7 +1306,7 @@ routing</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line124">line 124</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -1343,7 +1461,7 @@ initialization.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line136">line 136</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -1482,7 +1600,7 @@ performance when dealing with very many DOM elements.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line153">line 153</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line164">line 164</a>
     </li></ul></dd>
     
 
@@ -1666,7 +1784,7 @@ the component's state object</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line166">line 166</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line177">line 177</a>
     </li></ul></dd>
     
 
@@ -1715,7 +1833,7 @@ the component's state object</td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 30 2016 18:09:39 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Feb 26 2017 10:37:23 GMT-0800 (PST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

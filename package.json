@@ -22,8 +22,7 @@
     "web components",
     "virtual dom",
     "react",
-    "jade",
-    "mercury"
+    "snabbdom"
   ],
   "author": "dev@mixpanel.com",
   "license": "MIT",

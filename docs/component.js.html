@@ -38,16 +38,13 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import MainLoop from 'main-loop';
-import create from 'virtual-dom/create-element';
-import diff from 'virtual-dom/diff';
-import patch from 'virtual-dom/patch';
-import h from 'virtual-dom/virtual-hyperscript';
+            <pre class="prettyprint source linenums"><code>import cuid from 'cuid';
+import h from 'snabbdom/h';
 import WebComponent from 'webcomponent';
 
+import DOMPatcher from './dom-patcher';
 import Router from './router';
 
-let panelID = 1;
 const DOCUMENT_FRAGMENT_NODE = 11;
 const EMPTY_DIV = h('div');
 
@@ -84,9 +81,11 @@ class Component extends WebComponent {
   /**
    * Defines standard component configuration.
    * @type {object}
-   * @property {function} template - function transforming state object to virtual-dom tree
+   * @property {function} template - function transforming state object to virtual dom tree
    * @property {object} [helpers={}] - properties and functions injected automatically into template state object
    * @property {object} [routes={}] - object mapping string route expressions to handler functions
+   * @property {boolean} [updateSync=false] - whether to apply updates to DOM
+   * immediately, instead of batching to one update per frame
    * @property {boolean} [useShadowDom=false] - whether to use Shadow DOM
    * @property {string} [css=''] - component-specific Shadow DOM stylesheet
    * @example
@@ -106,19 +105,31 @@ class Component extends WebComponent {
   }
 
   /**
+   * Template helper functions defined in config object, and exposed to template code
+   * as $helpers. This getter uses the component's internal config cache.
+   * @type {object}
+   * @example
+   * {
+   *   myHelper: () => 'some return value',
+   * }
+   */
+  get helpers() {
+    return this.getConfig(`helpers`);
+  }
+
+  /**
    * For use inside view templates, to create a child Panel component nested under this
    * component, which will share its state object and update cycle.
    * @param {string} tagName - the HTML element tag name of the custom element
    * to be created
-   * @param {object} [attrs={}] - HTML attributes to assign to the child
-   * @returns {object} virtual-dom node
+   * @param {object} [config={}] - snabbdom node config (second argument of h())
+   * @returns {object} snabbdom vnode
    * @example
    * {template: state => h('.header', this.child('my-child-widget'))}
    */
-  child(tagName, attrs={}) {
-    attrs = Object.assign({}, attrs);
-    attrs.attributes = Object.assign({}, attrs.attributes, {'panel-parent': this.panelID});
-    return h(tagName, attrs);
+  child(tagName, config={}) {
+    config.props = Object.assign({}, config.props, {$panelParentID: this.panelID});
+    return h(tagName, config);
   }
 
   /**
@@ -221,12 +232,13 @@ class Component extends WebComponent {
   }
 
   createdCallback() {
-    this.panelID = panelID++;
+    this.panelID = cuid();
     this._config = Object.assign({}, {
       css: '',
       helpers: {},
       routes: {},
       template: () => { throw Error('No template provided by Component subclass'); },
+      updateSync: false,
       useShadowDom: false,
     }, this.config);
     this.state = {};
@@ -245,21 +257,20 @@ class Component extends WebComponent {
   attachedCallback() {
     this.$panelChildren = new Set();
 
-    const parentID = Number(this.getAttribute('panel-parent'));
-    if (parentID) {
+    if (typeof this.$panelParentID !== 'undefined') {
       this.isPanelChild = true;
       // find $panelParent
       for (let node = this.parentNode; node &amp;&amp; !this.$panelParent; node = node.parentNode) {
         if (node.nodeType === DOCUMENT_FRAGMENT_NODE) {  // handle shadow-root
           node = node.host;
         }
-        if (node.panelID === parentID) {
+        if (node.panelID === this.$panelParentID) {
           this.$panelParent = node;
           this.$panelRoot = node.$panelRoot;
         }
       }
       if (!this.$panelParent) {
-        throw Error(`panel-parent ${parentID} not found`);
+        throw Error(`panelParent ${this.$panelParentID} not found`);
       }
       this.$panelParent.$panelChildren.add(this);
       this.state = this.$panelRoot.state;
@@ -279,18 +290,23 @@ class Component extends WebComponent {
     );
     Object.assign(this.state, newState);
 
-    this.loop = MainLoop(this.state, this._render.bind(this), {create, diff, patch});
-    this.el.appendChild(this.loop.target);
-    this.initialized = true;
-
     if (Object.keys(this.getConfig('routes')).length) {
       this.router = new Router(this, {historyMethod: this.historyMethod});
       this.navigate(window.location.hash);
     }
+
+    this.domPatcher = new DOMPatcher(this.state, this._render.bind(this), {
+      updateMode: this.getConfig('updateSync') ? 'sync': 'async',
+    });
+    this.el.appendChild(this.domPatcher.el);
+    this.initialized = true;
   }
 
   detachedCallback() {
     this.$panelParent &amp;&amp; this.$panelParent.$panelChildren.delete(this);
+    this.el.removeChild(this.domPatcher.el);
+    this.domPatcher = null;
+    this.initialized = false;
   }
 
   attributeChangedCallback(attr, oldVal, newVal) {
@@ -322,7 +338,7 @@ class Component extends WebComponent {
 
   updateSelfAndChildren(state) {
     if (this.initialized &amp;&amp; this.shouldUpdate(state)) {
-      this.loop.update(state);
+      this.domPatcher.update(state);
       for (let child of this.$panelChildren) {
         child.updateSelfAndChildren(state);
       }
@@ -334,10 +350,10 @@ class Component extends WebComponent {
       try {
         this._rendered = this.getConfig('template')(Object.assign({}, state, {
           $component: this,
-          $helpers: this.getConfig('helpers'),
+          $helpers: this.helpers,
         }));
       } catch(e) {
-        this.logError(`Error while rendering ${this.toString()}`, this, e);
+        this.logError(`Error while rendering ${this.toString()}`, this, e.stack);
       }
     }
     return this._rendered || EMPTY_DIV;
@@ -373,7 +389,7 @@ export default Component;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 30 2016 18:09:39 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Feb 26 2017 10:37:23 GMT-0800 (PST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
