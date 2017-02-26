@@ -63,6 +63,8 @@ A brief tutorial is available in the [examples/tutorial](https://github.com/mixp
 
 A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is available at [https://github.com/tdumitrescu/todomvc-panel](https://github.com/tdumitrescu/todomvc-panel).
 
+Real world: since early 2016, Panel and Web Components have powered Mixpanel's most advanced new UIs in production, including [Insights](https://mixpanel.com/report/insights), [Autotrack](https://mixpanel.com/report/autotrack/web), and [JQL Console](https://mixpanel.com/report/jql-console).
+
 ## Running tests
 
 Browser tests run with Selenium through [web-component-tester](https://github.com/Polymer/web-component-tester). Server-side rendering tests use `mocha` and `chai` directly.
