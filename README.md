@@ -41,7 +41,7 @@ document.body.appendChild(document.createElement('counter-app'));
 
 ## Motivation and technologies
 
-Panel makes [Web Components](http://webcomponents.org/) suitable for constructing full web UIs, not just low-level building blocks. It does so by providing an easy-to-use state management and rendering layer built on Virtual DOM (with the [snabbdom](https://github.com/snabbdom/snabbdom) library), modeled on the core rendering technology of [React](https://facebook.github.io/react/).
+Panel makes [Web Components](http://webcomponents.org/) suitable for constructing full web UIs, not just low-level building blocks. It does so by providing an easy-to-use state management and rendering layer built on Virtual DOM, modeled on the core rendering technology of [React](https://facebook.github.io/react/). Through use of the [Snabbdom](https://github.com/snabbdom/snabbdom) Virtual DOM library and first-class support for multiple templating formats, Panel offers simple yet powerful APIs for rendering, animation, styling, and DOM lifecycle.
 
 Each Panel application is a Web Component, composed of DOM elements and potentially arbitrarily nested child components, each of which is technically an app in its own right. Parent and child components can share `state`, in the form of Plain Old JavaScript Objects which are passed to templates for rendering. When `update()` is called on a component with state changes, the DOM gets updated according to the diff. Templates can be in any format that produces Snabbdom-compatible [hyperscript](https://github.com/snabbdom/snabbdom#snabbdomh), including raw Hyperscript code or Jade or JSX.
 
