@@ -32,13 +32,13 @@ import { Component, h } from 'panel';
 document.registerElement('counter-app', class extends Component {
   get config() {
     return {
-      template: () => h('.about', 'This is a sample app.'),
+      template: () => h('div.about', 'This is a sample app.'),
     };
   }
 });
 ```
 
-Hurray! The `<counter-app>` element in our HTML will now be populated with a static chunk of text, and all it took was a bunch of JavaScript... But now we have the groundwork for an app with dynamic state and routing.
+Hurray! The `<counter-app>` element in our HTML will now be populated with a `<div>` and a static chunk of text, and all it took was a bunch of JavaScript... But now we have the groundwork for an app with dynamic state and routing.
 
 ### 2. Dynamic counter
 Let's split the app into two views: the 'about' screen defined above, and a 'counter' screen which will display a dynamic value `count`. Defining the 'counter' view looks quite like what we did in the previous section to define the app element:
@@ -46,7 +46,7 @@ Let's split the app into two views: the 'about' screen defined above, and a 'cou
 document.registerElement('counter-view', class extends Component {
   get config() {
     return {
-      template: state => h('.counter', `Counter: ${state.count}`),
+      template: state => h('div.counter', `Counter: ${state.count}`),
     };
   }
 });
@@ -56,7 +56,7 @@ The 'about' view is similar:
 document.registerElement('about-view', class extends Component {
   get config() {
     return {
-      template: () => h('.about', 'This is a sample app.'),
+      template: () => h('div.about', 'This is a sample app.'),
     };
   }
 });
@@ -68,7 +68,7 @@ document.registerElement('counter-app', class extends Component {
     return {
       defaultState: {count: 1},
 
-      template: () => h('.app', [
+      template: () => h('div.app', [
         this.child('about-view'),
         this.child('counter-view'),
       ]),
@@ -80,7 +80,7 @@ Now the bottom our HTML page will display "Counter: 1". To change the value from
 ```javascript
 let app;
 window.setInterval(() => {
-  app = app || document.getElementsByTagName('counter-app')[0];
+  app = app || document.querySelector('counter-app');
   app.update({count: app.state.count + 1});
 }, 1000);
 ```
@@ -91,10 +91,10 @@ Instead of updating the counter automatically and relentlessly, we'll now add + 
 document.registerElement('counter-view', class extends Component {
   get config() {
     return {
-      template: state => h('.counter', [
-        h('.val', `Counter: ${state.count}`),
-        h('button.decr', {onclick: state.$helpers.decr}, '-'),
-        h('button.incr', {onclick: state.$helpers.incr}, '+'),
+      template: state => h('div.counter', [
+        h('div.val', `Counter: ${state.count}`),
+        h('button.decr', {on: {click: state.$helpers.decr}}, '-'),
+        h('button.incr', {on: {click: state.$helpers.incr}}, '+'),
       ]),
 
       helpers: {
@@ -123,7 +123,7 @@ document.registerElement('counter-view', class extends Component {
   }
 });
 ```
-Since components have access to the parent app (as well as parent views, for deeper view hierarchies), such helpers can be added to the main app or individual views as appropriate - they're just methods in plain JavaScript classes.
+Since components have access to the parent app (as well as parent components, for deeper component hierarchies), such helpers can be added to the main app or individual components as appropriate - they're just methods in plain JavaScript classes.
 
 ### 4. Routing
 We have two 'views', `about` and `counter`, but currently no way to switch between them. Panel's built-in router can help handle navigation between views, by allowing URL/history changes to effect state changes:
@@ -154,9 +154,9 @@ Plain old HTML `anchor` tags with `href` values `#counter` and `#about` can now 
 document.registerElement('about-view', class extends Component {
   get config() {
     return {
-      template: () => h('.about', [
+      template: () => h('div.about', [
         h('p', 'This is a sample app.'),
-        h('a', {href: '#counter'}, 'Counter'),
+        h('a', {attrs: {href: '#counter'}}, 'Counter'),
       ]),
     };
   }
@@ -165,15 +165,15 @@ document.registerElement('about-view', class extends Component {
 document.registerElement('counter-view', class extends Component {
   get config() {
     return {
-      // ...
-      template: state => h('.counter', [
-        h('.val', `Counter: ${state.count}`),
-        h('.controls', [
-          h('button.decr', {onclick: state.$helpers.decr}, '-'),
-          h('button.incr', {onclick: state.$helpers.incr}, '+'),
+      template: state => h('div.counter', [
+        h('div.val', `Counter: ${state.count}`),
+        h('div.controls', [
+          h('button.decr', {on: {click: state.$helpers.decr}}, '-'),
+          h('button.incr', {on: {click: state.$helpers.incr}}, '+'),
         ]),
-        h('a', {href: '#about'}, 'About'),
+        h('a', {attrs: {href: '#about'}}, 'About'),
       ]),
+      // ...
     };
   }
   // ...
@@ -184,22 +184,22 @@ We could also use click handlers which update `$view` in the app state manually,
 
 ### 5. Advanced templating
 
-View templates can be constructed separately from the Component modules, as long as the `$template` getter provides a function which takes app state as input and returns a `virtual-dom` tree. We can remove the raw hyperscript notation from our app by rewriting our templates as [Jade](http://jade-lang.com/) files and importing them with [virtual-jade-loader](https://github.com/tdumitrescu/virtual-jade-loader):
+View templates can be constructed separately from the Component modules, as long as the `$template` getter provides a function which takes app state as input and returns a Virtual DOM tree (compatible with the [snabbdom](https://github.com/snabbdom/snabbdom) API). We can remove the raw hyperscript notation from our app by rewriting our templates as [Jade/Pug](https://pugjs.org) files and importing them with [virtual-jade-loader](https://github.com/tdumitrescu/virtual-jade-loader):
 ```jade
-.app= $component.child($view + '-view')
+.app= $component.child(`${$view}-view`)
 ```
 ```jade
 .about
   p This is a sample app.
-  a(href='#counter') Counter
+  a(attrs={href: '#counter'}) Counter
 ```
 ```jade
 .counter
-  .val Counter: #{countVal}
+  .val Counter: #{count}
   .controls
-    button.decr(ev-click=$helpers.decr) -
-    button.incr(ev-click=$helpers.incr) +
-  a(href='#about') About
+    button.decr(on={click: $helpers.decr}) -
+    button.incr(on={click: $helpers.incr}) +
+  a(attrs={href: '#about'}) About
 ```
 ```javascript
 import template from './app.jade';
@@ -234,7 +234,7 @@ document.registerElement('counter-view', class extends Component {
 });
 ```
 
-The final `index.js` gives us a lightweight, minimal app with dynamic updates, routing, and isolated markup. Moreover, the app is composed of Web Components which connect to each other intelligently and render with one-way data flow (state updates result in DOM updates), coupling web APIs with the power and simplicity of virtual DOM rendering.
+The final `index.js` gives us a lightweight, minimal app with dynamic updates, routing, and templated markup. Moreover, the app is composed of Web Components which connect to each other intelligently and render with one-way data flow (state updates result in DOM updates), coupling web APIs with the power and simplicity of virtual DOM rendering.
 ```javascript
 import { Component } from 'panel';
 
