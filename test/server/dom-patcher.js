@@ -10,12 +10,22 @@ const raf = () => new Promise(requestAnimationFrameCB);
 
 describe('dom-patcher', function() {
   context('when first initialized', function() {
-    const domPatcher = new DOMPatcher({foo: 'bar'}, () => h('div'));
+    const state = {foo: 'bar'};
+    const domPatcher = new DOMPatcher(state, () => h('div'));
 
     it('applies initial state', function() {
-      expect(domPatcher.state).to.eql({foo: 'bar'});
+      expect(domPatcher.state).to.eql(state);
     });
 
-    it('copies the initial state');
+    it('copies the initial state', function() {
+      expect(domPatcher.state).to.eql(state);
+      expect(domPatcher.state).not.to.equal(state);
+    });
+
+    it('defaults to async mode');
   });
+
+  context('in sync mode', function() {});
+
+  context('in async mode', function() {});
 });
