@@ -10,16 +10,16 @@ const raf = () => new Promise(requestAnimationFrameCB);
 
 describe('dom-patcher', function() {
   context('when first initialized', function() {
-    const state = {foo: 'bar'};
-    const domPatcher = new DOMPatcher(state, () => h('div'));
+    const fooState = {foo: 'bar'};
+    const domPatcher = new DOMPatcher(fooState, state => h('div', `Value of foo: ${state.foo}`));
 
     it('applies initial state', function() {
-      expect(domPatcher.state).to.eql(state);
+      expect(domPatcher.state).to.eql(fooState);
     });
 
     it('copies the initial state', function() {
-      expect(domPatcher.state).to.eql(state);
-      expect(domPatcher.state).not.to.equal(state);
+      expect(domPatcher.state).to.eql(fooState);
+      expect(domPatcher.state).not.to.equal(fooState);
     });
 
     it('defaults to async mode', function() {
@@ -29,6 +29,10 @@ describe('dom-patcher', function() {
     it('creates a target DOM element', function() {
       expect(domPatcher.el).to.be.ok;
       expect(domPatcher.el).to.be.an.instanceOf(Node);
+    });
+
+    it('applies the first patch immediately', function() {
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
     });
   });
 
