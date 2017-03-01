@@ -19,7 +19,7 @@ var webpackConfig = {
         loader: 'babel',
         query: {
           plugins: [
-            ['transform-react-jsx', {'pragma': 'h'}],
+            ['transform-react-jsx', {'pragma': 'html'}],
           ],
           presets: ['es2015'],
         },

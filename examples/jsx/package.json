@@ -10,8 +10,8 @@
   "author": "dev@mixpanel.com",
   "license": "MIT",
   "dependencies": {
-    "virtual-dom": "^2.1.1",
-    "webcomponents.js": "^0.7.22"
+    "snabbdom-jsx": "0.3.1",
+    "webcomponents.js": "0.7.22"
   },
   "devDependencies": {
     "babel-core": "^6.3.17",

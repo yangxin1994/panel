@@ -3,7 +3,7 @@ import 'webcomponents.js'; // polyfill
 // import from the same repo. in a different repo you'd use:
 // import { Component } from 'panel';
 import { Component } from '../../lib';
-import h from './jsx-h';
+import { html } from 'snabbdom-jsx';
 
 document.registerElement('counter-app', class extends Component {
   get config() {
