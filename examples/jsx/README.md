@@ -18,8 +18,8 @@ document.registerElement('counter-app', class extends Component {
             Counter: {props.count}
           </div>
           <div className="controls">
-            <button className="decr" onclick={props.$helpers.decr}>-</button>
-            <button className="incr" onclick={props.$helpers.incr}>+</button>
+            <button className="decr" on-click={props.$helpers.decr}>-</button>
+            <button className="incr" on-click={props.$helpers.incr}>+</button>
           </div>
         </div>
     };
@@ -35,4 +35,6 @@ To install and run the example from this directory: `npm install && npm start`. 
 
 ### Notes
 
-For transpiling JSX to JavaScript, this example uses the standard Babel plugin [transform-react-jsx](https://babeljs.io/docs/plugins/transform-react-jsx/). In order for the plugin's output to interface correctly with `virtual-dom` instead of `React`, a wrapper around the Hyperscript `h` function is provided in `jsx-h.js`. See the discussion in the Babel issue ["Use Array for JSX Children."](https://phabricator.babeljs.io/T2034) Other tools such as [jsx-transform](https://github.com/alexmingoia/jsx-transform), [babel-plugin-jsx-factory](https://github.com/substack/babel-plugin-jsx-factory), or [jsx-webpack-loader](https://www.npmjs.com/package/jsx-webpack-loader) may also provide similar functionality.
+For transpiling JSX to JavaScript, this example uses the standard Babel plugin [transform-react-jsx](https://babeljs.io/docs/plugins/transform-react-jsx/). In order for the plugin's output to interface correctly with `snabbdom` instead of `React`, we use the [`snabbdom-jsx`](https://github.com/yelouafi/snabbdom-jsx) package and configure the Babel plugin to use the `html` Hyperscript function provided by `snabbdom-jsx`.
+
+Information on integrating Snabbdom-specific functionality (such as its dynamic class-toggling system) into JSX code can be found in the [Mapping JSX attributes](https://github.com/yelouafi/snabbdom-jsx#mapping-jsx-attributes) from the `snabbdom-jsx` README.
