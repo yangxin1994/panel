@@ -3,8 +3,7 @@ import '../../lib/isorender/dom-shims';
 import { expect } from 'chai';
 import requestAnimationFrameCB from 'raf';
 
-import { h } from '../../lib';
-import DOMPatcher from '../../lib/dom-patcher';
+import { DOMPatcher, h } from '../../lib/dom-patcher';
 
 const raf = () => new Promise(requestAnimationFrameCB);
 
