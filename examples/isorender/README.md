@@ -5,7 +5,7 @@ The example in this directory demonstrates rendering a simple 'counter' app with
 ### Usage
 
 - Install dependencies: `npm install`
-- Run rendering script: `npm start`
+- Run rendering script: `npm start` (initial startup may require some time for Babel compilation)
 
 ### Notes
 
