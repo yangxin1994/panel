@@ -78,7 +78,20 @@ describe('dom-patcher', function() {
     });
   });
 
-  context('in sync mode', function() {});
+  context('in sync mode', function() {
+    it('renders updates immediately', function() {
+      const domPatcher = new DOMPatcher(
+        {foo: 'bar'},
+        state => h('div', `Value of foo: ${state.foo}`),
+        {updateMode: 'sync'}
+      );
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+      domPatcher.update({foo: 'moo'});
+      expect(domPatcher.el.textContent).to.eql('Value of foo: moo');
+      expect(domPatcher.pending).to.be.false;
+      expect(domPatcher.rendering).to.be.false;
+    });
+  });
 
   context('in async mode', function() {});
 });
