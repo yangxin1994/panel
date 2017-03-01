@@ -93,5 +93,43 @@ describe('dom-patcher', function() {
     });
   });
 
-  context('in async mode', function() {});
+  context('in async mode', function() {
+    let domPatcher;
+
+    beforeEach(function() {
+      domPatcher = new DOMPatcher(
+        {foo: 'bar'},
+        state => h('div', `Value of foo: ${state.foo}`),
+        {updateMode: 'async'}
+      );
+    });
+
+    it('does not render updates immediately', function() {
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+      domPatcher.update({foo: 'moo'});
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+      expect(domPatcher.pending).to.be.true;
+    });
+
+    it('renders updates on the next animation frame', async function() {
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+      domPatcher.update({foo: 'moo'});
+
+      await raf();
+
+      expect(domPatcher.el.textContent).to.eql('Value of foo: moo');
+    });
+
+    it('applies only the last state in a given frame', async function() {
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+      domPatcher.update({foo: 'moo'});
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+      domPatcher.update({foo: 'whew'});
+      expect(domPatcher.el.textContent).to.eql('Value of foo: bar');
+
+      await raf();
+
+      expect(domPatcher.el.textContent).to.eql('Value of foo: whew');
+    });
+  });
 });
