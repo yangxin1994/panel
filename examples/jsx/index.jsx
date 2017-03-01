@@ -21,8 +21,8 @@ document.registerElement('counter-app', class extends Component {
             Counter: {props.count}
           </div>
           <div className="controls">
-            <button className="decr" onclick={props.$helpers.decr}>-</button>
-            <button className="incr" onclick={props.$helpers.incr}>+</button>
+            <button className="decr" on-click={props.$helpers.decr}>-</button>
+            <button className="incr" on-click={props.$helpers.incr}>+</button>
           </div>
         </div>
     };
