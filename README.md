@@ -47,6 +47,8 @@ Each Panel application is a Web Component, composed of DOM elements and potentia
 
 The architecture of Panel draws upon aspects of and technologies from [Mercury](https://github.com/Raynos/mercury), [Polymer](https://www.polymer-project.org), [React](https://facebook.github.io/react/), [Redux](http://redux.js.org/), [Cycle](http://cycle.js.org/), and [Backbone](http://backbonejs.org/), with an emphasis on simple pragmatism over functional purity thanks to Henrik Joreteg's ["Feather" app demo](https://github.com/HenrikJoreteg/feather-app). Panel eschews opaque abstractions and data flow management layers to provide a straightforward state-based rendering cycle. There are no built-in data flow abstractions like Mercury's channels, Flux/React's stores, Cycle's observables, Backbone's event soup and DOM dependencies. More complex state management systems such as Redux and RxJS can plug in to Panel seamlessly if desired (hint: in most apps, you just don't need it). A built-in router (based on the [Backbone Router](http://backbonejs.org/#Router)) can sync URL updates and HTML5 History with a Panel app's `state` for automatic updating and view-swapping.
 
+Since early 2016, Panel and Web Components have powered Mixpanel's most advanced new UIs in production, including [Insights](https://mixpanel.com/report/insights), [Autotrack](https://mixpanel.com/report/autotrack/web), and [JQL Console](https://mixpanel.com/report/jql-console).
+
 ## Installation
 
 `npm install --save panel`
@@ -62,8 +64,6 @@ For some sample apps with explanations see [examples/](https://github.com/mixpan
 A brief tutorial is available in the [examples/tutorial](https://github.com/mixpanel/panel/tree/master/examples/tutorial) directory. The sample app accompanying the tutorial features routing, Jade templating, and infrastructure for practical usage such as Webpack/Babel configuration and inclusion of a Web Components polyfill.
 
 A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is available at [https://github.com/tdumitrescu/todomvc-panel](https://github.com/tdumitrescu/todomvc-panel).
-
-Real world: since early 2016, Panel and Web Components have powered Mixpanel's most advanced new UIs in production, including [Insights](https://mixpanel.com/report/insights), [Autotrack](https://mixpanel.com/report/autotrack/web), and [JQL Console](https://mixpanel.com/report/jql-console).
 
 ## Running tests
 
