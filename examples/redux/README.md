@@ -26,11 +26,11 @@ document.registerElement('counter-app', class extends Component {
     return {
       defaultState: store.getState(),
 
-      template: props => h('.counter', [
-        h('.val', `Counter: ${props.count}`),
-        h('.controls', [
-          h('button.decr', {onclick: () => store.dispatch(decrCounter())}, '-'),
-          h('button.incr', {onclick: () => store.dispatch(incrCounter())}, '+'),
+      template: props => h('div.counter', [
+        h('div.val', `Counter: ${props.count}`),
+        h('div.controls', [
+          h('button.decr', {on: {click: () => store.dispatch(decrCounter())}}, '-'),
+          h('button.incr', {on: {click: () => store.dispatch(incrCounter())}}, '+'),
         ]),
       ]),
     };
