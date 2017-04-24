@@ -1,5 +1,3 @@
-import 'webcomponents.js'; // polyfill
-
 // import from the same repo. in a different repo you'd use:
 // import { Component } from 'panel';
 import { Component } from '../../lib';
