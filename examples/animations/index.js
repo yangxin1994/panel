@@ -1,5 +1,3 @@
-import 'webcomponents.js'; // polyfill
-
 // import from the same repo. in a different repo you'd use:
 // import { Component } from 'panel';
 import { Component } from '../../lib';
@@ -10,7 +8,7 @@ import counterTemplate from './counter.jade';
 
 import './index.styl';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {
@@ -29,13 +27,13 @@ document.registerElement('counter-app', class extends Component {
   }
 });
 
-document.registerElement('about-view', class extends Component {
+customElements.define('about-view', class extends Component {
   get config() {
     return {template: aboutTemplate};
   }
 });
 
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       helpers: {
