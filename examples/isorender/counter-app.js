@@ -4,7 +4,7 @@ import { Component } from '../../lib';
 
 import template from './counter-app.jade';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {
