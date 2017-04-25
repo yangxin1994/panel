@@ -1,5 +1,3 @@
-import 'webcomponents.js'; // polyfill
-
 // import from the same repo. in a different repo you'd use:
 // import { Component, h } from 'panel';
 import { Component, h } from '../../lib';
@@ -24,7 +22,7 @@ const reducer = (state={count: 1}, action) => {
 
 const store = createStore(reducer);
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: store.getState(),
