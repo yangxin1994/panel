@@ -5,7 +5,7 @@ import { Component } from '../../../../lib';
 import template from './index.jade';
 import css from './index.styl';
 
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       helpers: {

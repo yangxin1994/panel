@@ -5,7 +5,7 @@ import { Component } from '../../../../lib';
 import template from './index.jade';
 import css from './index.styl';
 
-document.registerElement('about-view', class extends Component {
+customElements.define('about-view', class extends Component {
   get config() {
     return {
       template,

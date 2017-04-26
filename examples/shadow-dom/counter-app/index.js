@@ -8,7 +8,7 @@ import './counter-view';
 import template from './index.jade';
 import css from './index.styl';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {

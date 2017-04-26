@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "snabbdom": "^0.5.3",
-    "webcomponents.js": "^0.7.22"
+    "@webcomponents/custom-elements": "1.0.0-rc.3"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
