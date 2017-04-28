@@ -37,4 +37,4 @@ To install and run the example from this directory: `npm install && npm start`. 
 
 For transpiling JSX to JavaScript, this example uses the standard Babel plugin [transform-react-jsx](https://babeljs.io/docs/plugins/transform-react-jsx/). In order for the plugin's output to interface correctly with `snabbdom` instead of `React`, we use the [`snabbdom-jsx`](https://github.com/yelouafi/snabbdom-jsx) package and configure the Babel plugin to use the `html` Hyperscript function provided by `snabbdom-jsx`.
 
-Information on integrating Snabbdom-specific functionality (such as its dynamic class-toggling system) into JSX code can be found in the [Mapping JSX attributes](https://github.com/yelouafi/snabbdom-jsx#mapping-jsx-attributes) from the `snabbdom-jsx` README.
+Information on integrating Snabbdom-specific functionality (such as its dynamic class-toggling system) into JSX code can be found in [Mapping JSX attributes](https://github.com/yelouafi/snabbdom-jsx#mapping-jsx-attributes) from the `snabbdom-jsx` README.
