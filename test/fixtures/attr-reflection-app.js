@@ -8,4 +8,8 @@ export class AttrReflectionApp extends Component {
       ]),
     };
   }
+
+  static get observedAttributes() {
+    return [`wombats`];
+  }
 }

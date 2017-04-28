@@ -6,10 +6,10 @@ import requestAnimationFrameCB from 'raf';
 import { SimpleApp } from '../fixtures/simple-app';
 import { NestedApp, NestedChild } from '../fixtures/nested-app';
 import { AttrReflectionApp } from '../fixtures/attr-reflection-app';
-document.registerElement('nested-app', NestedApp);
-document.registerElement('nested-child', NestedChild);
-document.registerElement('simple-app', SimpleApp);
-document.registerElement('attr-reflection-app', AttrReflectionApp);
+customElements.define('nested-app', NestedApp);
+customElements.define('nested-child', NestedChild);
+customElements.define('simple-app', SimpleApp);
+customElements.define('attr-reflection-app', AttrReflectionApp);
 
 const raf = () => new Promise(requestAnimationFrameCB);
 
@@ -17,20 +17,20 @@ describe('Server-side component renderer', function() {
   it('can register and create components with document.createElement', function() {
     const el = document.createElement('simple-app');
     expect(el.state).to.eql({});
-    el.attachedCallback();
+    el.connectedCallback();
     expect(el.state).to.eql({foo: 'bar'});
   });
 
   it('supports class instantiation', function() {
     const el = new SimpleApp();
     expect(el.state).to.eql({});
-    el.attachedCallback();
+    el.connectedCallback();
     expect(el.state).to.eql({foo: 'bar'});
   });
 
   it('renders a simple component', async function() {
     const el = new SimpleApp();
-    el.attachedCallback();
+    el.connectedCallback();
 
     await raf();
 
@@ -42,7 +42,7 @@ describe('Server-side component renderer', function() {
 
   it('renders updates', async function() {
     const el = new SimpleApp();
-    el.attachedCallback();
+    el.connectedCallback();
 
     await raf();
 
@@ -58,7 +58,7 @@ describe('Server-side component renderer', function() {
 
   it('renders nested components', async function() {
     const el = new NestedApp();
-    el.attachedCallback();
+    el.connectedCallback();
 
     await raf();
 
@@ -83,7 +83,7 @@ describe('Server-side component renderer', function() {
 
   it('updates nested components', async function() {
     const el = new NestedApp();
-    el.attachedCallback();
+    el.connectedCallback();
 
     await raf();
 
@@ -106,7 +106,7 @@ describe('Server-side component renderer', function() {
   it('renders attributes', async function() {
     const el = new AttrReflectionApp();
     el.setAttribute('wombats', '15');
-    el.attachedCallback();
+    el.connectedCallback();
 
     await raf();
 
@@ -118,7 +118,7 @@ describe('Server-side component renderer', function() {
   it('reacts to attribute updates', async function() {
     const el = new AttrReflectionApp();
     el.setAttribute('wombats', '15');
-    el.attachedCallback();
+    el.connectedCallback();
 
     await raf();
 
