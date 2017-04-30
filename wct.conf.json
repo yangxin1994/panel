@@ -15,7 +15,7 @@
         },
         {
           "browserName": "chrome",
-          "version": "45.0",
+          "version": "49.0",
           "platform": "OS X 10.10"
         },
         {
@@ -30,8 +30,13 @@
         },
         {
           "browserName": "safari",
-          "version": "9.0",
+          "version": "10.0",
           "platform": "OS X 10.11"
+        },
+        {
+          "browserName": "safari",
+          "version": "latest",
+          "platform": "OS X 10.12"
         }
       ]
     }
