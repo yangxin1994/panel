@@ -143,7 +143,7 @@ describe('Simple Component instance', function() {
         childEl.$panelParentID = el.panelID;
         el.shadowRoot.appendChild(childEl);
         window.requestAnimationFrame(function() {
-          childEl.attachedCallback();
+          childEl.connectedCallback();
           expect(childEl.$panelRoot).to.equal(el);
           done();
         });
@@ -171,7 +171,6 @@ describe('Simple Component instance', function() {
     });
 
     it('renders its template', function() {
-      expect(document.getElementsByClassName('foo')).to.have.lengthOf(0);
       expect(el.children).to.have.lengthOf(0);
       expect(el.shadowRoot.children[1].className).to.equal('foo');
     });
@@ -235,11 +234,11 @@ describe('Nested Component instance', function() {
     })
 
     it('passes state updates from child to parent', function() {
-      el.attachedCallback();
+      el.connectedCallback();
       childEl = document.createElement('nested-child');
       childEl.$panelParentID = el.panelID;
       childEl.$panelParent = childEl.$panelRoot = el;
-      childEl.attachedCallback();
+      childEl.connectedCallback();
       childEl.update({animal: 'capybara'});
       expect(el.state.animal).to.equal('capybara');
     });
