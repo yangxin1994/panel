@@ -15,12 +15,12 @@ The HTML page is simple. The `counter-app` custom element is where the Panel app
 </html>
 ```
 
-Let's start the JavaScript code of the app, in `index.js` (in this development example, Webpack will transpile and inject it into the HTML page automatically). Every Panel app is defined as a custom element (Web Component) using [`document.registerElement()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/registerElement):
+Let's start the JavaScript code of the app, in `index.js` (in this development example, Webpack will transpile and inject it into the HTML page automatically). Every Panel app is defined as a custom element (Web Component) using [`customElements.define()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define):
 
 ```javascript
 import { Component } from 'panel';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   // counter-app code goes here
 });
 ```
@@ -29,7 +29,7 @@ The only property which an app must define is its view template. In this example
 ```javascript
 import { Component, h } from 'panel';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       template: () => h('div.about', 'This is a sample app.'),
@@ -43,7 +43,7 @@ Hurray! The `<counter-app>` element in our HTML will now be populated with a `<d
 ### 2. Dynamic counter
 Let's split the app into two views: the 'about' screen defined above, and a 'counter' screen which will display a dynamic value `count`. Defining the 'counter' view looks quite like what we did in the previous section to define the app element:
 ```javascript
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       template: state => h('div.counter', `Counter: ${state.count}`),
@@ -53,7 +53,7 @@ document.registerElement('counter-view', class extends Component {
 ```
 The 'about' view is similar:
 ```javascript
-document.registerElement('about-view', class extends Component {
+customElements.define('about-view', class extends Component {
   get config() {
     return {
       template: () => h('div.about', 'This is a sample app.'),
@@ -63,7 +63,7 @@ document.registerElement('about-view', class extends Component {
 ```
 Now let's show them both simultaneously in the app. The `defaultState` property defines a starting state object for the app. The `this.child()` call inserts the subcomponents, taking care of hooking them up to the parent app/component so that they all share a single state:
 ```javascript
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {count: 1},
@@ -88,7 +88,7 @@ window.setInterval(() => {
 ### 3. Interaction
 Instead of updating the counter automatically and relentlessly, we'll now add + and - buttons so the user can control the counter:
 ```javascript
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       template: state => h('div.counter', [
@@ -107,7 +107,7 @@ document.registerElement('counter-view', class extends Component {
 ```
 Now when the user clicks on the + button, the view's `incr` handler function is called, which updates the state. We can extract the counter-updating logic into a separate helper:
 ```javascript
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       // ...
@@ -128,7 +128,7 @@ Since components have access to the parent app (as well as parent components, fo
 ### 4. Routing
 We have two 'views', `about` and `counter`, but currently no way to switch between them. Panel's built-in router can help handle navigation between views, by allowing URL/history changes to effect state changes:
 ```javascript
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {
@@ -151,7 +151,7 @@ Now visiting a URL with location hash `#counter` will switch to the `counter` vi
 
 Plain old HTML `anchor` tags with `href` values `#counter` and `#about` can now navigate between the views:
 ```javascript
-document.registerElement('about-view', class extends Component {
+customElements.define('about-view', class extends Component {
   get config() {
     return {
       template: () => h('div.about', [
@@ -162,7 +162,7 @@ document.registerElement('about-view', class extends Component {
   }
 });
 
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       template: state => h('div.counter', [
@@ -206,7 +206,7 @@ import template from './app.jade';
 import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       // ...
@@ -215,7 +215,7 @@ document.registerElement('counter-app', class extends Component {
   }
 });
 
-document.registerElement('about-view', class extends Component {
+customElements.define('about-view', class extends Component {
   get config() {
     return {
       template: aboutTemplate,
@@ -223,7 +223,7 @@ document.registerElement('about-view', class extends Component {
   }
 });
 
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       // ...
@@ -242,7 +242,7 @@ import template from './app.jade';
 import aboutTemplate from './about.jade';
 import counterTemplate from './counter.jade';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {
@@ -261,13 +261,13 @@ document.registerElement('counter-app', class extends Component {
   }
 });
 
-document.registerElement('about-view', class extends Component {
+customElements.define('about-view', class extends Component {
   get config() {
     return {template: aboutTemplate};
   }
 });
 
-document.registerElement('counter-view', class extends Component {
+customElements.define('counter-view', class extends Component {
   get config() {
     return {
       helpers: {

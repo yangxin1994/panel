@@ -21,7 +21,7 @@ const reducer = (state={count: 1}, action) => {
 
 const store = createStore(reducer);
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: store.getState(),

@@ -2,7 +2,7 @@
 
 The example in this directory notates the basic 'counter app' from the [README](https://github.com/mixpanel/panel/blob/master/README.md) but using [JSX](https://facebook.github.io/jsx/) to inline the template:
 ```jsx
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {count: 1},
