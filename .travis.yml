@@ -3,6 +3,7 @@ node_js:
   - '6.9'
   - '4.2'
 before_script:
+  - npm run pretest
   - npm run build-test
 script:
   - npm run test-server
