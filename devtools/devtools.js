@@ -11,10 +11,18 @@ function getPanelElementState() {
   // $0 is not available if called via event listeners
   const selectedElem = window[`$0`] || window[`__$panelDevToolsLastSelectedElem`];
 
-  if (selectedElem && selectedElem.update && selectedElem.state) {
-    window[`__$panelDevToolsLastSelectedElem`] = selectedElem;
-    selectedElem.update(); // Force a refresh so UI reflects latest state
-    return selectedElem.state;
+  if (selectedElem) {
+    // selectedElem is a panel component then force an update so UI refreshes to latest edited state
+    if (selectedElem.controller && selectedElem.controller.state) {
+      window[`__$panelDevToolsLastSelectedElem`] = selectedElem;
+      selectedElem.controller._update();
+      return selectedElem.controller.state;
+    }
+    else if (selectedElem.state && selectedElem.update) {
+      window[`__$panelDevToolsLastSelectedElem`] = selectedElem;
+      selectedElem.update();
+      return selectedElem.state;
+    }
   }
 
   // No panel component selected, remove references
