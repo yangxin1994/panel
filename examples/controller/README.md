@@ -1,46 +1,45 @@
-# Using Redux with Panel
+# Using ControlledComponent and StateController
 
-The example in this directory recreates the basic 'counter app' from the [README](https://github.com/mixpanel/panel/blob/master/README.md), but models the state interactions with the store/dispatch system of [Redux](http://redux.js.org/):
+The example in this directory recreates the basic 'counter app' from the [README](https://github.com/mixpanel/panel/blob/master/README.md), but uses an explicit StateController
 
 ```js
-// action creators
-const incrCounter = () => ({type: 'INCREMENT'});
-const decrCounter = () => ({type: 'DECREMENT'});
+class CounterController extends StateController {
+  get defaultState() {
+    return {
+      count: 0,
+    };
+  }
 
-// reducer
-const reducer = (state={count: 1}, action) => {
-  switch(action.type) {
-    case 'INCREMENT':
-      return Object.assign({}, state, {count: state.count + 1});
-    case 'DECREMENT':
-      return Object.assign({}, state, {count: state.count - 1});
-    default:
-      return state;
+  incrCounter() {
+    const count = this.state.count + 1;
+    this._update({count});
+  }
+
+  decrCounter() {
+    const count = this.state.count - 1;
+    this._update({count});
+  }
+
+  getCount() {
+    return this.state.count;
   }
 }
 
-const store = createStore(reducer);
-
-document.registerElement('counter-app', class extends Component {
+document.registerElement(`counter-app`, class extends ControlledComponent {
   get config() {
     return {
-      defaultState: store.getState(),
-
-      template: props => h('div.counter', [
-        h('div.val', `Counter: ${props.count}`),
-        h('div.controls', [
-          h('button.decr', {on: {click: () => store.dispatch(decrCounter())}}, '-'),
-          h('button.incr', {on: {click: () => store.dispatch(incrCounter())}}, '+'),
+      controller: new CounterController(),
+      template: () => h(`div.counter`, [
+        h(`div.val`, `Counter: ${this.controller.getCount()}`),
+        h(`div.controls`, [
+          h(`button.decr`, {on: {click: () => this.controller.decrCounter()}}, `-`),
+          h(`button.incr`, {on: {click: () => this.controller.incrCounter()}}, `+`),
         ]),
       ]),
     };
   }
 });
 
-const counterApp = document.querySelector('counter-app');
-store.subscribe(() => counterApp.update(store.getState()));
 ```
-
-The `store.subscribe()` call at the bottom ensures that any dispatched actions will propagate the resulting `state` to the Panel app.
 
 To install and run the example from this directory: `npm install && npm start`. The page will be served on `localhost:8080` by Webpack dev server.
