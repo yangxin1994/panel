@@ -4,7 +4,8 @@
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "files": [
-    "build"
+    "build",
+    "lib"
   ],
   "scripts": {
     "build": "babel lib -d build && cp -r build/isorender .",
