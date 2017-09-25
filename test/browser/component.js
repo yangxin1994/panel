@@ -1,80 +1,84 @@
-describe('Simple Component instance', function() {
-  var el;
+/* eslint-env mocha */
+/* global sinon, expect */
+/* eslint no-unused-expressions:0 */
+
+describe(`Simple Component instance`, function() {
+  let el;
 
   beforeEach(function() {
-    document.body.innerHTML = '';
-    el = document.createElement('simple-app');
+    document.body.innerHTML = ``;
+    el = document.createElement(`simple-app`);
   });
 
-  describe('toString()', function() {
-    it('includes the tag name', function() {
-      expect(el.toString()).to.contain('SIMPLE-APP');
+  describe(`toString()`, function() {
+    it(`includes the tag name`, function() {
+      expect(el.toString()).to.contain(`SIMPLE-APP`);
     });
   });
 
-  describe('panelID', function() {
-    it('is unique for each component instance', function() {
+  describe(`panelID`, function() {
+    it(`is unique for each component instance`, function() {
       const ids = Array(5).fill()
-        .map(function()   { return document.createElement('simple-app'); })
+        .map(function()   { return document.createElement(`simple-app`); })
         .map(function(el) { return el.panelID; });
       expect(ids).to.have.lengthOf(new Set(ids).size);
     });
   });
 
-  describe('config', function() {
-    it('returns config object via getter', function() {
+  describe(`config`, function() {
+    it(`returns config object via getter`, function() {
       expect(el.config).to.be.an.instanceof(Object);
       expect(el.config.helpers).to.be.an.instanceof(Object);
     });
 
-    it('exposes helpers via a top-level getter', function() {
+    it(`exposes helpers via a top-level getter`, function() {
       expect(el.helpers).to.be.an.instanceof(Object);
       expect(el.helpers.capitalize).to.be.an.instanceof(Function);
     });
   });
 
-  context('before attached to DOM', function() {
-    it('does not affect the DOM', function(done) {
-      expect(document.getElementsByClassName('foo')).to.be.empty;
+  context(`before attached to DOM`, function() {
+    it(`does not affect the DOM`, function(done) {
+      expect(document.getElementsByClassName(`foo`)).to.be.empty;
       window.requestAnimationFrame(function() {
-        expect(document.getElementsByClassName('foo')).to.be.empty;
+        expect(document.getElementsByClassName(`foo`)).to.be.empty;
         done();
       });
     });
 
-    it('allows state setting', function(done) {
-      el.state = {foo: 'not bar'};
+    it(`allows state setting`, function(done) {
+      el.state = {foo: `not bar`};
       document.body.appendChild(el);
-      expect(el.state.foo).to.equal('not bar');
+      expect(el.state.foo).to.equal(`not bar`);
       window.requestAnimationFrame(function() {
-        expect(el.state.foo).to.equal('not bar');
+        expect(el.state.foo).to.equal(`not bar`);
         done();
       });
     });
 
-    it('allows updates and applies them when attached', function(done) {
-      el.update({foo: 'not bar'});
+    it(`allows updates and applies them when attached`, function(done) {
+      el.update({foo: `not bar`});
       document.body.appendChild(el);
-      expect(el.state.foo).to.equal('not bar');
+      expect(el.state.foo).to.equal(`not bar`);
       window.requestAnimationFrame(function() {
-        expect(el.state.foo).to.equal('not bar');
-        expect(el.textContent).to.contain('Value of foo: not bar');
-        expect(el.textContent).to.contain('Foo capitalized: Not bar');
+        expect(el.state.foo).to.equal(`not bar`);
+        expect(el.textContent).to.contain(`Value of foo: not bar`);
+        expect(el.textContent).to.contain(`Foo capitalized: Not bar`);
         done();
       });
     });
 
-    it('caches the last template once rendered', function(done) {
+    it(`caches the last template once rendered`, function(done) {
       expect(el._rendered).to.be.undefined;
       document.body.appendChild(el);
       window.requestAnimationFrame(function() {
-        expect(el._rendered).to.be.an('object');
+        expect(el._rendered).to.be.an(`object`);
         done();
       });
     });
   });
 
-  context('when attached to DOM', function() {
+  context(`when attached to DOM`, function() {
     beforeEach(function(done) {
       document.body.appendChild(el);
       window.requestAnimationFrame(function() {
@@ -82,63 +86,63 @@ describe('Simple Component instance', function() {
       });
     });
 
-    it('renders its template', function() {
-      expect(document.getElementsByClassName('foo')).to.have.lengthOf(1);
+    it(`renders its template`, function() {
+      expect(document.getElementsByClassName(`foo`)).to.have.lengthOf(1);
       expect(el.children).to.have.lengthOf(1);
-      expect(el.children[0].className).to.equal('foo');
+      expect(el.children[0].className).to.equal(`foo`);
     });
 
-    it('injects default state into templates', function() {
-      expect(el.textContent).to.contain('Value of foo: bar');
+    it(`injects default state into templates`, function() {
+      expect(el.textContent).to.contain(`Value of foo: bar`);
     });
 
-    it('injects helpers into templates', function() {
-      expect(el.textContent).to.contain('Foo capitalized: Bar');
+    it(`injects helpers into templates`, function() {
+      expect(el.textContent).to.contain(`Foo capitalized: Bar`);
     });
 
-    it('re-renders when state is updated', function(done) {
-      expect(el.textContent).to.contain('Value of foo: bar');
-      expect(el.textContent).to.contain('Foo capitalized: Bar');
-      el.update({foo: 'new value'});
+    it(`re-renders when state is updated`, function(done) {
+      expect(el.textContent).to.contain(`Value of foo: bar`);
+      expect(el.textContent).to.contain(`Foo capitalized: Bar`);
+      el.update({foo: `new value`});
       window.requestAnimationFrame(function() {
-        expect(el.textContent).to.contain('Value of foo: new value');
-        expect(el.textContent).to.contain('Foo capitalized: New value');
+        expect(el.textContent).to.contain(`Value of foo: new value`);
+        expect(el.textContent).to.contain(`Foo capitalized: New value`);
         done();
       });
     });
 
-    it('does not re-render if shouldUpdate() returns false', function(done) {
-      expect(el.textContent).to.contain('Value of foo: bar');
+    it(`does not re-render if shouldUpdate() returns false`, function(done) {
+      expect(el.textContent).to.contain(`Value of foo: bar`);
 
-      el.update({foo: 'meow'});
+      el.update({foo: `meow`});
       window.requestAnimationFrame(function() {
-        expect(el.textContent).to.contain('Value of foo: bar'); // no change
+        expect(el.textContent).to.contain(`Value of foo: bar`); // no change
 
-        el.update({foo: 'something else'});
+        el.update({foo: `something else`});
         window.requestAnimationFrame(function() {
-          expect(el.textContent).to.contain('Value of foo: something else');
+          expect(el.textContent).to.contain(`Value of foo: something else`);
           done();
         });
       });
     });
   });
 
-  context('when using shadow DOM', function() {
+  context(`when using shadow DOM`, function() {
     beforeEach(function(done) {
-      el = document.createElement('shadow-dom-app');
+      el = document.createElement(`shadow-dom-app`);
       document.body.appendChild(el);
       window.requestAnimationFrame(function() {
         done();
       });
     });
 
-    it('creates and uses a shadow root', function() {
+    it(`creates and uses a shadow root`, function() {
       expect(el.el).not.to.equal(el);
       expect(el.shadowRoot).to.be.ok;
     });
 
-    it('successfully finds the panel root when top level uses shadow dom', function(done) {
-      childEl = document.createElement('nested-child');
+    it(`successfully finds the panel root when top level uses shadow dom`, function(done) {
+      const childEl = document.createElement(`nested-child`);
       window.requestAnimationFrame(function() {
         childEl.$panelParentID = el.panelID;
         el.shadowRoot.appendChild(childEl);
@@ -150,15 +154,15 @@ describe('Simple Component instance', function() {
       });
     });
 
-    it('successfully finds the panel root when a nested child uses shadow dom', function(done) {
-      rootEl = document.createElement('nested-app');
+    it(`successfully finds the panel root when a nested child uses shadow dom`, function(done) {
+      const rootEl = document.createElement(`nested-app`);
       document.body.appendChild(rootEl);
       window.requestAnimationFrame(function() {
-        level1El = document.createElement('shadow-dom-app');
+        const level1El = document.createElement(`shadow-dom-app`);
         level1El.$panelParentID = rootEl.panelID;
         rootEl.appendChild(level1El);
         window.requestAnimationFrame(function() {
-          level2El = document.createElement('nested-child');
+          const level2El = document.createElement(`nested-child`);
           level2El.$panelParentID = level1El.panelID;
           level1El.shadowRoot.appendChild(level2El);
           window.requestAnimationFrame(function() {
@@ -170,127 +174,127 @@ describe('Simple Component instance', function() {
       });
     });
 
-    it('renders its template', function() {
-      expect(document.getElementsByClassName('foo')).to.have.lengthOf(0);
+    it(`renders its template`, function() {
+      expect(document.getElementsByClassName(`foo`)).to.have.lengthOf(0);
       expect(el.children).to.have.lengthOf(0);
-      expect(el.shadowRoot.children[1].className).to.equal('foo');
+      expect(el.shadowRoot.children[1].className).to.equal(`foo`);
     });
 
-    it('applies the styles', function() {
-      expect(el.shadowRoot.children[0].innerHTML).to.equal('color: blue;');
+    it(`applies the styles`, function() {
+      expect(el.shadowRoot.children[0].innerHTML).to.equal(`color: blue;`);
     });
 
-    context('when applying override styles', function() {
-      it('appends the overriding styles to the default styles', function(done) {
-        el.setAttribute('style-override', 'background: red;');
+    context(`when applying override styles`, function() {
+      it(`appends the overriding styles to the default styles`, function(done) {
+        el.setAttribute(`style-override`, `background: red;`);
         window.requestAnimationFrame(function() {
-          expect(el.shadowRoot.children[0].innerHTML).to.equal('color: blue;background: red;');
+          expect(el.shadowRoot.children[0].innerHTML).to.equal(`color: blue;background: red;`);
           done();
         });
       });
 
-      it("it applies the styles even if the component isn't attached to the DOM", function() {
-         el = document.createElement('shadow-dom-app');
-         el.setAttribute('style-override', 'background: red;');
-         expect(el.shadowRoot.children[0].innerHTML).to.equal('color: blue;background: red;');
+      it(`it applies the styles even if the component isn't attached to the DOM`, function() {
+        el = document.createElement(`shadow-dom-app`);
+        el.setAttribute(`style-override`, `background: red;`);
+        expect(el.shadowRoot.children[0].innerHTML).to.equal(`color: blue;background: red;`);
       });
     });
   });
 });
 
-describe('Nested Component instance', function() {
-  var el, childEl;
+describe(`Nested Component instance`, function() {
+  let el, childEl;
 
-  context('before child is rendered', function() {
+  context(`before child is rendered`, function() {
     beforeEach(function() {
-      document.body.innerHTML = '';
+      document.body.innerHTML = ``;
       childEl = null;
-      el = document.createElement('nested-app');
+      el = document.createElement(`nested-app`);
     });
 
-    it('successfully finds the panel root', function(done) {
+    it(`successfully finds the panel root`, function(done) {
       document.body.appendChild(el);
-      window.requestAnimationFrame(function(){
-        childEl = document.createElement('nested-child');
+      window.requestAnimationFrame(function() {
+        childEl = document.createElement(`nested-child`);
         childEl.$panelParentID = el.panelID;
         el.appendChild(childEl);
         window.requestAnimationFrame(function() {
           expect(childEl.$panelRoot).to.equal(el);
           done();
         });
-      })
-    })
+      });
+    });
 
-    it('successfully finds a panel parent node by a given tag name', function(done) {
+    it(`successfully finds a panel parent node by a given tag name`, function(done) {
       document.body.appendChild(el);
-      window.requestAnimationFrame(function(){
-        childEl = document.createElement('nested-child');
+      window.requestAnimationFrame(function() {
+        childEl = document.createElement(`nested-child`);
         childEl.$panelParentID = el.panelID;
         el.appendChild(childEl);
         window.requestAnimationFrame(function() {
-          expect(childEl.findPanelParentByTagName('nested-app')).to.equal(el);
+          expect(childEl.findPanelParentByTagName(`nested-app`)).to.equal(el);
           done();
         });
-      })
-    })
+      });
+    });
 
-    it('passes state updates from child to parent', function() {
+    it(`passes state updates from child to parent`, function() {
       el.attachedCallback();
-      childEl = document.createElement('nested-child');
+      childEl = document.createElement(`nested-child`);
       childEl.$panelParentID = el.panelID;
       childEl.$panelParent = childEl.$panelRoot = el;
       childEl.attachedCallback();
-      childEl.update({animal: 'capybara'});
-      expect(el.state.animal).to.equal('capybara');
+      childEl.update({animal: `capybara`});
+      expect(el.state.animal).to.equal(`capybara`);
     });
   });
 
-  context('when attached to DOM', function() {
+  context(`when attached to DOM`, function() {
     beforeEach(function(done) {
-      document.body.innerHTML = '';
-      el = document.createElement('nested-app');
+      document.body.innerHTML = ``;
+      el = document.createElement(`nested-app`);
       document.body.appendChild(el);
       window.requestAnimationFrame(function() {
-        childEl = el.getElementsByTagName('nested-child')[0];
+        childEl = el.getElementsByTagName(`nested-child`)[0];
         done();
       });
     });
 
-    it('renders the parent component', function() {
-      expect(document.getElementsByClassName('nested-foo')).to.have.lengthOf(1);
+    it(`renders the parent component`, function() {
+      expect(document.getElementsByClassName(`nested-foo`)).to.have.lengthOf(1);
       expect(el.children).to.have.lengthOf(1);
-      expect(el.children[0].className).to.equal('nested-foo');
+      expect(el.children[0].className).to.equal(`nested-foo`);
     });
 
-    it('renders the child component', function() {
-      expect(document.getElementsByClassName('nested-foo-child')).to.have.lengthOf(1);
-      expect(childEl.children[0].className).to.equal('nested-foo-child');
+    it(`renders the child component`, function() {
+      expect(document.getElementsByClassName(`nested-foo-child`)).to.have.lengthOf(1);
+      expect(childEl.children[0].className).to.equal(`nested-foo-child`);
     });
 
-    it('passes parent state to the child component', function() {
-      expect(childEl.textContent).to.include('parent title: test');
+    it(`passes parent state to the child component`, function() {
+      expect(childEl.textContent).to.include(`parent title: test`);
     });
 
-    it('passes attributes to the child component', function() {
-      expect(childEl.textContent).to.include('animal: llama');
+    it(`passes attributes to the child component`, function() {
+      expect(childEl.textContent).to.include(`animal: llama`);
     });
 
-    it('passes state updates from parent to child', function(done) {
-      expect(childEl.textContent).to.include('animal: llama');
-      el.update({animal: 'capybara'});
+    it(`passes state updates from parent to child`, function(done) {
+      expect(childEl.textContent).to.include(`animal: llama`);
+      el.update({animal: `capybara`});
       window.requestAnimationFrame(function() {
-        expect(childEl.textContent).to.include('animal: capybara');
+        expect(childEl.textContent).to.include(`animal: capybara`);
         done();
       });
     });
 
-    it('passes state updates from child to parent', function(done) {
-      expect(el.textContent).to.include('Nested app: test');
-      expect(childEl.textContent).to.include('parent title: test');
-      childEl.update({title: 'new title'});
+    it(`passes state updates from child to parent`, function(done) {
+      expect(el.textContent).to.include(`Nested app: test`);
+      expect(childEl.textContent).to.include(`parent title: test`);
+      childEl.update({title: `new title`});
       window.requestAnimationFrame(function() {
-        expect(el.textContent).to.include('Nested app: new title');
-        expect(childEl.textContent).to.include('parent title: new title');
+        expect(el.textContent).to.include(`Nested app: new title`);
+        expect(childEl.textContent).to.include(`parent title: new title`);
         done();
       });
     });
@@ -298,12 +302,12 @@ describe('Nested Component instance', function() {
 });
 
 
-describe('Rendering exception', function() {
-  var el;
+describe(`Rendering exception`, function() {
+  let el;
 
   beforeEach(function(done) {
-    document.body.innerHTML = '';
-    el = document.createElement('breakable-app');
+    document.body.innerHTML = ``;
+    el = document.createElement(`breakable-app`);
     el.logError = sinon.spy();
     document.body.appendChild(el);
     window.requestAnimationFrame(function() {
@@ -311,21 +315,54 @@ describe('Rendering exception', function() {
     });
   });
 
-  it('does not prevent component from initializing', function() {
+  it(`does not prevent component from initializing`, function() {
     expect(el.initialized).to.be.ok;
   });
 
-  it('logs an error', function() {
-    expect(el.logError.getCall(0).args[0]).to.contain('Error while rendering');
-    expect(el.logError.getCall(0).args[0]).to.contain('BREAKABLE-APP');
+  it(`logs an error`, function() {
+    expect(el.logError.getCall(0).args[0]).to.contain(`Error while rendering`);
+    expect(el.logError.getCall(0).args[0]).to.contain(`BREAKABLE-APP`);
   });
 
-  it('does not prevent further updates from rendering', function(done) {
-    expect(el.textContent).not.to.contain('Value of foo.bar');
-    el.update({foo: {bar: 'later success'}});
+  it(`does not prevent further updates from rendering`, function(done) {
+    expect(el.textContent).not.to.contain(`Value of foo.bar`);
+    el.update({foo: {bar: `later success`}});
     window.requestAnimationFrame(function() {
-      expect(el.textContent).to.contain('Value of foo.bar: later success');
+      expect(el.textContent).to.contain(`Value of foo.bar: later success`);
       done();
     });
   });
 });
+
+describe(`Controlled App`, function() {
+  let el;
+
+  beforeEach(function(done) {
+    document.body.innerHTML = ``;
+    el = document.createElement(`controlled-app`);
+    document.body.appendChild(el);
+    window.requestAnimationFrame(function() {
+      done();
+    });
+  });
+
+  it(`does not allow update on component`, function() {
+    expect(() => el.update({foo: `not bar`})).to.throw(/update\(\) not allowed from component. Use controller/);
+  });
+
+  it(`Behaves like normal component`, function(done) {
+    let count = 0;
+    expect(el.controller.state).to.be.eql({count});
+    expect(el.textContent).to.contain(`Counter: ${count}`);
+
+    el.querySelector(`button.incr`).click();
+    count += 1;
+    expect(el.controller.state).to.be.eql({count});
+
+    window.requestAnimationFrame(function() {
+      expect(el.textContent).to.contain(`Counter: ${count}`);
+      done();
+    });
+  });
+});
+

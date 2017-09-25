@@ -23,7 +23,7 @@ class CounterController extends StateController {
   }
 }
 
-document.registerElement(`counter-app`, class extends ControlledComponent {
+export class ControlledApp extends ControlledComponent {
   get config() {
     return {
       controller: new CounterController(),
@@ -36,4 +36,4 @@ document.registerElement(`counter-app`, class extends ControlledComponent {
       ]),
     };
   }
-});
+}
