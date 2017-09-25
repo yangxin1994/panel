@@ -3,7 +3,7 @@
 /* eslint no-unused-expressions:0 */
 
 describe(`Simple Component instance`, function() {
-  let el;
+  var el;
 
   beforeEach(function() {
     document.body.innerHTML = ``;
@@ -18,7 +18,7 @@ describe(`Simple Component instance`, function() {
 
   describe(`panelID`, function() {
     it(`is unique for each component instance`, function() {
-      const ids = Array(5).fill()
+      var ids = Array(5).fill()
         .map(function()   { return document.createElement(`simple-app`); })
         .map(function(el) { return el.panelID; });
       expect(ids).to.have.lengthOf(new Set(ids).size);
@@ -142,7 +142,7 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`successfully finds the panel root when top level uses shadow dom`, function(done) {
-      const childEl = document.createElement(`nested-child`);
+      var childEl = document.createElement(`nested-child`);
       window.requestAnimationFrame(function() {
         childEl.$panelParentID = el.panelID;
         el.shadowRoot.appendChild(childEl);
@@ -155,14 +155,14 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`successfully finds the panel root when a nested child uses shadow dom`, function(done) {
-      const rootEl = document.createElement(`nested-app`);
+      var rootEl = document.createElement(`nested-app`);
       document.body.appendChild(rootEl);
       window.requestAnimationFrame(function() {
-        const level1El = document.createElement(`shadow-dom-app`);
+        var level1El = document.createElement(`shadow-dom-app`);
         level1El.$panelParentID = rootEl.panelID;
         rootEl.appendChild(level1El);
         window.requestAnimationFrame(function() {
-          const level2El = document.createElement(`nested-child`);
+          var level2El = document.createElement(`nested-child`);
           level2El.$panelParentID = level1El.panelID;
           level1El.shadowRoot.appendChild(level2El);
           window.requestAnimationFrame(function() {
@@ -203,7 +203,7 @@ describe(`Simple Component instance`, function() {
 });
 
 describe(`Nested Component instance`, function() {
-  let el, childEl;
+  var el, childEl;
 
   context(`before child is rendered`, function() {
     beforeEach(function() {
@@ -303,7 +303,7 @@ describe(`Nested Component instance`, function() {
 
 
 describe(`Rendering exception`, function() {
-  let el;
+  var el;
 
   beforeEach(function(done) {
     document.body.innerHTML = ``;
@@ -335,7 +335,7 @@ describe(`Rendering exception`, function() {
 });
 
 describe(`Controlled App`, function() {
-  let el;
+  var el;
 
   beforeEach(function(done) {
     document.body.innerHTML = ``;
@@ -347,11 +347,13 @@ describe(`Controlled App`, function() {
   });
 
   it(`does not allow update on component`, function() {
-    expect(() => el.update({foo: `not bar`})).to.throw(/update\(\) not allowed from component. Use controller/);
+    expect(function() {
+      el.update({foo: `not bar`});
+    }).to.throw(/update\(\) not allowed from component. Use controller/);
   });
 
   it(`Behaves like normal component`, function(done) {
-    let count = 0;
+    var count = 0;
     expect(el.controller.state).to.be.eql({count});
     expect(el.textContent).to.contain(`Counter: ${count}`);
 
