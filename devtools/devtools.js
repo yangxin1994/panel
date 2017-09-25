@@ -12,7 +12,7 @@ function getPanelElementState() {
   const selectedElem = window[`$0`] || window[`__$panelDevToolsLastSelectedElem`];
 
   if (selectedElem) {
-    // selectedElem is a panel component then force an update so UI refreshes to latest edited state
+    // Force an update so UI refreshes to latest edited state
     if (selectedElem.controller && selectedElem.controller.state) {
       window[`__$panelDevToolsLastSelectedElem`] = selectedElem;
       selectedElem.controller._update();

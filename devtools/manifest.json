@@ -1,5 +1,5 @@
 {
-  "version": "1.3",
+  "version": "1.5",
   "manifest_version": 2,
   "name": "Panel State",
   "description": "Shows Mixpanel's Panel component state",
