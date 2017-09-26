@@ -3,7 +3,7 @@
 /* eslint no-unused-expressions:0 */
 
 describe(`Simple Component instance`, function() {
-  var el;
+  let el;
 
   beforeEach(function() {
     document.body.innerHTML = ``;
@@ -18,9 +18,9 @@ describe(`Simple Component instance`, function() {
 
   describe(`panelID`, function() {
     it(`is unique for each component instance`, function() {
-      var ids = Array(5).fill()
-        .map(function()   { return document.createElement(`simple-app`); })
-        .map(function(el) { return el.panelID; });
+      const ids = Array(5).fill()
+        .map(() => document.createElement(`simple-app`))
+        .map(el => el.panelID);
       expect(ids).to.have.lengthOf(new Set(ids).size);
     });
   });
@@ -40,7 +40,7 @@ describe(`Simple Component instance`, function() {
   context(`before attached to DOM`, function() {
     it(`does not affect the DOM`, function(done) {
       expect(document.getElementsByClassName(`foo`)).to.be.empty;
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(document.getElementsByClassName(`foo`)).to.be.empty;
         done();
       });
@@ -50,7 +50,7 @@ describe(`Simple Component instance`, function() {
       el.state = {foo: `not bar`};
       document.body.appendChild(el);
       expect(el.state.foo).to.equal(`not bar`);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(el.state.foo).to.equal(`not bar`);
         done();
       });
@@ -60,7 +60,7 @@ describe(`Simple Component instance`, function() {
       el.update({foo: `not bar`});
       document.body.appendChild(el);
       expect(el.state.foo).to.equal(`not bar`);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(el.state.foo).to.equal(`not bar`);
         expect(el.textContent).to.contain(`Value of foo: not bar`);
         expect(el.textContent).to.contain(`Foo capitalized: Not bar`);
@@ -71,7 +71,7 @@ describe(`Simple Component instance`, function() {
     it(`caches the last template once rendered`, function(done) {
       expect(el._rendered).to.be.undefined;
       document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(el._rendered).to.be.an(`object`);
         done();
       });
@@ -81,7 +81,7 @@ describe(`Simple Component instance`, function() {
   context(`when attached to DOM`, function() {
     beforeEach(function(done) {
       document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         done();
       });
     });
@@ -104,7 +104,7 @@ describe(`Simple Component instance`, function() {
       expect(el.textContent).to.contain(`Value of foo: bar`);
       expect(el.textContent).to.contain(`Foo capitalized: Bar`);
       el.update({foo: `new value`});
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(el.textContent).to.contain(`Value of foo: new value`);
         expect(el.textContent).to.contain(`Foo capitalized: New value`);
         done();
@@ -115,11 +115,11 @@ describe(`Simple Component instance`, function() {
       expect(el.textContent).to.contain(`Value of foo: bar`);
 
       el.update({foo: `meow`});
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(el.textContent).to.contain(`Value of foo: bar`); // no change
 
         el.update({foo: `something else`});
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(() => {
           expect(el.textContent).to.contain(`Value of foo: something else`);
           done();
         });
@@ -131,7 +131,7 @@ describe(`Simple Component instance`, function() {
     beforeEach(function(done) {
       el = document.createElement(`shadow-dom-app`);
       document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         done();
       });
     });
@@ -142,11 +142,11 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`successfully finds the panel root when top level uses shadow dom`, function(done) {
-      var childEl = document.createElement(`nested-child`);
-      window.requestAnimationFrame(function() {
+      const childEl = document.createElement(`nested-child`);
+      window.requestAnimationFrame(() => {
         childEl.$panelParentID = el.panelID;
         el.shadowRoot.appendChild(childEl);
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(() => {
           childEl.attachedCallback();
           expect(childEl.$panelRoot).to.equal(el);
           done();
@@ -155,17 +155,17 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`successfully finds the panel root when a nested child uses shadow dom`, function(done) {
-      var rootEl = document.createElement(`nested-app`);
+      const rootEl = document.createElement(`nested-app`);
       document.body.appendChild(rootEl);
-      window.requestAnimationFrame(function() {
-        var level1El = document.createElement(`shadow-dom-app`);
+      window.requestAnimationFrame(() => {
+        const level1El = document.createElement(`shadow-dom-app`);
         level1El.$panelParentID = rootEl.panelID;
         rootEl.appendChild(level1El);
-        window.requestAnimationFrame(function() {
-          var level2El = document.createElement(`nested-child`);
+        window.requestAnimationFrame(() => {
+          const level2El = document.createElement(`nested-child`);
           level2El.$panelParentID = level1El.panelID;
           level1El.shadowRoot.appendChild(level2El);
-          window.requestAnimationFrame(function() {
+          window.requestAnimationFrame(() => {
             expect(level2El.$panelParent).to.equal(level1El);
             expect(level2El.$panelRoot).to.equal(rootEl);
             done();
@@ -187,7 +187,7 @@ describe(`Simple Component instance`, function() {
     context(`when applying override styles`, function() {
       it(`appends the overriding styles to the default styles`, function(done) {
         el.setAttribute(`style-override`, `background: red;`);
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(() => {
           expect(el.shadowRoot.children[0].innerHTML).to.equal(`color: blue;background: red;`);
           done();
         });
@@ -203,7 +203,7 @@ describe(`Simple Component instance`, function() {
 });
 
 describe(`Nested Component instance`, function() {
-  var el, childEl;
+  let el, childEl;
 
   context(`before child is rendered`, function() {
     beforeEach(function() {
@@ -214,11 +214,11 @@ describe(`Nested Component instance`, function() {
 
     it(`successfully finds the panel root`, function(done) {
       document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         childEl = document.createElement(`nested-child`);
         childEl.$panelParentID = el.panelID;
         el.appendChild(childEl);
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(() => {
           expect(childEl.$panelRoot).to.equal(el);
           done();
         });
@@ -227,11 +227,11 @@ describe(`Nested Component instance`, function() {
 
     it(`successfully finds a panel parent node by a given tag name`, function(done) {
       document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         childEl = document.createElement(`nested-child`);
         childEl.$panelParentID = el.panelID;
         el.appendChild(childEl);
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(() => {
           expect(childEl.findPanelParentByTagName(`nested-app`)).to.equal(el);
           done();
         });
@@ -254,7 +254,7 @@ describe(`Nested Component instance`, function() {
       document.body.innerHTML = ``;
       el = document.createElement(`nested-app`);
       document.body.appendChild(el);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         childEl = el.getElementsByTagName(`nested-child`)[0];
         done();
       });
@@ -282,7 +282,7 @@ describe(`Nested Component instance`, function() {
     it(`passes state updates from parent to child`, function(done) {
       expect(childEl.textContent).to.include(`animal: llama`);
       el.update({animal: `capybara`});
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(childEl.textContent).to.include(`animal: capybara`);
         done();
       });
@@ -292,7 +292,7 @@ describe(`Nested Component instance`, function() {
       expect(el.textContent).to.include(`Nested app: test`);
       expect(childEl.textContent).to.include(`parent title: test`);
       childEl.update({title: `new title`});
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         expect(el.textContent).to.include(`Nested app: new title`);
         expect(childEl.textContent).to.include(`parent title: new title`);
         done();
@@ -303,14 +303,14 @@ describe(`Nested Component instance`, function() {
 
 
 describe(`Rendering exception`, function() {
-  var el;
+  let el;
 
   beforeEach(function(done) {
     document.body.innerHTML = ``;
     el = document.createElement(`breakable-app`);
     el.logError = sinon.spy();
     document.body.appendChild(el);
-    window.requestAnimationFrame(function() {
+    window.requestAnimationFrame(() => {
       done();
     });
   });
@@ -327,7 +327,7 @@ describe(`Rendering exception`, function() {
   it(`does not prevent further updates from rendering`, function(done) {
     expect(el.textContent).not.to.contain(`Value of foo.bar`);
     el.update({foo: {bar: `later success`}});
-    window.requestAnimationFrame(function() {
+    window.requestAnimationFrame(() => {
       expect(el.textContent).to.contain(`Value of foo.bar: later success`);
       done();
     });
@@ -335,25 +335,21 @@ describe(`Rendering exception`, function() {
 });
 
 describe(`Controlled App`, function() {
-  var el;
+  let el;
 
   beforeEach(function(done) {
     document.body.innerHTML = ``;
     el = document.createElement(`controlled-app`);
     document.body.appendChild(el);
-    window.requestAnimationFrame(function() {
-      done();
-    });
+    window.requestAnimationFrame(() => done());
   });
 
   it(`does not allow update on component`, function() {
-    expect(function() {
-      el.update({foo: `not bar`});
-    }).to.throw(/update\(\) not allowed from component. Use controller/);
+    expect(() => el.update({foo: `not bar`})).to.throw(/update\(\) not allowed from component. Use controller/);
   });
 
   it(`Behaves like normal component`, function(done) {
-    var count = 0;
+    let count = 0;
     expect(el.controller.state).to.be.eql({count});
     expect(el.textContent).to.contain(`Counter: ${count}`);
 
@@ -361,7 +357,7 @@ describe(`Controlled App`, function() {
     count += 1;
     expect(el.controller.state).to.be.eql({count});
 
-    window.requestAnimationFrame(function() {
+    window.requestAnimationFrame(() => {
       expect(el.textContent).to.contain(`Counter: ${count}`);
       done();
     });
