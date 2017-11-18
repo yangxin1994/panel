@@ -42,7 +42,7 @@
     "raf": "3.2.0",
     "snabbdom": "0.6.1",
     "snabbdom-delayed-class": "0.1.1",
-    "webcomponent": "1.0.0"
+    "webcomponent": "1.1.0"
   },
   "devDependencies": {
     "@webcomponents/custom-elements": "1.0.0-rc.3",
