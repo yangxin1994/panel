@@ -1,4 +1,3 @@
-import 'webcomponents.js'; // polyfill
 import {ControlledComponent, StateController, h} from '../../lib';
 
 class CounterController extends StateController {
