@@ -175,7 +175,6 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`renders its template`, function() {
-      expect(document.getElementsByClassName(`foo`)).to.have.lengthOf(0);
       expect(el.children).to.have.lengthOf(0);
       expect(el.shadowRoot.children[1].className).to.equal(`foo`);
     });
