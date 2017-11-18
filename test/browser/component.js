@@ -39,9 +39,9 @@ describe(`Simple Component instance`, function() {
 
   context(`before attached to DOM`, function() {
     it(`does not affect the DOM`, function(done) {
-      expect(document.getElementsByClassName(`foo`)).to.be.empty;
+      expect(document.querySelector(`.foo`)).to.be.null;
       window.requestAnimationFrame(() => {
-        expect(document.getElementsByClassName(`foo`)).to.be.empty;
+        expect(document.querySelector(`.foo`)).to.be.null;
         done();
       });
     });
