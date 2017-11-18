@@ -1,12 +1,14 @@
-import { AttrReflectionApp } from './attr-reflection-app';
-import { BreakableApp } from './breakable-app';
-import { CssNoShadowApp } from './css-no-shadow-app';
-import { NestedApp, NestedChild } from './nested-app';
-import { ShadowDomApp } from './shadow-dom-app';
-import { SimpleApp } from './simple-app';
+import {AttrReflectionApp} from './attr-reflection-app';
+import {BreakableApp} from './breakable-app';
+import {ControlledApp} from './controlled-app';
+import {CssNoShadowApp} from './css-no-shadow-app';
+import {NestedApp, NestedChild} from './nested-app';
+import {ShadowDomApp} from './shadow-dom-app';
+import {SimpleApp} from './simple-app';
 
 customElements.define('attr-reflection-app', AttrReflectionApp);
 customElements.define('breakable-app', BreakableApp);
+customElements.define(`controlled-app`, ControlledApp);
 customElements.define('css-no-shadow-app', CssNoShadowApp);
 customElements.define('nested-app', NestedApp);
 customElements.define('nested-child', NestedChild);
