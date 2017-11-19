@@ -44,7 +44,7 @@
     "webcomponent": "1.1.0"
   },
   "devDependencies": {
-    "@webcomponents/custom-elements": "1.0.0-rc.3",
+    "@webcomponents/custom-elements": "1.0.6",
     "@webcomponents/shadydom": "1.0.8",
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.6",
