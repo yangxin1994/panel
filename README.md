@@ -10,7 +10,7 @@ Apps made of composable, manageable Web Components. Because coding UIs shouldn't
 import { Component } from 'panel';
 import counterTemplate from './counter.jade';
 
-document.registerElement('counter-app', class extends Component {
+customElements.define('counter-app', class extends Component {
   get config() {
     return {
       defaultState: {count: 1},
