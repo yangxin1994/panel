@@ -12,7 +12,6 @@
     "build-test": "webpack --config test/browser/webpack.config.js",
     "docs": "rm -rf docs && jsdoc lib lib/isorender -t node_modules/minami -R README-API.md -d docs",
     "prepublish": "npm run build",
-    "pretest": "bower install --save webcomponents/shadydom#v1.0.0-rc.7",
     "publish-devtools": "node scripts/publish-devtools.js",
     "test": "npm run build-test && npm run test-server && npm run test-browser-local",
     "test-browser-local": "wct --plugin local test/browser/index.html",
@@ -46,6 +45,7 @@
   },
   "devDependencies": {
     "@webcomponents/custom-elements": "1.0.0-rc.3",
+    "@webcomponents/shadydom": "1.0.8",
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.6",
     "babel-loader": "^6.2.4",
