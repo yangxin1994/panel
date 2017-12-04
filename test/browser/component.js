@@ -202,6 +202,7 @@ describe(`Simple Component instance`, function() {
   });
 });
 
+
 describe(`Nested Component instance`, function() {
   let el, childEl;
 
@@ -297,6 +298,48 @@ describe(`Nested Component instance`, function() {
         expect(childEl.textContent).to.include(`parent title: new title`);
         done();
       });
+    });
+  });
+});
+
+
+describe(`Nested Component instance with partially shared state`, function() {
+  let el, childEl;
+
+  context(`before child is rendered`, function() {
+    beforeEach(function() {
+      document.body.innerHTML = ``;
+      childEl = null;
+      el = document.createElement(`nested-partial-state-parent`);
+    });
+
+    it(`passes shared state updates from child to parent`, function() {
+      el.attachedCallback();
+      childEl = document.createElement(`nested-partial-state-child`);
+      childEl.$panelParentID = el.panelID;
+      childEl.$panelParent = childEl.$panelRoot = el;
+      childEl.attachedCallback();
+      childEl.update({title: `new title!`});
+      expect(el.state.title).to.equal(`new title!`);
+    });
+  });
+
+  context(`when attached to DOM`, function() {
+    beforeEach(function(done) {
+      document.body.innerHTML = ``;
+      el = document.createElement(`nested-partial-state-parent`);
+      document.body.appendChild(el);
+      window.requestAnimationFrame(() => {
+        childEl = el.getElementsByTagName(`nested-partial-state-child`)[0];
+        done();
+      });
+    });
+
+    it(`passes only shared parent state to the child component`, function() {
+      expect(el.textContent).to.include(`Nested partial shared state app title: test`);
+      expect(el.textContent).to.include(`parent: parentOnlyState: hello`);
+      expect(childEl.textContent).to.include(`shared title: test`);
+      expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
     });
   });
 });
