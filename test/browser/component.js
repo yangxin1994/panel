@@ -365,6 +365,28 @@ describe(`Nested Component instance with partially shared state`, function() {
         done();
       });
     });
+
+    it(`supports "shadowing" state keys in parent and child with independent values`, function(done) {
+      expect(el.textContent).to.include(`parent: nonSharedStateExample: I am parent`);
+      expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+      el.update({nonSharedStateExample: `updated parent`});
+      window.requestAnimationFrame(() => {
+        expect(el.textContent).to.include(`parent: nonSharedStateExample: updated parent`);
+        expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+        childEl.update({nonSharedStateExample: `updated child`});
+        window.requestAnimationFrame(() => {
+          expect(el.textContent).to.include(`parent: nonSharedStateExample: updated parent`);
+          expect(childEl.textContent).to.include(`child: nonSharedStateExample: updated child`);
+
+          expect(el.state.nonSharedStateExample).to.eql(`updated parent`);
+          expect(childEl.state.nonSharedStateExample).to.eql(`updated child`);
+
+          done();
+        });
+      });
+    });
   });
 });
 

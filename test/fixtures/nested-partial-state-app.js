@@ -13,6 +13,7 @@ export class NestedPartialStateParent extends Component {
         h(`h1`, `Nested partial shared state app title: ${state.title}`),
         h(`p`, `parent: parentOnlyState: ${state.parentOnlyState}`),
         h(`p`, `parent: childOnlyState: ${state.childOnlyState}`),
+        h(`p`, `parent: nonSharedStateExample: ${state.nonSharedStateExample}`),
         this.child(`nested-partial-state-child`),
       ]),
     };
@@ -32,6 +33,7 @@ export class NestedPartialStateChild extends Component {
         h(`p`, `shared title: ${state.title}`),
         h(`p`, `childOnlyState: ${state.childOnlyState}`),
         h(`p`, `child: parentOnlyState: ${state.parentOnlyState}`),
+        h(`p`, `child: nonSharedStateExample: ${state.nonSharedStateExample}`),
       ]),
     };
   }
