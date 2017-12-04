@@ -341,6 +341,17 @@ describe(`Nested Component instance with partially shared state`, function() {
       expect(childEl.textContent).to.include(`shared title: test`);
       expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
     });
+
+    it(`passes only shared state updates from parent to child`, function(done) {
+      expect(childEl.textContent).to.include(`shared title: test`);
+      el.update({title: `llamas!`, parentOnlyState: `goodbye`});
+      window.requestAnimationFrame(() => {
+        expect(el.textContent).to.include(`parent: parentOnlyState: goodbye`);
+        expect(childEl.textContent).to.include(`shared title: llamas!`);
+        expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
+        done();
+      });
+    });
   });
 });
 
