@@ -12,6 +12,7 @@ export class NestedPartialStateParent extends Component {
       template: state => h(`div`, {class: {'nested-partial-parent': true}}, [
         h(`h1`, `Nested partial shared state app title: ${state.title}`),
         h(`p`, `parent: parentOnlyState: ${state.parentOnlyState}`),
+        h(`p`, `parent: childOnlyState: ${state.childOnlyState}`),
         this.child(`nested-partial-state-child`),
       ]),
     };

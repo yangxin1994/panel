@@ -352,6 +352,19 @@ describe(`Nested Component instance with partially shared state`, function() {
         done();
       });
     });
+
+    it(`passes only shared state updates from child to parent`, function(done) {
+      expect(el.textContent).to.include(`Nested partial shared state app title: test`);
+      expect(childEl.textContent).to.include(`shared title: test`);
+      expect(childEl.textContent).to.include(`childOnlyState: world`);
+      childEl.update({title: `new title`, childOnlyState: `mooo`});
+      window.requestAnimationFrame(() => {
+        expect(el.textContent).to.include(`Nested partial shared state app title: new title`);
+        expect(childEl.textContent).to.include(`shared title: new title`);
+        expect(childEl.textContent).to.include(`childOnlyState: mooo`);
+        done();
+      });
+    });
   });
 });
 
