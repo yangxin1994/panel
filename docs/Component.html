@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#isStateShared">isStateShared</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="module.exports.html">exports</a></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
 </nav>
 
 <div id="main">
@@ -109,7 +109,7 @@ either by including the tag in HTML markup, or by using the DOM API method
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line37">line 37</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -351,6 +351,81 @@ either by including the tag in HTML markup, or by using the DOM API method
 
         <tr>
             
+                <td class="name"><code>appState</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last">(app root component only) state object to share with nested descendant components;
+if not set, root component shares entire state object with all descendants</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultState</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last">default entries for component state</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>updateSync</code></td>
             
 
@@ -495,7 +570,7 @@ immediately, instead of batching to one update per frame</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line61">line 61</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -582,7 +657,7 @@ as $helpers. This getter uses the component's internal config cache.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line74">line 74</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -773,7 +848,7 @@ to be created</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line88">line 88</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line92">line 92</a>
     </li></ul></dd>
     
 
@@ -932,7 +1007,7 @@ given type (HTML tag name).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line102">line 102</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -1103,7 +1178,7 @@ values supplied in the config() getter and defaults applied automatically).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line120">line 120</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -1141,6 +1216,103 @@ values supplied in the config() getter and defaults applied automatically).
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>myWidget.getConfig('css');</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="isStateShared"><span class="type-signature"></span>isStateShared<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns whether this.state is shared with other components (the default).
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line134">line 134</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if this.state is shared, false if this.appState is the shared store
+</div>
+
+
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>myWidget.isStateShared()</code></pre>
 
 
 
@@ -1306,7 +1478,7 @@ routing</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line133">line 133</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -1461,7 +1633,7 @@ initialization.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line145">line 145</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line159">line 159</a>
     </li></ul></dd>
     
 
@@ -1600,7 +1772,7 @@ performance when dealing with very many DOM elements.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line162">line 162</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -1784,7 +1956,7 @@ the component's state object</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line175">line 175</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line189">line 189</a>
     </li></ul></dd>
     
 
@@ -1816,6 +1988,166 @@ the component's state object</td>
 
 
         
+            
+
+    
+
+    <h4 class="name" id="updateApp"><span class="type-signature"></span>updateApp<span class="signature">(stateUpdate<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Applies a state update specifically to app state shared across components.
+In apps which don't specify `appState` in the root component config, all
+state is shared across all parent and child components and the standard
+update() method should be used instead.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>stateUpdate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last">keys and values of entries to update in
+the app's appState object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line203">line 203</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>myWidget.updateApp({name: 'Bob'});</code></pre>
+
+
+
+        
     
 
     
@@ -1833,7 +2165,7 @@ the component's state object</td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Mar 01 2017 15:51:24 GMT-0800 (PST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 15:37:12 GMT-0800 (PST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

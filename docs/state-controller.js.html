@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>isorender/dom-shims - Documentation</title>
+    <title>state-controller.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,146 +28,56 @@
 
 <div id="main">
     
-    <h1 class="page-title">isorender/dom-shims</h1>
+    <h1 class="page-title">state-controller.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import StateStore from './state-store';
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Node.js polyfill for rendering Panel components without a browser.
-Makes the following objects globally available:
-Comment, document, Document, Element, HTMLElement, Node, requestAnimationFrame, Text.
-Most of the available DOM API functionality is provided by
-<a href="https://github.com/1N50MN14/html-element">html-element</a>, with some patches for
-the Web Components API.</div>
-        
+/**
+ * A StateController manages state for an application or component
+ * Subclasses extend this and expose methods that call the controller's _update method
+ * Controller will default create its own state store unless one is passed.
+ * StateController subclasses should only accept the dependencies they need via constructor
+ * This means the dependencies can easily be mocked and unit tested
+ */
+export default class StateController {
+  // Create's a default store if one isn't given
+  constructor({store=null}={}) {
+    this._store = store || new StateStore();
+    this._update(this.defaultState);
+  }
 
-        
-            
+  get defaultState() {
+    return {};
+  }
 
+  get state() {
+    return this._store.state;
+  }
 
+  // Discourage external users from using state directly
+  _update(props) {
+    this._store.update(props);
+  }
 
+  subscribeUpdates(listener) {
+    return this._store.subscribeUpdates(listener);
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="isorender_dom-shims.js.html">isorender/dom-shims.js</a>, <a href="isorender_dom-shims.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-        <p class="code-caption">Rendering app HTML to stdout</p>
-    
-    <pre class="prettyprint"><code>import 'panel/isorender/dom-shims';
-import { Component } from 'panel';
-document.registerElement('my-widget', class extends Component {
-  // app definition
-});
-const myWidget = document.createElement('my-widget');
-document.body.appendChild(myWidget);
-requestAnimationFrame(() => console.log(myWidget.outerHTML));</code></pre>
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+  unsubscribeUpdates(listener) {
+    return this._store.unsubscribeUpdates(listener);
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
