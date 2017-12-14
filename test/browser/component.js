@@ -201,6 +201,7 @@ describe(`Simple Component instance`, function() {
   });
 });
 
+
 describe(`Nested Component instance`, function() {
   let el, childEl;
 
@@ -295,6 +296,127 @@ describe(`Nested Component instance`, function() {
         expect(el.textContent).to.include(`Nested app: new title`);
         expect(childEl.textContent).to.include(`parent title: new title`);
         done();
+      });
+    });
+  });
+});
+
+
+describe(`Nested Component instance with partially shared state`, function() {
+  let parentEl, childEl;
+
+  context(`before child is rendered`, function() {
+    beforeEach(function() {
+      document.body.innerHTML = ``;
+      childEl = null;
+      parentEl = document.createElement(`nested-partial-state-parent`);
+    });
+
+    it(`passes shared app state updates from child to parent`, function() {
+      parentEl.attachedCallback();
+      childEl = document.createElement(`nested-partial-state-child`);
+      childEl.$panelParentID = parentEl.panelID;
+      childEl.$panelParent = childEl.$panelRoot = parentEl;
+      childEl.attachedCallback();
+      childEl.updateApp({title: `new title!`});
+      expect(parentEl.appState.title).to.equal(`new title!`);
+    });
+  });
+
+  context(`when attached to DOM`, function() {
+    beforeEach(function(done) {
+      document.body.innerHTML = ``;
+      parentEl = document.createElement(`nested-partial-state-parent`);
+      document.body.appendChild(parentEl);
+      window.requestAnimationFrame(() => {
+        childEl = parentEl.getElementsByTagName(`nested-partial-state-child`)[0];
+        done();
+      });
+    });
+
+    it(`passes only shared app state to the child component`, function() {
+      expect(parentEl.textContent).to.include(`Nested partial shared state app title: test`);
+      expect(parentEl.textContent).to.include(`component-specific title: parent-specific title`);
+      expect(parentEl.textContent).to.include(`parent: parentOnlyState: hello`);
+      expect(childEl.textContent).to.include(`shared title: test`);
+      expect(childEl.textContent).to.include(`component-specific title: child-specific title`);
+      expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
+    });
+
+    it(`passes only shared app state updates from parent to child`, function(done) {
+      expect(childEl.textContent).to.include(`shared title: test`);
+      expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: I am parent`);
+      expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+      parentEl.updateApp({title: `llamas!`});
+      parentEl.update({parentOnlyState: `goodbye`, nonSharedStateExample: `updated parent`});
+      window.requestAnimationFrame(() => {
+        // shared app state changed
+        expect(parentEl.textContent).to.include(`Nested partial shared state app title: llamas!`);
+        expect(childEl.textContent).to.include(`shared title: llamas!`);
+
+        // component-specific state entries didn't change
+        expect(parentEl.textContent).to.include(`component-specific title: parent-specific title`);
+        expect(childEl.textContent).to.include(`component-specific title: child-specific title`);
+
+        expect(parentEl.textContent).to.include(`parent: parentOnlyState: goodbye`);
+        expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
+
+        expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: updated parent`);
+        expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+        done();
+      });
+    });
+
+    it(`passes only shared app state updates from child to parent`, function(done) {
+      expect(parentEl.textContent).to.include(`Nested partial shared state app title: test`);
+      expect(childEl.textContent).to.include(`shared title: test`);
+      expect(childEl.textContent).to.include(`childOnlyState: world`);
+
+      expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: I am parent`);
+      expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+      childEl.updateApp({title: `new title`});
+      childEl.update({childOnlyState: `mooo`, nonSharedStateExample: `updated child`});
+      window.requestAnimationFrame(() => {
+        // shared app state changed
+        expect(parentEl.textContent).to.include(`Nested partial shared state app title: new title`);
+        expect(childEl.textContent).to.include(`shared title: new title`);
+
+        // component-specific state entries didn't change
+        expect(parentEl.textContent).to.include(`component-specific title: parent-specific title`);
+        expect(childEl.textContent).to.include(`component-specific title: child-specific title`);
+
+        expect(parentEl.textContent).to.include(`parent: parentOnlyState: hello`);
+        expect(childEl.textContent).to.include(`childOnlyState: mooo`);
+
+        expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: I am parent`);
+        expect(childEl.textContent).to.include(`child: nonSharedStateExample: updated child`);
+
+        done();
+      });
+    });
+
+    it(`supports state in parent and child with the same keys as shared app state but independent values`, function(done) {
+      expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: I am parent`);
+      expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+      parentEl.update({nonSharedStateExample: `updated parent`});
+      window.requestAnimationFrame(() => {
+        expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: updated parent`);
+        expect(childEl.textContent).to.include(`child: nonSharedStateExample: I am child`);
+
+        childEl.update({nonSharedStateExample: `updated child`});
+        window.requestAnimationFrame(() => {
+          expect(parentEl.textContent).to.include(`parent: nonSharedStateExample: updated parent`);
+          expect(childEl.textContent).to.include(`child: nonSharedStateExample: updated child`);
+
+          expect(parentEl.state.nonSharedStateExample).to.eql(`updated parent`);
+          expect(childEl.state.nonSharedStateExample).to.eql(`updated child`);
+
+          done();
+        });
       });
     });
   });

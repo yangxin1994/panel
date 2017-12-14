@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>isorender/dom-shims - Documentation</title>
+    <title>state-store.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,146 +28,47 @@
 
 <div id="main">
     
-    <h1 class="page-title">isorender/dom-shims</h1>
+    <h1 class="page-title">state-store.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * StateStore stores state and allows an observer to subscribe to state updates
+ */
+export default class StateStore {
+  constructor() {
+    this._listeners = [];
+    this._state = {};
+  }
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Node.js polyfill for rendering Panel components without a browser.
-Makes the following objects globally available:
-Comment, document, Document, Element, HTMLElement, Node, requestAnimationFrame, Text.
-Most of the available DOM API functionality is provided by
-<a href="https://github.com/1N50MN14/html-element">html-element</a>, with some patches for
-the Web Components API.</div>
-        
+  get state() {
+    return this._state;
+  }
 
-        
-            
+  update(props) {
+    // Always create a new state object.
+    // if lastState === newState then state hasn't changed
+    this._state = Object.assign({}, this._state, props);
+    this._listeners.forEach(listener => listener(props));
+  }
 
+  subscribeUpdates(listener) {
+    this._listeners.push(listener);
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="isorender_dom-shims.js.html">isorender/dom-shims.js</a>, <a href="isorender_dom-shims.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-        <p class="code-caption">Rendering app HTML to stdout</p>
-    
-    <pre class="prettyprint"><code>import 'panel/isorender/dom-shims';
-import { Component } from 'panel';
-document.registerElement('my-widget', class extends Component {
-  // app definition
-});
-const myWidget = document.createElement('my-widget');
-document.body.appendChild(myWidget);
-requestAnimationFrame(() => console.log(myWidget.outerHTML));</code></pre>
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+  unsubscribeUpdates(listener) {
+    this._listeners = this._listeners.filter(l => l !== listener);
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

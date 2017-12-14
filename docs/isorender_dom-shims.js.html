@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#isStateShared">isStateShared</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="module.exports.html">exports</a></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
 </nav>
 
 <div id="main">
@@ -51,7 +51,7 @@
  * @example &lt;caption>Rendering app HTML to stdout&lt;/caption>
  * import 'panel/isorender/dom-shims';
  * import { Component } from 'panel';
- * customElements.define('my-widget', class extends Component {
+ * document.registerElement('my-widget', class extends Component {
  *   // app definition
  * });
  * const myWidget = document.createElement('my-widget');
@@ -66,14 +66,14 @@ import requestAnimationFrame from 'raf';
 // is already there
 global.requestAnimationFrame = global.requestAnimationFrame || requestAnimationFrame;
 
-// patch DOM insertion functions to call connectedCallback on Custom Elements
+// patch DOM insertion functions to call attachedCallback on Custom Elements
 ['appendChild', 'insertBefore', 'replaceChild'].forEach(funcName => {
   const origFunc = Element.prototype[funcName];
   Element.prototype[funcName] = function() {
     const child = origFunc.apply(this, arguments);
     requestAnimationFrame(() => {
-      if (!child.initialized &amp;&amp; child.connectedCallback) {
-        child.connectedCallback();
+      if (!child.initialized &amp;&amp; child.attachedCallback) {
+        child.attachedCallback();
       }
     });
   };
@@ -82,19 +82,15 @@ global.requestAnimationFrame = global.requestAnimationFrame || requestAnimationF
 // html-element only provides Element (with a lot of the HTMLElement API baked in).
 // Use HTMLElement as our Web Components-ready extension.
 class HTMLElement extends Element {
+  constructor() {
+    super(...arguments);
+    this.createdCallback &amp;&amp; this.createdCallback();
+  }
+
   setAttribute(name, value) {
     const oldValue = this.getAttribute(name);
     super.setAttribute(...arguments);
-    if (this.attributeChangedCallback &amp;&amp; this.__attrIsObserved(name)) {
-      this.attributeChangedCallback(name, oldValue, value);
-    }
-  }
-
-  __attrIsObserved(name) {
-    if (!this.__observedAttrs) {
-      this.__observedAttrs = this.constructor.observedAttributes || [];
-    }
-    return this.__observedAttrs.includes(name);
+    this.attributeChangedCallback &amp;&amp; this.attributeChangedCallback(name, oldValue, value);
   }
 }
 global.HTMLElement = HTMLElement;
@@ -118,16 +114,14 @@ Document.prototype.createElement = function(tagName) {
   return el;
 }
 
-global.customElements = global.customElements || {
-  define(tagName, proto) {
-    tagName = tagName.toLowerCase();
-    if (registeredElements[tagName]) {
-      throw DOMException(`Registration failed for type '${tagName}'. A type with that name is already registered.`);
-    } else {
-      registeredElements[tagName] = proto;
-    }
+Document.prototype.registerElement = function(tagName, proto) {
+  tagName = tagName.toLowerCase();
+  if (registeredElements[tagName]) {
+    throw DOMException(`Registration failed for type '${tagName}'. A type with that name is already registered.`);
+  } else {
+    registeredElements[tagName] = proto;
   }
-};
+}
 </code></pre>
         </article>
     </section>
@@ -140,7 +134,7 @@ global.customElements = global.customElements || {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon May 01 2017 14:22:04 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 15:37:12 GMT-0800 (PST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
