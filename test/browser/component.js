@@ -313,11 +313,11 @@ describe(`Nested Component instance with partially shared state`, function() {
     });
 
     it(`passes shared app state updates from child to parent`, function() {
-      parentEl.attachedCallback();
+      parentEl.connectedCallback();
       childEl = document.createElement(`nested-partial-state-child`);
       childEl.$panelParentID = parentEl.panelID;
       childEl.$panelParent = childEl.$panelRoot = parentEl;
-      childEl.attachedCallback();
+      childEl.connectedCallback();
       childEl.updateApp({title: `new title!`});
       expect(parentEl.appState.title).to.equal(`new title!`);
     });
