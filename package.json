@@ -1,10 +1,11 @@
 {
   "name": "panel",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "files": [
     "build",
+    "hot",
     "lib"
   ],
   "scripts": {
