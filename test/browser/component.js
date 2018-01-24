@@ -127,6 +127,15 @@ describe(`Simple Component instance`, function() {
 
       expect(el.textContent).to.contain(`Value of foo: something else`);
     });
+
+    it(`passes full state context to shouldUpdate()`, async function() {
+      expect(el.textContent).to.contain(`Value of baz: qux`);
+      el.update({baz: `llamas`});
+
+      await nextAnimationFrame();
+
+      expect(el.textContent).to.contain(`Value of baz: llamas`);
+    });
   });
 
   context(`when using shadow DOM`, function() {

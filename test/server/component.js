@@ -18,14 +18,14 @@ describe('Server-side component renderer', function() {
     const el = document.createElement('simple-app');
     expect(el.state).to.eql({});
     el.attachedCallback();
-    expect(el.state).to.eql({foo: 'bar'});
+    expect(el.state).to.eql({foo: 'bar', baz: 'qux'});
   });
 
   it('supports class instantiation', function() {
     const el = new SimpleApp();
     expect(el.state).to.eql({});
     el.attachedCallback();
-    expect(el.state).to.eql({foo: 'bar'});
+    expect(el.state).to.eql({foo: 'bar', baz: 'qux'});
   });
 
   it('renders a simple component', async function() {
