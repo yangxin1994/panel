@@ -2,6 +2,9 @@
 /* global sinon, expect */
 /* eslint no-unused-expressions:0 */
 
+const nextAnimationFrame = () => new Promise(requestAnimationFrame);
+
+
 describe(`Simple Component instance`, function() {
   let el;
 
@@ -111,19 +114,18 @@ describe(`Simple Component instance`, function() {
       });
     });
 
-    it(`does not re-render if shouldUpdate() returns false`, function(done) {
+    it(`does not re-render if shouldUpdate() returns false`, async function() {
       expect(el.textContent).to.contain(`Value of foo: bar`);
-
       el.update({foo: `meow`});
-      window.requestAnimationFrame(() => {
-        expect(el.textContent).to.contain(`Value of foo: bar`); // no change
 
-        el.update({foo: `something else`});
-        window.requestAnimationFrame(() => {
-          expect(el.textContent).to.contain(`Value of foo: something else`);
-          done();
-        });
-      });
+      await nextAnimationFrame();
+
+      expect(el.textContent).to.contain(`Value of foo: bar`); // no change
+      el.update({foo: `something else`});
+
+      await nextAnimationFrame();
+
+      expect(el.textContent).to.contain(`Value of foo: something else`);
     });
   });
 

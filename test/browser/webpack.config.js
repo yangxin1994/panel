@@ -15,6 +15,10 @@ const webpackConfig = {
         exclude: /node_modules/,
         loader: `babel`,
         query: {
+          plugins: [
+            `syntax-async-functions`,
+            `transform-regenerator`,
+          ],
           presets: [`es2015`],
         },
       },
