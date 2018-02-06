@@ -8,3 +8,5 @@ before_script:
 script:
   - npm run test-server
   - npm run test-browser-sauce
+branches:
+  only: master
