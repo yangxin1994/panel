@@ -137,13 +137,10 @@ describe(`Simple Component instance`, function() {
       expect(el.textContent).to.contain(`Value of baz: llamas`);
     });
 
-    it(`fires update hooks`, async function() {
+    it(`fires update hooks`, function() {
       expect(el.didPre).to.be.undefined;
       expect(el.didPost).to.be.undefined;
       el.update({baz: `llamas`});
-
-      await nextAnimationFrame();
-
       expect(el.didPre).to.be.ok;
       expect(el.didPost).to.be.ok;
     });
@@ -321,13 +318,10 @@ describe(`Nested Component instance`, function() {
       });
     });
 
-    it(`fires parent update hooks when child updates`, async function() {
+    it(`fires parent update hooks when child updates`, function() {
       expect(el.didNestedPre).to.be.undefined;
       expect(el.didNestedPost).to.be.undefined;
       childEl.update({title: `new title`});
-
-      await nextAnimationFrame();
-
       expect(el.didNestedPre).to.be.ok;
       expect(el.didNestedPost).to.be.ok;
     });
