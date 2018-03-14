@@ -7,6 +7,11 @@ export class NestedApp extends Component {
         title: 'test',
       },
 
+      hooks: {
+        preUpdate: () => this.didNestedPre = true,
+        postUpdate: () => this.didNestedPost = true,
+      },
+
       template: state => h('div', {class: {'nested-foo': true}}, [
         h('h1', `Nested app: ${state.title}`),
         this.child('nested-child', {attrs: {'state-animal': 'llama'}}),

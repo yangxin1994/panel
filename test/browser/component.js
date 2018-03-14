@@ -320,6 +320,17 @@ describe(`Nested Component instance`, function() {
         done();
       });
     });
+
+    it(`fires parent update hooks when child updates`, async function() {
+      expect(el.didNestedPre).to.be.undefined;
+      expect(el.didNestedPost).to.be.undefined;
+      childEl.update({title: `new title`});
+
+      await nextAnimationFrame();
+
+      expect(el.didNestedPre).to.be.ok;
+      expect(el.didNestedPost).to.be.ok;
+    });
   });
 });
 
