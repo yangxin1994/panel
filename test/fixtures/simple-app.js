@@ -12,6 +12,11 @@ export class SimpleApp extends Component {
         capitalize: s => s[0].toUpperCase() + s.slice(1),
       },
 
+      hooks: {
+        preUpdate: () => this.didPre = true,
+        postUpdate: () => this.didPost = true,
+      },
+
       template: state => h('div', {class: {foo: true}}, [
         h('p', `Value of foo: ${state.foo}`),
         h('p', `Value of baz: ${state.baz}`),

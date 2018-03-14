@@ -136,6 +136,17 @@ describe(`Simple Component instance`, function() {
 
       expect(el.textContent).to.contain(`Value of baz: llamas`);
     });
+
+    it(`fires update hooks`, async function() {
+      expect(el.didPre).to.be.undefined;
+      expect(el.didPost).to.be.undefined;
+      el.update({baz: `llamas`});
+
+      await nextAnimationFrame();
+
+      expect(el.didPre).to.be.ok;
+      expect(el.didPost).to.be.ok;
+    });
   });
 
   context(`when using shadow DOM`, function() {
