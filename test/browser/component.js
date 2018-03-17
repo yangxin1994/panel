@@ -138,11 +138,11 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`fires update hooks`, function() {
-      expect(el.didPre).to.be.undefined;
-      expect(el.didPost).to.be.undefined;
-      el.update({baz: `llamas`});
-      expect(el.didPre).to.be.ok;
-      expect(el.didPost).to.be.ok;
+      expect(el.preFoo).to.be.undefined;
+      expect(el.postFoo).to.be.undefined;
+      el.update({foo: `llamas`});
+      expect(el.preFoo).to.equal(`bar`);
+      expect(el.postFoo).to.equal(`llamas`);
     });
   });
 

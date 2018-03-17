@@ -13,8 +13,8 @@ export class SimpleApp extends Component {
       },
 
       hooks: {
-        preUpdate: () => this.didPre = true,
-        postUpdate: () => this.didPost = true,
+        preUpdate: () => this.preFoo = this.state.foo,
+        postUpdate: () => this.postFoo = this.state.foo,
       },
 
       template: state => h('div', {class: {foo: true}}, [
