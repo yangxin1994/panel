@@ -8,8 +8,8 @@ export class NestedApp extends Component {
       },
 
       hooks: {
-        preUpdate: () => this.didNestedPre = true,
-        postUpdate: () => this.didNestedPost = true,
+        preUpdate: () => this.nestedPreTitle = this.state.title,
+        postUpdate: () => this.nestedPostTitle = this.state.title,
       },
 
       template: state => h('div', {class: {'nested-foo': true}}, [

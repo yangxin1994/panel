@@ -319,11 +319,11 @@ describe(`Nested Component instance`, function() {
     });
 
     it(`fires parent update hooks when child updates`, function() {
-      expect(el.didNestedPre).to.be.undefined;
-      expect(el.didNestedPost).to.be.undefined;
+      expect(el.nestedPreTitle).to.be.undefined;
+      expect(el.nestedPostTitle).to.be.undefined;
       childEl.update({title: `new title`});
-      expect(el.didNestedPre).to.be.ok;
-      expect(el.didNestedPost).to.be.ok;
+      expect(el.nestedPreTitle).to.equal(`test`);
+      expect(el.nestedPostTitle).to.equal(`new title`);
     });
   });
 });
