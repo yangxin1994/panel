@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#isStateShared">isStateShared</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="module.exports.html">exports</a></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="module.exports.html">exports</a></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
 </nav>
 
 <div id="main">
@@ -68,7 +68,7 @@ const DOCUMENT_FRAGMENT_NODE = 11;
  * }
  *
  * @example &lt;caption>Registering the custom element definition for the DOM&lt;/caption>
- * document.registerElement('my-widget', MyWidget);
+ * customElements.define('my-widget', MyWidget);
  *
  * @example &lt;caption>Adding an instance of the element to the DOM&lt;/caption>
  * &lt;my-widget some-attr>&lt;/my-widget>
@@ -86,6 +86,9 @@ class Component extends WebComponent {
    * @property {object} [appState={}] - (app root component only) state object to share with nested descendant components;
    * if not set, root component shares entire state object with all descendants
    * @property {object} [defaultState={}] - default entries for component state
+   * @property {object} [hooks={}] - extra rendering/lifecycle callbacks
+   * @property {function} [hooks.preUpdate] - called before an update is applied
+   * @property {function} [hooks.postUpdate] - called after an update is applied
    * @property {boolean} [updateSync=false] - whether to apply updates to DOM
    * immediately, instead of batching to one update per frame
    * @property {boolean} [useShadowDom=false] - whether to use Shadow DOM
@@ -166,16 +169,6 @@ class Component extends WebComponent {
   }
 
   /**
-   * Returns whether this.state is shared with other components (the default).
-   * @returns true if this.state is shared, false if this.appState is the shared store
-   * @example
-   * myWidget.isStateShared()
-   */
-  isStateShared() {
-    return !this.appState; // if appState is not specified, all state is shared
-  }
-
-  /**
    * Executes the route handler matching the given URL fragment, and updates
    * the URL, as though the user had navigated explicitly to that address.
    * @param {string} fragment - URL fragment to navigate to
@@ -227,7 +220,7 @@ class Component extends WebComponent {
    * myWidget.update({name: 'Bob'});
    */
   update(stateUpdate={}) {
-    return this._updateStore(stateUpdate, {store: `state`, cascade: this.isStateShared()});
+    return this._updateStore(stateUpdate, {store: `state`, cascade: this.isStateShared});
   }
 
   /**
@@ -244,7 +237,9 @@ class Component extends WebComponent {
     return this._updateStore(stateUpdate, {store: `appState`, cascade: true});
   }
 
-  createdCallback() {
+  constructor() {
+    super();
+
     this.panelID = cuid();
     this._config = Object.assign({}, {
       css: '',
@@ -254,9 +249,21 @@ class Component extends WebComponent {
       updateSync: false,
       useShadowDom: false,
     }, this.config);
+
+    // initialize shared state store, either in `appState` or default to `state`
+    // appState and isStateShared of child components will be overwritten by parent/root
+    // when the component is connected to the hierarchy
     this.state = {};
+    this.appState = this.getConfig(`appState`);
+    if (!this.appState) {
+      this.appState = {};
+      this.isStateShared = true;
+    } else {
+      this.isStateShared = false;
+    }
+
     if (this.getConfig('useShadowDom')) {
-      this.el = this.createShadowRoot();
+      this.el = this.attachShadow({mode: 'open'});
       this.styleTag = document.createElement('style');
       this.styleTag.innerHTML = this.getConfig('css');
       this.el.appendChild(this.styleTag);
@@ -267,10 +274,17 @@ class Component extends WebComponent {
     }
   }
 
-  attachedCallback() {
+  connectedCallback() {
     if (this.initialized) {
       return;
     }
+
+    // Prevent re-entrant calls to connectedCallback.
+    // This can happen in some (probably erroneous) cases with Firefox+polyfills.
+    if (this.initializing) {
+      return;
+    }
+    this.initializing = true;
 
     this.$panelChildren = new Set();
 
@@ -292,14 +306,15 @@ class Component extends WebComponent {
       this.$panelParent.$panelChildren.add(this);
 
       // share either appState or all of state
+      Object.assign(this.$panelRoot.appState, this.appState); // flush any queued appState changes
       this.appState = this.$panelRoot.appState;
-      this.state = this.isStateShared() ? this.$panelRoot.state : {};
+      this.isStateShared = this.$panelRoot.isStateShared;
+      this.state = this.isStateShared ? this.$panelRoot.state : {};
 
     } else {
       this.isPanelRoot = true;
       this.$panelRoot = this;
       this.$panelParent = null;
-      this.appState = this.getConfig(`appState`);
     }
     this.app = this.$panelRoot;
 
@@ -322,9 +337,14 @@ class Component extends WebComponent {
     });
     this.el.appendChild(this.domPatcher.el);
     this.initialized = true;
+    this.initializing = false;
   }
 
-  detachedCallback() {
+  disconnectedCallback() {
+    if (!this.initialized) {
+      return;
+    }
+
     if (this.$panelParent) {
       this.$panelParent.$panelChildren.delete(this);
     }
@@ -333,6 +353,10 @@ class Component extends WebComponent {
     }
     this.domPatcher = null;
     this.initialized = false;
+  }
+
+  static get observedAttributes() {
+    return [`style-override`];
   }
 
   attributeChangedCallback(attr, oldVal, newVal) {
@@ -377,6 +401,26 @@ class Component extends WebComponent {
     return this._rendered || EMPTY_DIV;
   }
 
+  // run a user-defined hook with the given params, if configured
+  // cascade down tree hierarchy if option is set
+  runHook(hookName, options, ...params) {
+    if (!this.initialized) {
+      return;
+    }
+
+    const hook = (this.getConfig(`hooks`) || {})[hookName];
+    if (hook) {
+      hook(...params);
+    }
+    if (options.cascade) {
+      for (let child of this.$panelChildren) {
+        if (options.exclude !== child) {
+          child.runHook(hookName, options, ...params);
+        }
+      }
+    }
+  }
+
   _stateFromAttributes() {
     let state = {};
 
@@ -408,12 +452,26 @@ class Component extends WebComponent {
 
       // update DOM, router, descendants etc.
       const updateHash = '$fragment' in stateUpdate &amp;&amp; stateUpdate.$fragment !== this[store].$fragment;
-      this.updateSelfAndChildren(stateUpdate, {cascade, store});
-      if (cascade &amp;&amp; !this.isPanelRoot) {
-        this.$panelRoot.updateSelfAndChildren(stateUpdate, {exclude: this, cascade, store});
+      const cascadeFromRoot = cascade &amp;&amp; !this.isPanelRoot;
+      const updateOptions = {cascade, store};
+      const rootOptions = {exclude: this, cascade, store};
+
+      this.runHook(`preUpdate`, updateOptions, stateUpdate);
+      if (cascadeFromRoot) {
+        this.$panelRoot.runHook(`preUpdate`, rootOptions, stateUpdate);
+      }
+
+      this.updateSelfAndChildren(stateUpdate, updateOptions);
+      if (cascadeFromRoot) {
+        this.$panelRoot.updateSelfAndChildren(stateUpdate, rootOptions);
       }
       if (updateHash) {
         this.router.replaceHash(this[store].$fragment);
+      }
+
+      this.runHook(`postUpdate`, updateOptions, stateUpdate);
+      if (cascadeFromRoot) {
+        this.$panelRoot.runHook(`postUpdate`, rootOptions, stateUpdate);
       }
     }
   }
@@ -423,9 +481,13 @@ class Component extends WebComponent {
   // a full state update to one component while sending only "shared" state
   // updates to the app root.
   updateSelfAndChildren(stateUpdate, options={}) {
+    if (!this.initialized) {
+      return;
+    }
+
     const {store, cascade} = options;
-    if (this.initialized &amp;&amp; this.shouldUpdate(stateUpdate)) {
-      Object.assign(this[store], stateUpdate);
+    Object.assign(this[store], stateUpdate);
+    if (store !== `state` || this.shouldUpdate(this[store])) {
       this.domPatcher.update(this.state);
 
       if (cascade) {
@@ -452,7 +514,7 @@ export default Component;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 15:37:12 GMT-0800 (PST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 17 2018 22:05:33 GMT-0700 (PDT) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
