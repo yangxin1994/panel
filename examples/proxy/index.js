@@ -7,7 +7,7 @@ class FreeAddressCard extends Component {
         return h(`div`, [
           h(`ul`, [
             h(`li`, $component.getAttribute(`name`)),
-            h(`li`, { on: { click: this.registerClick } }, $component.getAttribute(`city`)),
+            h(`li`, {on: {click: () => this.registerClick()}}, $component.getAttribute(`city`)),
           ])
         ]);
       }
@@ -32,7 +32,7 @@ class PremiumAddressCard extends Component {
         return h(`div`, [
           h(`ul`, [
             h(`li`, $component.getAttribute(`name`)),
-            h(`li`, { on: { click: this.registerClick } }, $component.getAttribute(`city`)),
+            h(`li`, {on: {click: () => this.registerClick()}}, $component.getAttribute(`city`)),
             h(`li`, `You're viewing with premium!`)
           ])
         ]);
@@ -74,8 +74,8 @@ customElements.define(`proxy-app`, class extends ProxyComponent {
   get config() {
     return {
       template: () => h(`address-card`, {
-        attrs: { name: `Ben`, city: `San Francisco` },
-        on: { clickedCity: () => alert(`it's true!`) }
+        attrs: {name: `Ben`, city: `San Francisco`},
+        on: {clickedCity: () => alert(`it's true!`)},
       })
     };
   }
