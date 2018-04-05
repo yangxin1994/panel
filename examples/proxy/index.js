@@ -3,8 +3,8 @@ import {Component, ProxyComponent, h} from '../../lib';
 class FreeAddressCard extends Component {
   get config() {
     return {
-      template: ({ $component }) => {
-        h(`div`, [
+      template: ({$component}) => {
+        return h(`div`, [
           h(`ul`, [
             h(`li`, $component.getAttribute(`name`)),
             h(`li`, { on: { click: this.registerClick } }, $component.getAttribute(`city`)),
@@ -28,8 +28,8 @@ class FreeAddressCard extends Component {
 class PremiumAddressCard extends Component {
   get config() {
     return {
-      template: ({ $component }) => {
-        h(`div`, [
+      template: ({$component}) => {
+        return h(`div`, [
           h(`ul`, [
             h(`li`, $component.getAttribute(`name`)),
             h(`li`, { on: { click: this.registerClick } }, $component.getAttribute(`city`)),
