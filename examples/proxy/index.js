@@ -66,11 +66,11 @@ class AddressCard extends ProxyComponent {
   }
 }
 
-document.registerElement(`address-card-v1`, FreeAddressCard);
-document.registerElement(`address-card-v2`, PremiumAddressCard);
-document.registerElement(`address-card`, AddressCard);
+customElements.define(`address-card-v1`, FreeAddressCard);
+customElements.define(`address-card-v2`, PremiumAddressCard);
+customElements.define(`address-card`, AddressCard);
 
-document.registerElement(`proxy-app`, class extends ProxyComponent {
+customElements.define(`proxy-app`, class extends ProxyComponent {
   get config() {
     return {
       template: () => h(`address-card`, {
