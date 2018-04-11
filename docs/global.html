@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>panel - Documentation</title>
+    <title>Global - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">panel</h1>
+    <h1 class="page-title">Global</h1>
     
 
     
@@ -40,8 +40,9 @@
 
 <header>
     
+        <h2>
         
-            
+        </h2>
         
     
 </header>
@@ -50,13 +51,216 @@
     <div class="container-overview">
     
         
-            <div class="description">Entry point for Panel apps and components</div>
+
         
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="localConfig"><span class="type-signature"></span>localConfig<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Override this to extend the default configuration.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Component.html#config">Component#config</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="observedEvents"><span class="type-signature"></span>observedEvents<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Define the events which will be emitted by the wrapped component.
+Bubbling events will bubble through, but non-composed events from ShadowDOM
+elements will not and will be re-dispatched from the proxy.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line109">line 109</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
 
+    
 
+    <h4 class="name" id="allowEvent"><span class="type-signature"></span>allowEvent<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Override this method to stop events from being bubbled through this element.
+</div>
 
 
 
@@ -99,7 +303,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -126,40 +330,37 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import { Component } from 'panel';
-customElements.define('my-widget', class extends Component {
-  // app definition
-});</code></pre>
-
-
-
-        
+        <p class="code-caption">filter specific events out</p>
     
-    </div>
+    <pre class="prettyprint"><code>class MyWidget extends ProxyComponent {
+  allowEvent(ev) {
+    // don't propagate click events for the v2 component
+    return this.getTargetElement() !== `my-widget-v2` &amp;&amp; event.type !== `click`;
+  }
+}</code></pre>
 
-    
 
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
 
         
             
-<h4 class="name" id=".Component"><span class="type-signature">(static) </span>Component<span class="type-signature"></span></h4>
 
+    
+
+    <h4 class="name" id="getAttributes"><span class="type-signature"></span>getAttributes<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
 
 
 
 <div class="description">
-    <a href="Component.html">Component</a> class, to be subclassed by apps
+    Return a map of attributes to pass to the child.
 </div>
+
+
+
+
+
+
 
 
 
@@ -196,7 +397,7 @@ customElements.define('my-widget', class extends Component {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line20">line 20</a>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -212,16 +413,38 @@ customElements.define('my-widget', class extends Component {
 
 
 
+
+
+
+
+
+
+
+
+
+
         
             
-<h4 class="name" id=".ControlledComponent"><span class="type-signature">(static) </span>ControlledComponent<span class="type-signature"></span></h4>
 
+    
+
+    <h4 class="name" id="getTargetElement"><span class="type-signature"></span>getTargetElement<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
 
 
 
 <div class="description">
-    ControlledComponent class, to be subclassed by apps
+    Override to determine which tag to instantiate as the child.
+
+This is where all switching logic should go.
 </div>
+
+
+
+
+
+
 
 
 
@@ -258,7 +481,7 @@ customElements.define('my-widget', class extends Component {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line23">line 23</a>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -274,17 +497,70 @@ customElements.define('my-widget', class extends Component {
 
 
 
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+        <p class="code-caption">a URL based feature flag</p>
+    
+    <pre class="prettyprint"><code>class MyWidget extends ProxyComponent {
+  getTargetElement() {
+    if (window.location.search.includes('enable_beta') {
+      return 'my-widget-v2';
+    }
+
+    return 'my-widget-v1'
+  }
+}</code></pre>
+
+
+
         
             
-<h4 class="name" id=".h"><span class="type-signature">(static) </span>h<span class="type-signature"></span></h4>
 
+    
+
+    <h4 class="name" id="proxyEventHandler"><span class="type-signature"></span>proxyEventHandler<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
 
 
 
 <div class="description">
-    <a href="https://github.com/snabbdom/snabbdom">snabbdom</a> function to create Hyperscript nodes,
-exported here for user convenience
+    Proxied events will be stripped of their native attributes and re-wrapped as CustomEvents. Callers
+should assume that only `detail` remains intact.
 </div>
+
+
+
+
+
+
 
 
 
@@ -321,7 +597,7 @@ exported here for user convenience
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line38">line 38</a>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -337,62 +613,10 @@ exported here for user convenience
 
 
 
-        
-            
-<h4 class="name" id=".ProxyComponent"><span class="type-signature">(static) </span>ProxyComponent<span class="type-signature"></span></h4>
 
 
 
 
-<div class="description">
-    ProxyComponent class, to be subclassed by apps
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line26">line 26</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -400,132 +624,6 @@ exported here for user convenience
 
 
         
-            
-<h4 class="name" id=".StateController"><span class="type-signature">(static) </span>StateController<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    StateController class, to be subclassed by apps
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line29">line 29</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id=".StateStore"><span class="type-signature">(static) </span>StateStore<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    A simple subscribable state store
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line32">line 32</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
     
 
     

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>isorender/dom-shims.js - Documentation</title>
+    <title>proxy-component.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">isorender/dom-shims.js</h1>
+    <h1 class="page-title">proxy-component.js</h1>
     
 
     
@@ -38,96 +38,118 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Node.js polyfill for rendering Panel components without a browser.
- * Makes the following objects globally available:
- * Comment, document, Document, Element, HTMLElement, Node, requestAnimationFrame, Text.
- * Most of the available DOM API functionality is provided by
- * [html-element]{@link https://github.com/1N50MN14/html-element}, with some patches for
- * the Web Components API.
+            <pre class="prettyprint source linenums"><code>import {h} from 'snabbdom';
+import Component from './component';
+
+/**
+ * Definition of a generic Component which proxies attributes and events
+ * between itself and a variable child component.
  *
- * @module isorender/dom-shims
- *
- * @example &lt;caption>Rendering app HTML to stdout&lt;/caption>
- * import 'panel/isorender/dom-shims';
- * import { Component } from 'panel';
- * customElements.define('my-widget', class extends Component {
- *   // app definition
- * });
- * const myWidget = document.createElement('my-widget');
- * document.body.appendChild(myWidget);
- * requestAnimationFrame(() => console.log(myWidget.outerHTML));
+ * @extends Component
  */
-
-import 'html-element/global-shim';
-import requestAnimationFrame from 'raf';
-
-// make raf globally available unless a requestAnimationFrame implementation
-// is already there
-global.requestAnimationFrame = global.requestAnimationFrame || requestAnimationFrame;
-
-// patch DOM insertion functions to call connectedCallback on Custom Elements
-['appendChild', 'insertBefore', 'replaceChild'].forEach(funcName => {
-  const origFunc = Element.prototype[funcName];
-  Element.prototype[funcName] = function() {
-    const child = origFunc.apply(this, arguments);
-    requestAnimationFrame(() => {
-      if (!child.initialized &amp;&amp; child.connectedCallback) {
-        child.connectedCallback();
-      }
-    });
-  };
-});
-
-// html-element only provides Element (with a lot of the HTMLElement API baked in).
-// Use HTMLElement as our Web Components-ready extension.
-class HTMLElement extends Element {
-  setAttribute(name, value) {
-    const oldValue = this.getAttribute(name);
-    super.setAttribute(...arguments);
-    if (this.attributeChangedCallback &amp;&amp; this.__attrIsObserved(name)) {
-      this.attributeChangedCallback(name, oldValue, value);
-    }
+export default class ProxyComponent extends Component {
+  get config(){
+    return Object.assign({
+      template: ({$component}) => {
+        return h($component.getTargetElement(), {
+          attrs: $component.getAttributes(),
+          on: $component._getProxiedEventHandlers(),
+        });
+      },
+    }, this.localConfig);
   }
 
-  __attrIsObserved(name) {
-    if (!this.__observedAttrs) {
-      this.__observedAttrs = this.constructor.observedAttributes || [];
+  /**
+   * Override this to extend the default configuration.
+   *
+   * @see Component#config
+   */
+  get localConfig() {
+    return {};
+  }
+
+  /**
+   * Override to determine which tag to instantiate as the child.
+   *
+   * This is where all switching logic should go.
+   *
+   * @returns  {string}
+   *
+   * @example &lt;caption>a URL based feature flag&lt;/caption>
+   * class MyWidget extends ProxyComponent {
+   *   getTargetElement() {
+   *     if (window.location.search.includes('enable_beta') {
+   *       return 'my-widget-v2';
+   *     }
+   *
+   *     return 'my-widget-v1'
+   *   }
+   * }
+   */
+  getTargetElement() {
+    throw new Error(`You must override getTargetElement().`);
+  }
+
+  _getProxiedEventHandlers() {
+    const handler = this.proxyEventHandler.bind(this);
+    return this.observedEvents.reduce((acc, evt) => {
+      acc[evt] = handler;
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Override this method to stop events from being bubbled through this element.
+   *
+   * @example &lt;caption>filter specific events out&lt;/caption>
+   * class MyWidget extends ProxyComponent {
+   *   allowEvent(ev) {
+   *     // don't propagate click events for the v2 component
+   *     return this.getTargetElement() !== `my-widget-v2` &amp;&amp; event.type !== `click`;
+   *   }
+   * }
+   */
+  allowEvent(event) {
+    return true;
+  }
+
+  /**
+   * Proxied events will be stripped of their native attributes and re-wrapped as CustomEvents. Callers
+   * should assume that only `detail` remains intact.
+   */
+  proxyEventHandler(ev) {
+    if (!this.allowEvent(event)) {
+      return false;
     }
-    return this.__observedAttrs.includes(name);
+
+    if (!ev.bubbles) {
+      this.dispatchEvent(new CustomEvent(ev.type, ev));
+    }
+
+    return true;
+  }
+
+  /**
+   * Return a map of attributes to pass to the child.
+   */
+  getAttributes() {
+    const attributes = {};
+    for (let attr of this.attributes) {
+      attributes[attr.name] = attr.value;
+    }
+
+    return attributes;
+  }
+
+  /**
+   * Define the events which will be emitted by the wrapped component.
+   * Bubbling events will bubble through, but non-composed events from ShadowDOM
+   * elements will not and will be re-dispatched from the proxy.
+   */
+  get observedEvents() {
+    return [];
   }
 }
-global.HTMLElement = HTMLElement;
-
-
-// Document patches for Custom Elements
-
-const registeredElements = {};
-
-const originalCreateElement = Document.prototype.createElement;
-Document.prototype.createElement = function(tagName) {
-  tagName = tagName.toLowerCase();
-  const customElProto = registeredElements[tagName];
-  let el;
-  if (customElProto) {
-    el = new customElProto();
-    el.nodeName = el.tagName = tagName;
-  } else {
-    el = originalCreateElement(...arguments);
-  }
-  return el;
-}
-
-global.customElements = global.customElements || {
-  define(tagName, proto) {
-    tagName = tagName.toLowerCase();
-    if (registeredElements[tagName]) {
-      throw DOMException(`Registration failed for type '${tagName}'. A type with that name is already registered.`);
-    } else {
-      registeredElements[tagName] = proto;
-    }
-  }
-};
 </code></pre>
         </article>
     </section>
