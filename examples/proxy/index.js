@@ -1,6 +1,6 @@
 import {Component, ProxyComponent, h} from '../../lib';
 
-class FreeAddressCard extends Component {
+class AddressCardV1 extends Component {
   get config() {
     return {
       template: ({$component}) => {
@@ -25,15 +25,15 @@ class FreeAddressCard extends Component {
   }
 }
 
-class PremiumAddressCard extends Component {
+class AddressCardV2 extends Component {
   get config() {
     return {
       template: ({$component}) => {
         return h(`div`, [
           h(`ul`, [
             h(`li`, $component.getAttribute(`name`)),
+            h(`li`, `(experimental feature for beta)`),
             h(`li`, {on: {click: () => this.registerClick()}}, $component.getAttribute(`city`)),
-            h(`li`, `You're viewing with premium!`)
           ])
         ]);
       }
@@ -53,12 +53,16 @@ class PremiumAddressCard extends Component {
 
 class AddressCard extends ProxyComponent {
   getTargetElement() {
-    // arbitrary biz logic
-    return window.showTheNewCard ? `address-card-v2` : `address-card-v1`;
+    // Arbitrary switching logic goes here.
+    if (window.location.search.match(/use_experimental_card/) || this.isAttributeEnabled(`force-v2`)) {
+      return `address-card-v2`;
+    }
+
+    return `address-card-v1`;
   }
 
   static get observedAttributes() {
-    return PremiumAddressCard.observedAttributes;
+    return AddressCardV1.observedAttributes;
   }
 
   get observedEvents() {
@@ -66,17 +70,22 @@ class AddressCard extends ProxyComponent {
   }
 }
 
-customElements.define(`address-card-v1`, FreeAddressCard);
-customElements.define(`address-card-v2`, PremiumAddressCard);
+customElements.define(`address-card-v1`, AddressCardV1);
+customElements.define(`address-card-v2`, AddressCardV2);
 customElements.define(`address-card`, AddressCard);
 
 customElements.define(`proxy-app`, class extends ProxyComponent {
   get config() {
     return {
-      template: () => h(`address-card`, {
-        attrs: {name: `Ben`, city: `San Francisco`},
-        on: {clickedCity: () => alert(`it's true!`)},
-      })
+      template: () => h(`div`, [
+        h(`a`, { attrs: { href: `?` } }, `Try v1 `),
+        h(`a`, { attrs: { href: `?use_experimental_card` } }, `Try v2`),
+        h(`address-card`, {
+          attrs: {name: `Ben`, city: `San Francisco`},
+          on: {clickedCity: () => alert(`it's true!`)}
+        }),
+        ]
+      )
     };
   }
 });
