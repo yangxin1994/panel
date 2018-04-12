@@ -52,7 +52,7 @@ class AddressCardV2 extends Component {
 }
 
 class AddressCard extends ProxyComponent {
-  getTargetElement() {
+  getTargetElementTag() {
     // Arbitrary switching logic goes here.
     if (window.location.search.match(/use_experimental_card/) || this.isAttributeEnabled(`force-v2`)) {
       return `address-card-v2`;

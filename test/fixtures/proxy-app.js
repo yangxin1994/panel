@@ -8,7 +8,7 @@ export class ProxyApp extends ProxyComponent {
     };
   }
 
-  getTargetElement() {
+  getTargetElementTag() {
     // This element will change its behavior if passed an href.
     return !!this.getAttribute(`href`) ? `a` : `event-producer`;
   }
