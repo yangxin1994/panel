@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="ProxyComponent.html">ProxyComponent</a><ul class='methods'><li data-type='method'><a href="ProxyComponent.html#allowEvent">allowEvent</a></li><li data-type='method'><a href="ProxyComponent.html#child">child</a></li><li data-type='method'><a href="ProxyComponent.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="ProxyComponent.html#getAttributes">getAttributes</a></li><li data-type='method'><a href="ProxyComponent.html#getConfig">getConfig</a></li><li data-type='method'><a href="ProxyComponent.html#getTargetElement">getTargetElement</a></li><li data-type='method'><a href="ProxyComponent.html#navigate">navigate</a></li><li data-type='method'><a href="ProxyComponent.html#proxyEventHandler">proxyEventHandler</a></li><li data-type='method'><a href="ProxyComponent.html#setConfig">setConfig</a></li><li data-type='method'><a href="ProxyComponent.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="ProxyComponent.html#update">update</a></li><li data-type='method'><a href="ProxyComponent.html#updateApp">updateApp</a></li></ul></li><li><a href="StateController.html">StateController</a></li><li><a href="StateStore.html">StateStore</a></li></ul><h3>Modules</h3><ul><li><a href="module-component-utils.html">component-utils</a></li><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="ProxyComponent.html">ProxyComponent</a><ul class='methods'><li data-type='method'><a href="ProxyComponent.html#allowEvent">allowEvent</a></li><li data-type='method'><a href="ProxyComponent.html#child">child</a></li><li data-type='method'><a href="ProxyComponent.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="ProxyComponent.html#getConfig">getConfig</a></li><li data-type='method'><a href="ProxyComponent.html#getTargetElementTag">getTargetElementTag</a></li><li data-type='method'><a href="ProxyComponent.html#navigate">navigate</a></li><li data-type='method'><a href="ProxyComponent.html#setConfig">setConfig</a></li><li data-type='method'><a href="ProxyComponent.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="ProxyComponent.html#update">update</a></li><li data-type='method'><a href="ProxyComponent.html#updateApp">updateApp</a></li></ul></li><li><a href="StateController.html">StateController</a></li><li><a href="StateStore.html">StateStore</a></li></ul><h3>Modules</h3><ul><li><a href="module-component-utils.html">component-utils</a></li><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
 </nav>
 
 <div id="main">
@@ -52,7 +52,7 @@ class ProxyComponent extends Component {
   get config(){
     return Object.assign({
       template: ({$component}) => {
-        return h($component.getTargetElement(), {
+        return h($component.getTargetElementTag(), {
           attrs: $component.getAttributes(),
           on: $component._getProxiedEventHandlers(),
         });
@@ -74,11 +74,11 @@ class ProxyComponent extends Component {
    *
    * This is where all switching logic should go.
    *
-   * @returns  {string}
+   * @returns {string} - tag name of the component to instantiate
    *
    * @example &lt;caption>a URL based feature flag&lt;/caption>
    * class MyWidget extends ProxyComponent {
-   *   getTargetElement() {
+   *   getTargetElementTag() {
    *     if (window.location.search.includes('enable_beta') {
    *       return 'my-widget-v2';
    *     }
@@ -87,37 +87,37 @@ class ProxyComponent extends Component {
    *   }
    * }
    */
-  getTargetElement() {
-    throw new Error(`You must override getTargetElement().`);
+  getTargetElementTag() {
+    throw new Error(`You must override getTargetElementTag().`);
   }
 
   _getProxiedEventHandlers() {
     const handler = this.proxyEventHandler.bind(this);
-    return this.observedEvents.reduce((acc, evt) => {
-      acc[evt] = handler;
+    return this.observedEvents.reduce((acc, ev) => {
+      acc[ev] = handler;
       return acc;
     }, {});
   }
 
   /**
    * Override this method to stop events from being bubbled through this element.
+   * @param {Event} ev - event to check
+   * @returns {boolean} whether event should bubble through
    *
    * @example &lt;caption>filter specific events out&lt;/caption>
    * class MyWidget extends ProxyComponent {
    *   allowEvent(ev) {
    *     // don't propagate click events for the v2 component
-   *     return this.getTargetElement() !== `my-widget-v2` &amp;&amp; event.type !== `click`;
+   *     return this.getTargetElementTag() !== `my-widget-v2` &amp;&amp; ev.type !== `click`;
    *   }
    * }
    */
-  allowEvent(event) {
+  allowEvent(ev) {
     return true;
   }
 
-  /**
-   * Proxied events will be stripped of their native attributes and re-wrapped as CustomEvents. Callers
-   * should assume that only `detail` remains intact.
-   */
+  // Proxied events will be stripped of their native attributes and re-wrapped as CustomEvents. Callers
+  // should assume that only `detail` remains intact.
   proxyEventHandler(ev) {
     if (!this.allowEvent(ev)) {
       return false;
@@ -130,9 +130,7 @@ class ProxyComponent extends Component {
     return true;
   }
 
-  /**
-   * Return a map of attributes to pass to the child.
-   */
+  // Return a map of attributes to pass to the child.
   getAttributes() {
     const attributes = {};
     for (let i = 0; i &lt; this.attributes.length; i++) {
@@ -144,9 +142,10 @@ class ProxyComponent extends Component {
   }
 
   /**
-   * Define the events which will be emitted by the wrapped component.
+   * Defines the names of events which will be emitted by the wrapped component.
    * Bubbling events will bubble through, but non-composed events from ShadowDOM
    * elements will not and will be re-dispatched from the proxy.
+   * @type {string[]}
    */
   get observedEvents() {
     return [];
@@ -166,7 +165,7 @@ export default ProxyComponent;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 12 2018 13:29:39 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 12 2018 16:20:51 GMT-0700 (PDT) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
