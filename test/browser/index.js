@@ -1,4 +1,7 @@
 import 'babel-polyfill';
 
-import '../fixtures/index'; // import fixtures
-import './component.js'; // import tests
+import '../fixtures'; // import fixtures
+
+// import tests
+import './component';
+import './component-utils';
