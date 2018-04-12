@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>state-store.js - Documentation</title>
+    <title>StateStore - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,49 +28,132 @@
 
 <div id="main">
     
-    <h1 class="page-title">state-store.js</h1>
+    <h1 class="page-title">StateStore</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * StateStore stores state and allows an observer to subscribe to state updates
- */
-class StateStore {
-  constructor() {
-    this._listeners = [];
-    this._state = {};
-  }
+        <h2>
+        StateStore
+        </h2>
+        
+            <div class="class-description">StateStore stores state and allows an observer to subscribe to state updates</div>
+        
+    
+</header>
 
-  get state() {
-    return this._state;
-  }
+<article>
+    <div class="container-overview">
+    
+        
 
-  update(props) {
-    // Always create a new state object.
-    // if lastState === newState then state hasn't changed
-    this._state = Object.assign({}, this._state, props);
-    this._listeners.forEach(listener => listener(props));
-  }
+    
+    <h2>Constructor</h2>
+    
 
-  subscribeUpdates(listener) {
-    this._listeners.push(listener);
-  }
+    <h4 class="name" id="StateStore"><span class="type-signature"></span>new StateStore<span class="signature">()</span><span class="type-signature"></span></h4>
 
-  unsubscribeUpdates(listener) {
-    this._listeners = this._listeners.filter(l => l !== listener);
-  }
-}
+    
 
-export default StateStore;
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="state-store.js.html">state-store.js</a>, <a href="state-store.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

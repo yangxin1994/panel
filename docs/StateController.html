@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>state-store.js - Documentation</title>
+    <title>StateController - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,49 +28,136 @@
 
 <div id="main">
     
-    <h1 class="page-title">state-store.js</h1>
+    <h1 class="page-title">StateController</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * StateStore stores state and allows an observer to subscribe to state updates
- */
-class StateStore {
-  constructor() {
-    this._listeners = [];
-    this._state = {};
-  }
+        <h2>
+        StateController
+        </h2>
+        
+            <div class="class-description">A StateController manages state for an application or component
+Subclasses extend this and expose methods that call the controller's _update method
+Controller will default create its own state store unless one is passed.
+StateController subclasses should only accept the dependencies they need via constructor
+This means the dependencies can easily be mocked and unit tested</div>
+        
+    
+</header>
 
-  get state() {
-    return this._state;
-  }
+<article>
+    <div class="container-overview">
+    
+        
 
-  update(props) {
-    // Always create a new state object.
-    // if lastState === newState then state hasn't changed
-    this._state = Object.assign({}, this._state, props);
-    this._listeners.forEach(listener => listener(props));
-  }
+    
+    <h2>Constructor</h2>
+    
 
-  subscribeUpdates(listener) {
-    this._listeners.push(listener);
-  }
+    <h4 class="name" id="StateController"><span class="type-signature"></span>new StateController<span class="signature">()</span><span class="type-signature"></span></h4>
 
-  unsubscribeUpdates(listener) {
-    this._listeners = this._listeners.filter(l => l !== listener);
-  }
-}
+    
 
-export default StateStore;
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="state-controller.js.html">state-controller.js</a>, <a href="state-controller.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

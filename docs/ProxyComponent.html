@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Component - Documentation</title>
+    <title>ProxyComponent - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Component</h1>
+    <h1 class="page-title">ProxyComponent</h1>
     
 
     
@@ -41,14 +41,11 @@
 <header>
     
         <h2>
-        Component
+        ProxyComponent
         </h2>
         
-            <div class="class-description">Definition of a Panel component/app, implemented as an HTML custom element.
-App logic and configuration is defined by extending this class. Instantiating
-a component is typically not done by calling the constructor directly, but
-either by including the tag in HTML markup, or by using the DOM API method
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement">document.createElement</a>.</div>
+            <div class="class-description">Definition of a generic Component which proxies attributes and events
+between itself and a variable child component.</div>
         
     
 </header>
@@ -62,7 +59,7 @@ either by including the tag in HTML markup, or by using the DOM API method
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="Component"><span class="type-signature"></span>new Component<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ProxyComponent"><span class="type-signature"></span>new ProxyComponent<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -109,7 +106,7 @@ either by including the tag in HTML markup, or by using the DOM API method
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component.js.html">component.js</a>, <a href="component.js.html#line38">line 38</a>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -134,31 +131,6 @@ either by including the tag in HTML markup, or by using the DOM API method
 
 
 
-    <h5>Examples</h5>
-    
-        <p class="code-caption">Defining a Panel component</p>
-    
-    <pre class="prettyprint"><code>class MyWidget extends Component {
-  get config() {
-    return {
-      // options go here
-    };
-  }
-
-  myMethod() {
-    // etc
-  }
-}</code></pre>
-
-        <p class="code-caption">Registering the custom element definition for the DOM</p>
-    
-    <pre class="prettyprint"><code>customElements.define('my-widget', MyWidget);</code></pre>
-
-        <p class="code-caption">Adding an instance of the element to the DOM</p>
-    
-    <pre class="prettyprint"><code>&lt;my-widget some-attr>&lt;/my-widget></code></pre>
-
-
 
     
     </div>
@@ -170,7 +142,7 @@ either by including the tag in HTML markup, or by using the DOM API method
 
 
     <ul>
-        <li>WebComponent</li>
+        <li><a href="Component.html">Component</a></li>
     </ul>
 
 
@@ -676,6 +648,11 @@ immediately, instead of batching to one update per frame</td>
     
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Component.html#config">Component#config</a>
+    </li></ul></dd>
+    
 
     
 
@@ -761,6 +738,11 @@ as $helpers. This getter uses the component's internal config cache.
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#helpers">Component#helpers</a>
+    </li></ul></dd>
+    
 
     
 
@@ -807,10 +789,237 @@ as $helpers. This getter uses the component's internal config cache.
 
 
         
+            
+<h4 class="name" id="localConfig"><span class="type-signature"></span>localConfig<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Override this to extend the default configuration.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Component.html#config">Component#config</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="observedEvents"><span class="type-signature"></span>observedEvents<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Define the events which will be emitted by the wrapped component.
+Bubbling events will bubble through, but non-composed events from ShadowDOM
+elements will not and will be re-dispatched from the proxy.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="allowEvent"><span class="type-signature"></span>allowEvent<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Override this method to stop events from being bubbled through this element.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+        <p class="code-caption">filter specific events out</p>
+    
+    <pre class="prettyprint"><code>class MyWidget extends ProxyComponent {
+  allowEvent(ev) {
+    // don't propagate click events for the v2 component
+    return this.getTargetElement() !== `my-widget-v2` &amp;&amp; event.type !== `click`;
+  }
+}</code></pre>
+
+
 
         
             
@@ -951,6 +1160,11 @@ to be created</td>
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#child">Component#child</a>
+    </li></ul></dd>
     
 
     
@@ -1111,6 +1325,11 @@ given type (HTML tag name).
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#findPanelParentByTagName">Component#findPanelParentByTagName</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1203,6 +1422,88 @@ given type (HTML tag name).
 
     
 
+    <h4 class="name" id="getAttributes"><span class="type-signature"></span>getAttributes<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Return a map of attributes to pass to the child.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="getConfig"><span class="type-signature"></span>getConfig<span class="signature">(key)</span><span class="type-signature"></span></h4>
 
     
@@ -1282,6 +1583,11 @@ values supplied in the config() getter and defaults applied automatically).
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#getConfig">Component#getConfig</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1342,6 +1648,123 @@ values supplied in the config() getter and defaults applied automatically).
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>myWidget.getConfig('css');</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getTargetElement"><span class="type-signature"></span>getTargetElement<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Override to determine which tag to instantiate as the child.
+
+This is where all switching logic should go.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+        <p class="code-caption">a URL based feature flag</p>
+    
+    <pre class="prettyprint"><code>class MyWidget extends ProxyComponent {
+  getTargetElement() {
+    if (window.location.search.includes('enable_beta') {
+      return 'my-widget-v2';
+    }
+
+    return 'my-widget-v1'
+  }
+}</code></pre>
 
 
 
@@ -1485,6 +1908,11 @@ routing</td>
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#navigate">Component#navigate</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1535,6 +1963,89 @@ routing</td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>myApp.navigate('wombat/54', {color: 'blue'});</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="proxyEventHandler"><span class="type-signature"></span>proxyEventHandler<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Proxied events will be stripped of their native attributes and re-wrapped as CustomEvents. Callers
+should assume that only `detail` remains intact.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy-component.js.html">proxy-component.js</a>, <a href="proxy-component.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1639,6 +2150,11 @@ initialization.
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#setConfig">Component#setConfig</a>
+    </li></ul></dd>
     
 
     
@@ -1778,6 +2294,11 @@ performance when dealing with very many DOM elements.
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#shouldUpdate">Component#shouldUpdate</a>
+    </li></ul></dd>
     
 
     
@@ -1963,6 +2484,11 @@ the component's state object</td>
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#update">Component#update</a>
+    </li></ul></dd>
+    
 
     
 
@@ -2122,6 +2648,11 @@ the app's appState object</td>
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Component.html#updateApp">Component#updateApp</a>
+    </li></ul></dd>
     
 
     

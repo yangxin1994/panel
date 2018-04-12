@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="module.exports.html">exports</a><ul class='methods'><li data-type='method'><a href="module.exports.html#child">child</a></li><li data-type='method'><a href="module.exports.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="module.exports.html#getConfig">getConfig</a></li><li data-type='method'><a href="module.exports.html#navigate">navigate</a></li><li data-type='method'><a href="module.exports.html#setConfig">setConfig</a></li><li data-type='method'><a href="module.exports.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="module.exports.html#update">update</a></li><li data-type='method'><a href="module.exports.html#updateApp">updateApp</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul><h3>Global</h3><ul><li><a href="global.html#allowEvent">allowEvent</a></li><li><a href="global.html#getAttributes">getAttributes</a></li><li><a href="global.html#getTargetElement">getTargetElement</a></li><li><a href="global.html#localConfig">localConfig</a></li><li><a href="global.html#observedEvents">observedEvents</a></li><li><a href="global.html#proxyEventHandler">proxyEventHandler</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="ProxyComponent.html">ProxyComponent</a><ul class='methods'><li data-type='method'><a href="ProxyComponent.html#allowEvent">allowEvent</a></li><li data-type='method'><a href="ProxyComponent.html#child">child</a></li><li data-type='method'><a href="ProxyComponent.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="ProxyComponent.html#getAttributes">getAttributes</a></li><li data-type='method'><a href="ProxyComponent.html#getConfig">getConfig</a></li><li data-type='method'><a href="ProxyComponent.html#getTargetElement">getTargetElement</a></li><li data-type='method'><a href="ProxyComponent.html#navigate">navigate</a></li><li data-type='method'><a href="ProxyComponent.html#proxyEventHandler">proxyEventHandler</a></li><li data-type='method'><a href="ProxyComponent.html#setConfig">setConfig</a></li><li data-type='method'><a href="ProxyComponent.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="ProxyComponent.html#update">update</a></li><li data-type='method'><a href="ProxyComponent.html#updateApp">updateApp</a></li></ul></li><li><a href="StateController.html">StateController</a></li><li><a href="StateStore.html">StateStore</a></li></ul><h3>Modules</h3><ul><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
 </nav>
 
 <div id="main">
@@ -47,7 +47,7 @@ import Component from './component';
  *
  * @extends Component
  */
-export default class ProxyComponent extends Component {
+class ProxyComponent extends Component {
   get config(){
     return Object.assign({
       template: ({$component}) => {
@@ -118,7 +118,7 @@ export default class ProxyComponent extends Component {
    * should assume that only `detail` remains intact.
    */
   proxyEventHandler(ev) {
-    if (!this.allowEvent(event)) {
+    if (!this.allowEvent(ev)) {
       return false;
     }
 
@@ -134,7 +134,8 @@ export default class ProxyComponent extends Component {
    */
   getAttributes() {
     const attributes = {};
-    for (let attr of this.attributes) {
+    for (let i = 0; i &lt; this.attributes.length; i++) {
+      const attr = this.attributes[i];
       attributes[attr.name] = attr.value;
     }
 
@@ -150,6 +151,8 @@ export default class ProxyComponent extends Component {
     return [];
   }
 }
+
+export default ProxyComponent;
 </code></pre>
         </article>
     </section>
@@ -162,7 +165,7 @@ export default class ProxyComponent extends Component {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Apr 11 2018 00:34:30 GMT+0000 (UTC) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 12 2018 11:33:54 GMT-0700 (PDT) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
