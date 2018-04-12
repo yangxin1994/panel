@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>StateController - Documentation</title>
+    <title>component-utils/index.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,136 +28,49 @@
 
 <div id="main">
     
-    <h1 class="page-title">StateController</h1>
+    <h1 class="page-title">component-utils/index.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-        StateController
-        </h2>
-        
-            <div class="class-description">A StateController manages state for an application or component
-Subclasses extend this and expose methods that call the controller's _update method
-Controller will default create its own state store unless one is passed.
-StateController subclasses should only accept the dependencies they need via constructor
-This means the dependencies can easily be mocked and unit tested</div>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Optional component wrappers and utilities for state management;
+ * exported in the main {@link panel} module for convenience.
+ * @module component-utils
+ * @example
+ * // direct top-level import
+ * import {ProxyComponent, StateController} from 'panel';
+ * // module import
+ * import {ComponentUtils} from 'panel';
+ * const {ProxyComponent, StateController} = ComponentUtils;
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
+import ControlledComponent from './controlled-component';
+import ProxyComponent from './proxy-component';
+import StateController from './state-controller';
+import StateStore from './state-store';
 
-    
-    <h2>Constructor</h2>
-    
+export default {
+  /** {@link ControlledComponent} class, to be subclassed by apps */
+  ControlledComponent,
 
-    <h4 class="name" id="StateController"><span class="type-signature"></span>new StateController<span class="signature">()</span><span class="type-signature"></span></h4>
+  /** {@link ProxyComponent} class, to be subclassed by apps */
+  ProxyComponent,
 
-    
+  /** {@link StateController} class, to be subclassed by apps */
+  StateController,
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component-utils_state-controller.js.html">component-utils/state-controller.js</a>, <a href="component-utils_state-controller.js.html#line10">line 10</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+  /** A simple subscribable state store */
+  StateStore,
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

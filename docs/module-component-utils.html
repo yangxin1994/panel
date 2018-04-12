@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>StateController - Documentation</title>
+    <title>component-utils - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">StateController</h1>
+    <h1 class="page-title">component-utils</h1>
     
 
     
@@ -40,15 +40,8 @@
 
 <header>
     
-        <h2>
-        StateController
-        </h2>
         
-            <div class="class-description">A StateController manages state for an application or component
-Subclasses extend this and expose methods that call the controller's _update method
-Controller will default create its own state store unless one is passed.
-StateController subclasses should only accept the dependencies they need via constructor
-This means the dependencies can easily be mocked and unit tested</div>
+            
         
     
 </header>
@@ -57,14 +50,12 @@ This means the dependencies can easily be mocked and unit tested</div>
     <div class="container-overview">
     
         
+            <div class="description">Optional component wrappers and utilities for state management;
+exported in the main panel module for convenience.</div>
+        
 
-    
-    <h2>Constructor</h2>
-    
-
-    <h4 class="name" id="StateController"><span class="type-signature"></span>new StateController<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
+        
+            
 
 
 
@@ -109,7 +100,7 @@ This means the dependencies can easily be mocked and unit tested</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="component-utils_state-controller.js.html">component-utils/state-controller.js</a>, <a href="component-utils_state-controller.js.html#line10">line 10</a>
+        <a href="component-utils_index.js.html">component-utils/index.js</a>, <a href="component-utils_index.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -134,7 +125,17 @@ This means the dependencies can easily be mocked and unit tested</div>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// direct top-level import
+import {ProxyComponent, StateController} from 'panel';
+// module import
+import {ComponentUtils} from 'panel';
+const {ProxyComponent, StateController} = ComponentUtils;</code></pre>
 
+
+
+        
     
     </div>
 
@@ -148,6 +149,258 @@ This means the dependencies can easily be mocked and unit tested</div>
 
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".ControlledComponent"><span class="type-signature">(static) </span>ControlledComponent<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    ControlledComponent class, to be subclassed by apps
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component-utils_index.js.html">component-utils/index.js</a>, <a href="component-utils_index.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".ProxyComponent"><span class="type-signature">(static) </span>ProxyComponent<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <a href="ProxyComponent.html">ProxyComponent</a> class, to be subclassed by apps
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component-utils_index.js.html">component-utils/index.js</a>, <a href="component-utils_index.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".StateController"><span class="type-signature">(static) </span>StateController<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <a href="StateController.html">StateController</a> class, to be subclassed by apps
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component-utils_index.js.html">component-utils/index.js</a>, <a href="component-utils_index.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".StateStore"><span class="type-signature">(static) </span>StateStore<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A simple subscribable state store
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component-utils_index.js.html">component-utils/index.js</a>, <a href="component-utils_index.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
