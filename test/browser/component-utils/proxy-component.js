@@ -1,15 +1,17 @@
 /* eslint-env mocha */
 /* global expect */
 
+import nextAnimationFrame from '../nextAnimationFrame';
+
 describe(`ProxyComponent`, function() {
   let el;
 
-  beforeEach(function(done) {
+  beforeEach(async function() {
     document.body.innerHTML = ``;
     el = document.createElement(`proxy-app`);
     el.setAttribute(`data-foo`, `bar`);
     document.body.appendChild(el);
-    window.requestAnimationFrame(() => done());
+    await nextAnimationFrame();
   });
 
   it(`renders the target element with attributes`, function() {
