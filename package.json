@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "types": "lib/index.d.ts",
@@ -23,7 +23,6 @@
     "test-server": "NODE_ENV=test mocha --require babel-core/register --require babel-polyfill test/server",
     "ts-check": "tsc",
     "tslint": "tslint -c tslint.json -t stylish 'lib/index.d.ts'"
-
   },
   "repository": {
     "type": "git",
