@@ -3,6 +3,7 @@
 /* eslint no-unused-expressions:0 */
 
 import nextAnimationFrame from './nextAnimationFrame';
+import {compactHtml} from '../utils';
 
 describe(`Simple Component instance`, function() {
   let el;
@@ -190,6 +191,81 @@ describe(`Simple Component instance`, function() {
   });
 });
 
+describe(`Simple Component instance with attrsSchema`, function() {
+  let el;
+
+  beforeEach(async function() {
+    document.body.innerHTML = ``;
+    el = document.createElement(`attrs-reflection-app`);
+    el.setAttribute(`str-attr`, `hello world`);
+
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+  });
+
+  it(`renders template`, function() {
+    expect(el.innerHTML).to.equal(compactHtml(`
+      <div class="attrs-reflection-app">
+        <p>str-attr: "hello world"</p>
+        <p>bool-attr: true</p>
+        <p>number-attr: 0</p>
+        <p>json-attr: null</p>
+      </div>
+    `));
+  });
+
+  it(`updates attrs`, function() {
+    expect(el.attrs).to.deep.equal({
+      'str-attr': `hello world`,
+      'bool-attr': true,
+      'number-attr': 0,
+      'json-attr': null,
+    });
+  });
+
+  it(`reacts to attr updates`, async function() {
+    el.setAttribute(`str-attr`, `foo bae`);
+    el.setAttribute(`bool-attr`, `false`);
+    el.setAttribute(`number-attr`, `500843`);
+    el.setAttribute(`json-attr`, `{"foo": "bae"}`);
+
+    expect(el.attrs).to.deep.equal({
+      'str-attr': `foo bae`,
+      'bool-attr': false,
+      'number-attr': 500843,
+      'json-attr': {foo: `bae`},
+    });
+
+    await nextAnimationFrame();
+
+    expect(el.innerHTML).to.equal(compactHtml(`
+    <div class="attrs-reflection-app">
+      <p>str-attr: "foo bae"</p>
+      <p>bool-attr: false</p>
+      <p>number-attr: 500843</p>
+      <p>json-attr: {"foo":"bae"}</p>
+    </div>
+  `));
+  });
+
+  it(`can query schema from customElements registry`, async function() {
+    const component = customElements.get(`attrs-reflection-app`);
+    expect(component.attrsSchema).to.deep.equal({
+      'str-attr': {type: `string`},
+      'bool-attr': {type: `boolean`, default: true},
+      'number-attr': {type: `number`, default: 0},
+      'json-attr': {type: `json`},
+    });
+
+    expect(component.observedAttributes).to.deep.equal([
+      `style-override`,
+      `str-attr`,
+      `bool-attr`,
+      `number-attr`,
+      `json-attr`,
+    ]);
+  });
+});
 
 describe(`Nested Component instance`, function() {
   let el, childEl;

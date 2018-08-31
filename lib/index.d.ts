@@ -63,9 +63,23 @@ declare namespace Component {
         [hookName: string]: (params: any) => void;
     }
 
+    interface TemplateScope<AppState = {}> {
+        /** AppState of the root panel component */
+        $app: AppState;
+
+        /** Attributes parsed from component's html attributes using attrsSchema */
+        $attrs: {[attr: string]: any};
+
+        /** A reference to the component itself */
+        $component: WebComponent;
+
+        /** Helpers defined in component config */
+        $helpers: Helpers;
+    }
+
     interface ConfigOptions<State, AppState> {
         /** Function transforming state object to virtual dom tree */
-        template(state: State): VNode;
+        template(scope: (TemplateScope<AppState> & State)): VNode;
 
         /** Component-specific Shadow DOM stylesheet */
         css?: string;
@@ -94,11 +108,31 @@ declare namespace Component {
         /** Whether to use Shadow DOM */
         useShadowDom?: boolean;
     }
+
+    interface AttrSchema {
+        /** Type of the attribute, default is 'string' */
+        type?: 'string' | 'number' | 'boolean' | 'json';
+
+        /** Default value if the attr is not defined */
+        default?: any;
+
+        /** Description of attribute, what it does e.t.c */
+        description?: string;
+    }
 }
 
 type ConfigOptions<State, AppState> = Component.ConfigOptions<State, AppState>;
 
 export class Component<State, AppState = {}> extends WebComponent {
+    /**
+     * Attributes schema that defines the component's html attributes and their types
+     * Panel auto parses attribute changes into this.attrs object and $attrs template helper
+     */
+    static attrsSchema: {[attr: string]: Component.AttrSchema};
+
+    /** Attributes parsed from component's html attributes using attrsSchema */
+    attrs: {[attr: string]: any};
+
     /** State object to share with nested descendant components */
     appState: AppState;
 
