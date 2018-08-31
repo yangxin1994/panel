@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "1.3.4",
+  "version": "1.4.0",
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "types": "lib/index.d.ts",
@@ -10,7 +10,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "babel lib -d build && cp -r build/isorender .",
+    "build": "rm -rf build && babel lib -d build && cp -r build/isorender .",
     "build-test": "webpack --config test/browser/webpack.config.js",
     "docs": "rm -rf docs && jsdoc lib lib/component-utils lib/isorender -t node_modules/minami -R README-API.md -d docs",
     "lint": "eslint devtools hot lib scripts test --ignore-pattern 'test/browser/build/' && npm run tslint",

@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="ProxyComponent.html">ProxyComponent</a><ul class='methods'><li data-type='method'><a href="ProxyComponent.html#allowEvent">allowEvent</a></li><li data-type='method'><a href="ProxyComponent.html#child">child</a></li><li data-type='method'><a href="ProxyComponent.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="ProxyComponent.html#getConfig">getConfig</a></li><li data-type='method'><a href="ProxyComponent.html#getTargetElementTag">getTargetElementTag</a></li><li data-type='method'><a href="ProxyComponent.html#navigate">navigate</a></li><li data-type='method'><a href="ProxyComponent.html#setConfig">setConfig</a></li><li data-type='method'><a href="ProxyComponent.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="ProxyComponent.html#update">update</a></li><li data-type='method'><a href="ProxyComponent.html#updateApp">updateApp</a></li></ul></li><li><a href="StateController.html">StateController</a></li><li><a href="StateStore.html">StateStore</a></li></ul><h3>Modules</h3><ul><li><a href="module-component-utils.html">component-utils</a></li><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Component.html">Component</a><ul class='methods'><li data-type='method'><a href="Component.html#_updateAttr">_updateAttr</a></li><li data-type='method'><a href="Component.html#child">child</a></li><li data-type='method'><a href="Component.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="Component.html#getConfig">getConfig</a></li><li data-type='method'><a href="Component.html#navigate">navigate</a></li><li data-type='method'><a href="Component.html#setConfig">setConfig</a></li><li data-type='method'><a href="Component.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="Component.html#update">update</a></li><li data-type='method'><a href="Component.html#updateApp">updateApp</a></li></ul></li><li><a href="module.exports.html">exports</a></li><li><a href="ProxyComponent.html">ProxyComponent</a><ul class='methods'><li data-type='method'><a href="ProxyComponent.html#_updateAttr">_updateAttr</a></li><li data-type='method'><a href="ProxyComponent.html#allowEvent">allowEvent</a></li><li data-type='method'><a href="ProxyComponent.html#child">child</a></li><li data-type='method'><a href="ProxyComponent.html#findPanelParentByTagName">findPanelParentByTagName</a></li><li data-type='method'><a href="ProxyComponent.html#getConfig">getConfig</a></li><li data-type='method'><a href="ProxyComponent.html#getTargetElementTag">getTargetElementTag</a></li><li data-type='method'><a href="ProxyComponent.html#navigate">navigate</a></li><li data-type='method'><a href="ProxyComponent.html#setConfig">setConfig</a></li><li data-type='method'><a href="ProxyComponent.html#shouldUpdate">shouldUpdate</a></li><li data-type='method'><a href="ProxyComponent.html#update">update</a></li><li data-type='method'><a href="ProxyComponent.html#updateApp">updateApp</a></li></ul></li><li><a href="StateController.html">StateController</a></li><li><a href="StateStore.html">StateStore</a></li></ul><h3>Modules</h3><ul><li><a href="module-component-utils.html">component-utils</a></li><li><a href="module-isorender_dom-shims.html">isorender/dom-shims</a></li><li><a href="module-panel.html">panel</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -38,7 +38,8 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>/* eslint-env node */
+/**
  * Node.js polyfill for rendering Panel components without a browser.
  * Makes the following objects globally available:
  * Comment, document, Document, Element, HTMLElement, Node, requestAnimationFrame, Text.
@@ -67,7 +68,7 @@ import requestAnimationFrame from 'raf';
 global.requestAnimationFrame = global.requestAnimationFrame || requestAnimationFrame;
 
 // patch DOM insertion functions to call connectedCallback on Custom Elements
-['appendChild', 'insertBefore', 'replaceChild'].forEach(funcName => {
+[`appendChild`, `insertBefore`, `replaceChild`].forEach(funcName => {
   const origFunc = Element.prototype[funcName];
   Element.prototype[funcName] = function() {
     const child = origFunc.apply(this, arguments);
@@ -90,6 +91,10 @@ class HTMLElement extends Element {
     }
   }
 
+  hasAttribute(name) {
+    return !!this.attributes.find(attr => attr.name === name);
+  }
+
   __attrIsObserved(name) {
     if (!this.__observedAttrs) {
       this.__observedAttrs = this.constructor.observedAttributes || [];
@@ -97,6 +102,7 @@ class HTMLElement extends Element {
     return this.__observedAttrs.includes(name);
   }
 }
+
 global.HTMLElement = HTMLElement;
 
 
@@ -116,7 +122,7 @@ Document.prototype.createElement = function(tagName) {
     el = originalCreateElement(...arguments);
   }
   return el;
-}
+};
 
 global.customElements = global.customElements || {
   define(tagName, proto) {
@@ -126,7 +132,7 @@ global.customElements = global.customElements || {
     } else {
       registeredElements[tagName] = proto;
     }
-  }
+  },
 };
 </code></pre>
         </article>
@@ -140,7 +146,7 @@ global.customElements = global.customElements || {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 12 2018 16:20:51 GMT-0700 (PDT) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 30 2018 17:04:14 GMT-0700 (PDT) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

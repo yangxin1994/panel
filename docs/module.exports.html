@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>component-utils/state-controller.js - Documentation</title>
+    <title>exports - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,58 +28,139 @@
 
 <div id="main">
     
-    <h1 class="page-title">component-utils/state-controller.js</h1>
+    <h1 class="page-title">exports</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import StateStore from './state-store';
+        <h2>
+        exports
+        </h2>
+        
+    
+</header>
 
-/**
- * A StateController manages state for an application or component
- * Subclasses extend this and expose methods that call the controller's _update method
- * Controller will default create its own state store unless one is passed.
- * StateController subclasses should only accept the dependencies they need via constructor
- * This means the dependencies can easily be mocked and unit tested
- */
-class StateController {
-  // Create's a default store if one isn't given
-  constructor({store=null}={}) {
-    this._store = store || new StateStore();
-    this._update(this.defaultState);
-  }
+<article>
+    <div class="container-overview">
+    
+        
 
-  get defaultState() {
-    return {};
-  }
+    
 
-  get state() {
-    return this._store.state;
-  }
+    <h4 class="name" id="exports"><span class="type-signature"></span>new exports<span class="signature">()</span><span class="type-signature"></span></h4>
 
-  // Discourage external users from using state directly
-  _update(props) {
-    this._store.update(props);
-  }
+    
 
-  subscribeUpdates(listener) {
-    return this._store.subscribeUpdates(listener);
-  }
 
-  unsubscribeUpdates(listener) {
-    return this._store.unsubscribeUpdates(listener);
-  }
-}
 
-export default StateController;
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>ControlledComponent is deprecated. Compose with a normal component and controller</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="component-utils_controlled-component.js.html">component-utils/controlled-component.js</a>, <a href="component-utils_controlled-component.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>constructor() {
+  super(...arguments);
+  this.controller = new ExampleController({store: this});
+  this.setConfig(`defaultState`, this.controller.defaultState);
+}</code></pre>
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>component-utils/state-controller.js - Documentation</title>
+    <title>component-utils/controlled-component.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">component-utils/state-controller.js</h1>
+    <h1 class="page-title">component-utils/controlled-component.js</h1>
     
 
     
@@ -38,45 +38,67 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import StateStore from './state-store';
+            <pre class="prettyprint source linenums"><code>import Component from '../component';
+import {EMPTY_DIV} from '../dom-patcher';
 
 /**
- * A StateController manages state for an application or component
- * Subclasses extend this and expose methods that call the controller's _update method
- * Controller will default create its own state store unless one is passed.
- * StateController subclasses should only accept the dependencies they need via constructor
- * This means the dependencies can easily be mocked and unit tested
+ * @deprecated
+ * ControlledComponent is deprecated. Compose with a normal component and controller
+ *
+ * @example
+ * constructor() {
+ *   super(...arguments);
+ *   this.controller = new ExampleController({store: this});
+ *   this.setConfig(`defaultState`, this.controller.defaultState);
+ * }
  */
-class StateController {
-  // Create's a default store if one isn't given
-  constructor({store=null}={}) {
-    this._store = store || new StateStore();
-    this._update(this.defaultState);
+
+
+export default class ControlledComponent extends Component {
+  constructor() {
+    super(...arguments);
+    this.controller = this.getConfig(`controller`);
+    if (!this.controller) {
+      throw Error(`"controller" must be set in config of a ControlledComponent`);
+    }
+    // Don't allow component's update directly
+    this._update = this.update;
+    this.update = () => { throw new Error(`update() not allowed from component. Use controller`); };
+    this._updateListener = () => this._update();
+    this.controller.subscribeUpdates(this._updateListener);
   }
 
-  get defaultState() {
-    return {};
+  disconnectedCallback() {
+    if (!this.initialized) {
+      return;
+    }
+
+    super.disconnectedCallback();
+    this.controller.unsubscribeUpdates(this._updateListener);
   }
 
-  get state() {
-    return this._store.state;
+  attributeChangedCallback() {
+    // Do nothing, component should explicitly pass this to controller for an update
+    // Super class calls this.update() which will throw an error
   }
 
-  // Discourage external users from using state directly
-  _update(props) {
-    this._store.update(props);
-  }
-
-  subscribeUpdates(listener) {
-    return this._store.subscribeUpdates(listener);
-  }
-
-  unsubscribeUpdates(listener) {
-    return this._store.unsubscribeUpdates(listener);
+  _render() {
+    if (this.shouldUpdate()) {
+      try {
+        // Pass in $controller to jade.
+        // Template should use something like $controller.getDisplayX() to get the state it needs
+        this._rendered = this.getConfig(`template`)({
+          $component: this,
+          $helpers: this.helpers,
+          $controller: this.controller,
+        });
+      } catch (e) {
+        this.logError(`Error while rendering ${this.toString()}`, this, e.stack);
+      }
+    }
+    return this._rendered || EMPTY_DIV;
   }
 }
-
-export default StateController;
 </code></pre>
         </article>
     </section>
