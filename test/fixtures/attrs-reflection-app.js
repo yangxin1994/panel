@@ -14,6 +14,9 @@ export class AttrsReflectionApp extends Component {
       template: scope => h(`div`, {class: {'attrs-reflection-app': true}},
         Object.entries(scope.$attrs).map(([attr, val]) => h(`p`, `${attr}: ${JSON.stringify(val)}`)),
       ),
+      defaultState: {
+        str: this.attrs[`str-attr`],
+      },
     };
   }
 }
