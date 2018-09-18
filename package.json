@@ -20,7 +20,7 @@
     "test-browser-local": "wct --plugin local test/browser/index.html",
     "test-browser-p": "wct --plugin local --persistent test/browser/index.html",
     "test-browser-sauce": "wct --plugin sauce test/browser/index.html",
-    "test-server": "NODE_ENV=test mocha --require babel-core/register --require babel-polyfill test/server",
+    "test-server": "NODE_ENV=test mocha --require babel-core/register test/server",
     "ts-check": "tsc",
     "tslint": "tslint -c tslint.json -t stylish 'lib/index.d.ts'"
   },
