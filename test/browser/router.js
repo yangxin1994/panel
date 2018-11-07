@@ -11,6 +11,10 @@ export class RouterApp extends Component {
       },
       routes: {
         'foo': () => ({text: `Foobar!`}),
+        'widget/:id': (stateUpdate, id) => ({text: `Widget ${id}`}),
+        'multiparam/:param1/lala:param2': (stateUpdate, param1, param2) => ({
+          text: `param1: ${param1} param2: ${param2}`,
+        }),
         '': () => ({text: `Default route!`}),
       },
       template: state => h(`p`, [state.text]),
@@ -48,7 +52,14 @@ describe(`Router`, function() {
 
   it(`reacts to location hash changes`, async function() {
     window.location.hash = `#foo`;
-    await nextAnimationFrame();
     await retryable(() => expect(this.routerApp.textContent).to.equal(`Foobar!`));
+  });
+
+  it(`passes params to route handlers`, async function() {
+    window.location.hash = `#widget/15`;
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`Widget 15`));
+
+    window.location.hash = `#multiparam/angry/lalallama`;
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`param1: angry param2: llama`));
   });
 });
