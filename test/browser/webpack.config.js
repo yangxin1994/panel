@@ -24,6 +24,7 @@ const webpackConfig = {
       },
     ],
   },
+  watch: process.env.WATCH,
 };
 
 module.exports = webpackConfig;
