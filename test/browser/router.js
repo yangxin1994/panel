@@ -1,5 +1,6 @@
+import {nextAnimationFrame, retryable} from 'domsuite';
+
 import {Component, h} from '../../lib';
-import nextAnimationFrame from './nextAnimationFrame';
 
 
 export class RouterApp extends Component {
@@ -48,6 +49,6 @@ describe(`Router`, function() {
   it(`reacts to location hash changes`, async function() {
     window.location.hash = `#foo`;
     await nextAnimationFrame();
-    expect(this.routerApp.textContent).to.equal(`Foobar!`);
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`Foobar!`));
   });
 });

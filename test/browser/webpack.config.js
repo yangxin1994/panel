@@ -22,6 +22,18 @@ const webpackConfig = {
           presets: [`es2015`],
         },
       },
+      {
+        test: /\.js$/,
+        include: /domsuite/,
+        loader: `babel`,
+        query: {
+          plugins: [
+            `syntax-async-functions`,
+            `transform-regenerator`,
+          ],
+          presets: [`es2015`],
+        },
+      },
     ],
   },
   watch: process.env.WATCH,
