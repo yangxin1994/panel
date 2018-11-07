@@ -15,6 +15,9 @@ export class RouterApp extends Component {
         'multiparam/:param1/lala:param2': (stateUpdate, param1, param2) => ({
           text: `param1: ${param1} param2: ${param2}`,
         }),
+        'optional/:required(/:optional)': (stateUpdate, required, optional) => ({
+          text: optional ? `Two params: ${required} and ${optional}` : `One param: ${required}`,
+        }),
         '': () => ({text: `Default route!`}),
       },
       template: state => h(`p`, [state.text]),
@@ -61,5 +64,13 @@ describe(`Router`, function() {
 
     window.location.hash = `#multiparam/angry/lalallama`;
     await retryable(() => expect(this.routerApp.textContent).to.equal(`param1: angry param2: llama`));
+  });
+
+  it(`supports optional params`, async function() {
+    window.location.hash = `#optional/wombat`;
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`One param: wombat`));
+
+    window.location.hash = `#optional/wombat/32`;
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`Two params: wombat and 32`));
   });
 });
