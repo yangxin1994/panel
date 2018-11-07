@@ -1,7 +1,3 @@
-/* eslint-env mocha */
-/* global sinon, expect */
-/* eslint no-unused-expressions:0 */
-
 import {nextAnimationFrame} from 'domsuite';
 
 import {compactHtml} from '../utils';
