@@ -2,8 +2,10 @@
 /* global sinon, expect */
 /* eslint no-unused-expressions:0 */
 
-import nextAnimationFrame from './nextAnimationFrame';
+import {nextAnimationFrame} from 'domsuite';
+
 import {compactHtml} from '../utils';
+
 
 describe(`Simple Component instance`, function() {
   let el;
