@@ -18,6 +18,8 @@ export class RouterApp extends Component {
         'optional/:required(/:optional)': (stateUpdate, required, optional) => ({
           text: optional ? `Two params: ${required} and ${optional}` : `One param: ${required}`,
         }),
+        'alias-to-foo': 'foo',
+        'alias-with-params/:param1/:param2': 'multiparam/:param1/lala:param2',
         '': () => ({text: `Default route!`}),
       },
       template: state => h(`p`, [state.text]),
@@ -72,5 +74,17 @@ describe(`Router`, function() {
 
     window.location.hash = `#optional/wombat/32`;
     await retryable(() => expect(this.routerApp.textContent).to.equal(`Two params: wombat and 32`));
+  });
+
+  it(`supports route redirects/aliases`, async function() {
+    expect(this.routerApp.textContent).to.equal(`Default route!`);
+    window.location.hash = `#alias-to-foo`;
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`Foobar!`));
+  });
+
+  it(`supports params in redirects/aliases`, async function() {
+    expect(this.routerApp.textContent).to.equal(`Default route!`);
+    window.location.hash = `#alias-with-params/foo/bar`;
+    await retryable(() => expect(this.routerApp.textContent).to.equal(`param1: foo param2: bar`));
   });
 });
