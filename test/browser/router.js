@@ -8,10 +8,11 @@ export class RouterApp extends Component {
     return {
       defaultState: {
         text: `Hello world`,
+        additionalText: ``,
       },
       routes: {
         'foo': () => ({text: `Foobar!`}),
-        'widget/:id': (stateUpdate, id) => ({text: `Widget ${id}`}),
+        'widget/:id': (stateUpdate, id) => Object.assign({text: `Widget ${id}`}, stateUpdate),
         'multiparam/:param1/lala:param2': (stateUpdate, param1, param2) => ({
           text: `param1: ${param1} param2: ${param2}`,
         }),
@@ -22,7 +23,7 @@ export class RouterApp extends Component {
         'alias-with-params/:param1/:param2': 'multiparam/:param1/lala:param2',
         '': () => ({text: `Default route!`}),
       },
-      template: state => h(`p`, [state.text]),
+      template: state => h(`p`, [`${state.text}${state.additionalText}`]),
     };
   }
 }
@@ -86,5 +87,23 @@ describe(`Router`, function() {
     expect(this.routerApp.textContent).to.equal(`Default route!`);
     window.location.hash = `#alias-with-params/foo/bar`;
     await retryable(() => expect(this.routerApp.textContent).to.equal(`param1: foo param2: bar`));
+  });
+
+  describe(`navigate()`, function() {
+    it(`switches to the manually specified route`, async function() {
+      this.routerApp.router.navigate(`foo`);
+      await retryable(() => expect(this.routerApp.textContent).to.equal(`Foobar!`));
+    });
+
+    it(`updates the URL`, function() {
+      expect(window.location.hash).not.to.equal(`#foo`);
+      this.routerApp.router.navigate(`foo`);
+      expect(window.location.hash).to.equal(`#foo`);
+    });
+
+    it(`supports passing state updates to the route handler`, async function() {
+      this.routerApp.router.navigate(`widget/5`, {additionalText: ` and more!`});
+      await retryable(() => expect(this.routerApp.textContent).to.equal(`Widget 5 and more!`));
+    });
   });
 });
