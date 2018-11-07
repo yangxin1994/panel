@@ -1,4 +1,5 @@
 import {Component, h} from '../../lib';
+import nextAnimationFrame from './nextAnimationFrame';
 
 
 export class RouterApp extends Component {
@@ -18,12 +19,14 @@ export class RouterApp extends Component {
 customElements.define(`router-app`, RouterApp);
 
 describe(`Router`, function() {
-  beforeEach(function() {
+  beforeEach(async function() {
     document.body.innerHTML = ``;
     window.location = `#`;
 
     this.routerApp = document.createElement(`router-app`);
     document.body.appendChild(this.routerApp);
+
+    await nextAnimationFrame();
   });
 
   it(`is not initialized when component has no routes defined`, function() {
@@ -36,5 +39,15 @@ describe(`Router`, function() {
 
   it(`is present when component has routes defined`, function() {
     expect(this.routerApp.router).to.be.ok;
+  });
+
+  it(`runs index route handler when window location is empty`, function() {
+    expect(this.routerApp.textContent).to.equal(`Default route!`);
+  });
+
+  it(`reacts to location hash changes`, async function() {
+    window.location.hash = `#foo`;
+    await nextAnimationFrame();
+    expect(this.routerApp.textContent).to.equal(`Foobar!`);
   });
 });
