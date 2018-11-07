@@ -1,7 +1,5 @@
-/* eslint-env mocha */
-/* global expect */
+import {nextAnimationFrame} from 'domsuite';
 
-import nextAnimationFrame from '../nextAnimationFrame';
 
 describe(`Controlled App`, function() {
   let el;
