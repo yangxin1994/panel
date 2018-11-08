@@ -1,9 +1,7 @@
-/* eslint-env mocha */
-/* global sinon, expect */
-/* eslint no-unused-expressions:0 */
+import {nextAnimationFrame} from 'domsuite';
 
-import nextAnimationFrame from './nextAnimationFrame';
 import {compactHtml} from '../utils';
+
 
 describe(`Simple Component instance`, function() {
   let el;
