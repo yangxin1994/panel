@@ -21,6 +21,7 @@ export class RouterApp extends Component {
         }),
         'alias-to-foo': 'foo',
         'alias-with-params/:param1/:param2': 'multiparam/:param1/lala:param2',
+        'numeric/:num': (stateUpdate, num) => isNaN(num) ? false : ({text: `Number: ${num}`}),
         '': () => ({text: `Default route!`}),
       },
       template: state => h(`p`, [`${state.text}${state.additionalText}`]),
@@ -104,6 +105,17 @@ describe(`Router`, function() {
     it(`supports passing state updates to the route handler`, async function() {
       this.routerApp.router.navigate(`widget/5`, {additionalText: ` and more!`});
       await retryable(() => expect(this.routerApp.textContent).to.equal(`Widget 5 and more!`));
+    });
+
+    it(`does not apply updates when the route handler returns a falsey result`, async function() {
+      this.routerApp.router.navigate(`numeric/42`);
+      await retryable(() => expect(this.routerApp.textContent).to.equal(`Number: 42`));
+
+      this.routerApp.router.navigate(`numeric/notanumber`);
+      await nextAnimationFrame();
+      await nextAnimationFrame();
+      await nextAnimationFrame();
+      expect(this.routerApp.textContent).to.equal(`Number: 42`);
     });
   });
 });
