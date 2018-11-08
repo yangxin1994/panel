@@ -67,7 +67,7 @@ A Panel implementation of the [TodoMVC](http://todomvc.com/) app spec is availab
 
 ## Running tests
 
-Browser tests run with Selenium through [web-component-tester](https://github.com/Polymer/web-component-tester). Server-side rendering tests use `mocha` and `chai` directly.
+Browser tests run with Selenium through [web-component-tester](https://github.com/Polymer/tools/tree/master/packages/web-component-tester). Server-side rendering tests use `mocha` and `chai` directly.
 
 #### Run with locally installed browsers
 `npm test`
