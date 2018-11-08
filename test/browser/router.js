@@ -90,6 +90,18 @@ describe(`Router`, function() {
     await retryable(() => expect(this.routerApp.textContent).to.equal(`param1: foo param2: bar`));
   });
 
+  it(`unregisters listeners when component is disconnected`, function() {
+    window.location.hash = `#foo`;
+    expect(this.routerApp.state.text).to.equal(`Foobar!`);
+    window.location.hash = `#`;
+    expect(this.routerApp.state.text).to.equal(`Default route!`);
+
+    document.body.removeChild(this.routerApp);
+
+    window.location.hash = `#foo`;
+    expect(this.routerApp.state.text).to.equal(`Default route!`);
+  });
+
   describe(`navigate()`, function() {
     it(`switches to the manually specified route`, async function() {
       this.routerApp.router.navigate(`foo`);
