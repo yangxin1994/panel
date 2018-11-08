@@ -19,8 +19,8 @@ export class RouterApp extends Component {
         'optional/:required(/:optional)': (stateUpdate, required, optional) => ({
           text: optional ? `Two params: ${required} and ${optional}` : `One param: ${required}`,
         }),
-        'alias-to-foo': 'foo',
-        'alias-with-params/:param1/:param2': 'multiparam/:param1/lala:param2',
+        'alias-to-foo': `foo`,
+        'alias-with-params/:param1/:param2': `multiparam/:param1/lala:param2`,
         'numeric/:num': (stateUpdate, num) => isNaN(num) ? false : ({text: `Number: ${num}`}),
         '': () => ({text: `Default route!`}),
       },
