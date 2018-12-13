@@ -5,13 +5,14 @@ const helpers = require(`./loader-helpers`);
 // Used in non-HMR mode, do nothing
 module.exports = source => source;
 
-module.exports.pitch = function(remainingReq) {
-  if (!helpers.isDevServerHot(this.options)) {
-    return;
-  }
+module.exports.pitch = function(request) {
+  const options = loaderUtils.getOptions(this) || {};
+  const moduleId = loaderUtils.stringifyRequest(this, `!!${request}`);
+  const elemName = helpers.getElemName(this.resourcePath, options);
 
-  const moduleId = loaderUtils.stringifyRequest(this, `!!${remainingReq}`);
-  const elemName = helpers.getElemName(this.resourcePath);
+  if (!options.hot) {
+    return `module.exports = require(${moduleId});`;
+  }
 
   return `
     module.hot.accept(${moduleId}, () => {
@@ -24,5 +25,5 @@ module.exports.pitch = function(remainingReq) {
       });
     });
     const oldExports = module.exports = require(${moduleId});
-    `.trim().replace(/^ {4}/gm, ``);
+  `;
 };

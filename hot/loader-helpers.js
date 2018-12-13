@@ -1,5 +1,16 @@
 /* eslint-env commonjs */
+const loaderUtils = require(`loader-utils`);
 const path = require(`path`);
+const validateOptions = require(`schema-utils`);
+
+const OPTIONS_SCHEMA = {
+  type: `object`,
+  properties: {
+    hot: {
+      type: `boolean`,
+    },
+  },
+};
 
 // Retrieve elemName for hot injection from path convention
 //
@@ -12,7 +23,7 @@ const path = require(`path`);
 //
 // this means multiple element definitions in a single file won't work
 
-module.exports.getElemName = function(resourcePath) {
+module.exports.getElemName = function(resourcePath, options) {
   const pathInfo = path.parse(resourcePath);
   let elemName = pathInfo.name;
   if (/^(index|template|styles?|controller)$/.test(pathInfo.name)) {
@@ -20,9 +31,18 @@ module.exports.getElemName = function(resourcePath) {
     elemName = pathParts[pathParts.length - 2];
   }
 
+  const transform = options.elementNameTransform;
+  if (typeof transform === `function`) {
+    elemName = transform(elemName, resourcePath);
+  }
+
   return elemName;
 };
 
-module.exports.isDevServerHot = function(webpackOpts) {
-  return webpackOpts.devServer && webpackOpts.devServer.hot;
+module.exports.getOptions = function(context) {
+  const options = loaderUtils.getOptions(context) || {};
+
+  validateOptions(OPTIONS_SCHEMA, options, `Panel HMR`);
+
+  return options;
 };

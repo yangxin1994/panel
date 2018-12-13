@@ -25,8 +25,8 @@ module.exports = function updatePanelElems(elemName, updateFn) {
 
   for (const elem of elems) {
     if (updateFn.call(null, elem)) {
-      const update = elem._update || elem.update;
-      numUpdated += update.apply(elem) ? 1 : 0;
+      numUpdated++;
+      (elem._update || elem.update).apply(elem);
     }
   }
 

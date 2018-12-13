@@ -26,7 +26,16 @@ const webpackConfig = {
         }},
       ]},
       { test: /\.styl$/, use: [
-        { loader: `panel/hot/style-loader`},
+        {
+          loader: `panel/hot/style-loader`,
+          options: {
+            // enables or disables the loader
+            hot: true,
+            // transforms a path derived element name into something else
+            // allows for more flexible naming convention
+            elementNameTransform: (name, path) => `mp-${name}`,
+          },
+        },
         { loader: `css-loader`},
         { loader: `stylus-loader`},
       ]},
