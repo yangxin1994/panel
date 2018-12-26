@@ -138,6 +138,9 @@ export class Component<State, AppState = {}> extends WebComponent {
     /** State object to share with nested descendant components */
     appState: AppState;
 
+    /** A flag that represents whether the component is currently connected and initialized */
+    initialized: boolean;
+
     /** Defines the state of the component, including all the properties required for rendering */
     state: State;
 
