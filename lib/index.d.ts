@@ -135,6 +135,9 @@ export class Component<State, AppState = {}> extends WebComponent {
     /** Attributes parsed from component's html attributes using attrsSchema */
     attrs: {[attr: string]: any};
 
+    /** A reference to the top-level component */
+    app: Component<State, AppState>;
+
     /** State object to share with nested descendant components */
     appState: AppState;
 
