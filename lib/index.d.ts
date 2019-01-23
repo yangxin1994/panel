@@ -125,7 +125,7 @@ declare namespace Component {
 
 type ConfigOptions<State, AppState> = Component.ConfigOptions<State, AppState>;
 
-export class Component<State, AppState = {}> extends WebComponent {
+export class Component<State, AppState = {}, App = unknown> extends WebComponent {
     /**
      * Attributes schema that defines the component's html attributes and their types
      * Panel auto parses attribute changes into this.attrs object and $attrs template helper
@@ -136,7 +136,7 @@ export class Component<State, AppState = {}> extends WebComponent {
     attrs: {[attr: string]: any};
 
     /** A reference to the top-level component */
-    app: Component<State, AppState>;
+    app: App;
 
     /** State object to share with nested descendant components */
     appState: AppState;
