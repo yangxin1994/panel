@@ -109,17 +109,18 @@ declare namespace Component {
         useShadowDom?: boolean;
     }
 
-    type AttrType = 'string' | 'number' | 'boolean' | 'json';
-
     interface AttrSchema {
-        /** Type of the attribute */
-        type: AttrType;
+        /** Type of the attribute. One of 'string' | 'number' | 'boolean' | 'json' */
+        type: string;
 
         /** Default value if the attr is not defined */
         default?: any;
 
         /** Description of attribute, what it does e.t.c */
         description?: string;
+
+        /** Possible values of an attribute. e.g ['primary', 'secondary'] */
+        enum?: Array<string>;
     }
 }
 
@@ -130,7 +131,7 @@ export class Component<State, AppState = {}, App = unknown> extends WebComponent
      * Attributes schema that defines the component's html attributes and their types
      * Panel auto parses attribute changes into this.attrs object and $attrs template helper
      */
-    static attrsSchema: {[attr: string]: (Component.AttrSchema | Component.AttrType)};
+    static attrsSchema: {[attr: string]: (string | Component.AttrSchema )};
 
     /** Attributes parsed from component's html attributes using attrsSchema */
     attrs: {[attr: string]: any};
