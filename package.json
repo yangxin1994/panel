@@ -3,7 +3,7 @@
   "version": "1.6.2",
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
-  "types": "lib/index.d.ts",
+  "types": "lib/types.d.ts",
   "files": [
     "build",
     "hot",
@@ -47,8 +47,9 @@
     "lodash.pick": "4.4.0",
     "raf": "3.2.0",
     "schema-utils": "1.0.0",
-    "snabbdom": "0.6.2",
+    "snabbdom": "0.7.2",
     "snabbdom-delayed-class": "0.1.1",
+    "tsd-jsdoc": "^2.1.2",
     "webcomponent": "1.2.1"
   },
   "devDependencies": {
