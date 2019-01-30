@@ -126,7 +126,7 @@ declare namespace Component {
 
 type ConfigOptions<State, AppState> = Component.ConfigOptions<State, AppState>;
 
-export class Component<State, AppState = {}, App = unknown> extends WebComponent {
+export class Component<State = unknown, AppState = {}, App = unknown> extends WebComponent {
 
     /** The first Panel Component ancestor in the DOM tree; null if this component is the root */
     $panelParent: Component<unknown>;
