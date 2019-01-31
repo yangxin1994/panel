@@ -1,6 +1,7 @@
 # panel
 
 [![Build Status](https://travis-ci.org/mixpanel/panel.svg?branch=master)](https://travis-ci.org/mixpanel/panel)
+[![NPM version](https://img.shields.io/npm/v/panel.svg)](https://www.npmjs.com/package/panel)
 
 [![Build Status](https://saucelabs.com/browser-matrix/panel.svg)](https://saucelabs.com/open_sauce/user/panel)
 
