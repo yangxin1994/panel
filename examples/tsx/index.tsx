@@ -7,6 +7,8 @@ import './property-filter.tsx';
 
 const Snabbdom = _Snabbdom; // required so we don't lose Snabbdom reference, can probably use webpack to inject this.
 
+// this is a hack to get type checking when we serialize the params,
+// I think if we made a custom module instead of the default `attrs` module, we can abstract this away
 const tojson = function<T>(obj: T) {
   return JSON.stringify(obj) as unknown as T;
 };
