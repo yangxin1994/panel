@@ -130,4 +130,31 @@ describe(`Router`, function() {
       expect(this.routerApp.textContent).to.equal(`Number: 42`);
     });
   });
+
+  describe(`replaceHash()`, function() {
+    it(`updates the URL`, function() {
+      expect(window.location.hash).not.to.equal(`#foo`);
+      this.routerApp.router.replaceHash(`foo`);
+      expect(window.location.hash).to.equal(`#foo`);
+    });
+
+    it(`does not update the URL if hash is the same`, function() {
+      const historyLength = window.history.length;
+
+      this.routerApp.router.replaceHash(`foo`);
+      expect(window.history.length).to.equal(historyLength + 1);
+      this.routerApp.router.replaceHash(`foo`);
+      expect(window.history.length).to.equal(historyLength + 1);
+
+      // ensure window.location.hash is properly URI-decoded for comparison,
+      // otherwise `widget/bar baz` !== `widget/bar%20baz` may be compared
+      // resulting in possible circular redirect loop
+      this.routerApp.router.replaceHash(`widget/bar baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+      this.routerApp.router.replaceHash(`widget/bar baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+      this.routerApp.router.replaceHash(`widget/bar%20baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+    });
+  });
 });
