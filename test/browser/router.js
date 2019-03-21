@@ -156,5 +156,23 @@ describe(`Router`, function() {
       this.routerApp.router.replaceHash(`widget/bar%20baz`);
       expect(window.history.length).to.equal(historyLength + 2);
     });
+
+    it(`uses pushState by default and adds a history entry`, function() {
+      const historyLength = window.history.length;
+
+      this.routerApp.router.replaceHash(`foo`);
+      expect(window.history.length).to.equal(historyLength + 1);
+      this.routerApp.router.replaceHash(`widget/bar baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+    });
+
+    it(`can use replaceState to avoid adding a history entry`, function() {
+      const historyLength = window.history.length;
+
+      this.routerApp.router.replaceHash(`foo`, {historyMethod: `replaceState`});
+      expect(window.history.length).to.equal(historyLength);
+      this.routerApp.router.replaceHash(`widget/bar baz`, {historyMethod: `replaceState`});
+      expect(window.history.length).to.equal(historyLength);
+    });
   });
 });
