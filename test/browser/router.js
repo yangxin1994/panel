@@ -114,6 +114,25 @@ describe(`Router`, function() {
       expect(window.location.hash).to.equal(`#foo`);
     });
 
+    it(`does not update the URL if hash is the same`, function() {
+      const historyLength = window.history.length;
+
+      this.routerApp.router.navigate(`foo`);
+      expect(window.history.length).to.equal(historyLength + 1);
+      this.routerApp.router.navigate(`foo`);
+      expect(window.history.length).to.equal(historyLength + 1);
+
+      // ensure window.location.hash is properly URI-decoded for comparison,
+      // otherwise `widget/bar baz` !== `widget/bar%20baz` may be compared
+      // resulting in possible circular redirect loop
+      this.routerApp.router.navigate(`widget/bar baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+      this.routerApp.router.navigate(`widget/bar baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+      this.routerApp.router.navigate(`widget/bar%20baz`);
+      expect(window.history.length).to.equal(historyLength + 2);
+    });
+
     it(`supports passing state updates to the route handler`, async function() {
       this.routerApp.router.navigate(`widget/5`, {additionalText: ` and more!`});
       await retryable(() => expect(this.routerApp.textContent).to.equal(`Widget 5 and more!`));
