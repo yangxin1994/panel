@@ -41,8 +41,8 @@ function getPanelElementState() {
         debugInfo.appState = panelElem.appState;
       }
 
-      if (panelElem.attrs && Object.keys(panelElem.attrs).length) {
-        debugInfo.attrs = panelElem.attrs;
+      if (panelElem._attrs && Object.keys(panelElem._attrs).length) {
+        debugInfo.attrs = panelElem._attrs;
         debugInfo.attrsSchema = panelElem.constructor.attrsSchema;
       }
 

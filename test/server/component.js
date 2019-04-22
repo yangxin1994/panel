@@ -131,12 +131,12 @@ describe(`Server-side component renderer`, function() {
     el.setAttribute(`number-attr`, `500843`);
     el.setAttribute(`json-attr`, `{"foo": "bae"}`);
 
-    expect(el.attrs).to.deep.equal({
+    expect(JSON.stringify(el.attrs)).to.equal(JSON.stringify({
       'str-attr': `world`,
       'bool-attr': false,
       'number-attr': 500843,
       'json-attr': {foo: `bae`},
-    });
+    }));
 
     await nextAnimationFrame();
 
@@ -158,12 +158,12 @@ describe(`Server-side component renderer`, function() {
     el.setAttribute(`json-attr`, `{"foo": not %%^ json`);
     el.connectedCallback();
 
-    expect(el.attrs).to.deep.equal({
+    expect(JSON.stringify(el.attrs)).to.equal(JSON.stringify({
       'str-attr': `💩🤒🤢☠️ -> 👻🎉💐🎊😱😍`,
       'bool-attr': true,
       'number-attr': null,
       'json-attr': null,
-    });
+    }));
 
     await nextAnimationFrame();
 
@@ -175,6 +175,15 @@ describe(`Server-side component renderer`, function() {
         <p>json-attr: null</p>
       </div>
     `));
+  });
+
+  it(`throws error for invalid attr access`, async function() {
+    const el = new AttrsReflectionApp();
+    el.connectedCallback();
+
+    expect(() => el.attrs[`bad-attr`]).to.throw(
+      `attr 'bad-attr' is not defined in attrSchema`
+    );
   });
 
   it(`throws error for invalid value in an enum attr`, function() {

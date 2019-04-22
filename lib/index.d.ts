@@ -122,6 +122,9 @@ export interface AttrSchema {
 
   /** Possible values of an attribute. e.g ['primary', 'secondary'] */
   enum?: Array<string>;
+
+  /** When attr is set, console.warn that attr is deprecated e.g 'use xyz instead' */
+  deprecatedMsg?: string;
 }
 
 type ConfigOptions<State, AppState> = Component.ConfigOptions<State, AppState>;
