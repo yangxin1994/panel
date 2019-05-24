@@ -317,7 +317,7 @@ describe(`Nested Component instance`, function() {
       expect(el.state.animal).to.equal(`capybara`);
     });
 
-    it.only(`flushes child state updates to parent`, async function() {
+    it(`flushes child state updates to parent`, async function() {
       el.connectedCallback();
       expect(el.state).to.not.have.all.keys(`animal`, `stateFromChild`);
       childEl = document.createElement(`nested-child`);
