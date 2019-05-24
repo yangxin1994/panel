@@ -19,15 +19,11 @@ customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
 describe(`Server-side component renderer`, function() {
   it(`can register and create components with document.createElement`, function() {
     const el = document.createElement(`simple-app`);
-    expect(el.state).to.eql({});
-    el.connectedCallback();
     expect(el.state).to.eql({foo: `bar`, baz: `qux`});
   });
 
   it(`supports class instantiation`, function() {
     const el = new SimpleApp();
-    expect(el.state).to.eql({});
-    el.connectedCallback();
     expect(el.state).to.eql({foo: `bar`, baz: `qux`});
   });
 
