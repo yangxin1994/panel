@@ -312,9 +312,23 @@ describe(`Nested Component instance`, function() {
       childEl = document.createElement(`nested-child`);
       childEl.$panelParentID = el.panelID;
       childEl.$panelParent = childEl.$panelRoot = el;
-      childEl.update({animal: `capybara`});
       childEl.connectedCallback();
+      childEl.update({animal: `capybara`});
       expect(el.state.animal).to.equal(`capybara`);
+    });
+
+    it.only(`flushes child state updates to parent`, async function() {
+      el.connectedCallback();
+      expect(el.state).to.not.have.all.keys(`animal`, `stateFromChild`);
+      childEl = document.createElement(`nested-child`);
+      childEl.$panelParentID = el.panelID;
+      childEl.$panelParent = childEl.$panelRoot = el;
+      // state updates happening in child menu should be flushed to parent when connected
+      expect(el.state).to.not.have.all.keys(`animal`, `stateFromChild`);
+      childEl.setAttribute(`animal`, `attribute-animal`);
+      childEl.connectedCallback();
+      expect(childEl.state).to.include({animal: `attribute-animal`, stateFromChild: `value`});
+      expect(el.state).to.include({animal: `attribute-animal`, stateFromChild: `value`});
     });
   });
 

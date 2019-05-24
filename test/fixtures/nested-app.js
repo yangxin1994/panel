@@ -14,13 +14,17 @@ export class NestedApp extends Component {
 
       template: state => h(`div`, {class: {'nested-foo': true}}, [
         h(`h1`, `Nested app: ${state.title}`),
-        this.child(`nested-child`, {attrs: {'state-animal': `llama`}}),
+        this.child(`nested-child`, {attrs: {'child-title': `test`, 'state-animal': `llama`}}),
       ]),
     };
   }
 }
 
 export class NestedChild extends Component {
+  static get attrsSchema() {
+    return {'animal': `string`};
+  }
+
   get config() {
     return {
       template: state => h(`div`, {class: {'nested-foo-child': true}}, [
@@ -28,5 +32,18 @@ export class NestedChild extends Component {
         h(`p`, `animal: ${state.animal}`),
       ]),
     };
+  }
+
+  attributeChangedCallback(attr, oldVal, newVal) {
+    super.attributeChangedCallback(attr, oldVal, newVal);
+
+    if (attr === `animal`) {
+      this.update({animal: newVal});
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.update({stateFromChild: `value`});
   }
 }
