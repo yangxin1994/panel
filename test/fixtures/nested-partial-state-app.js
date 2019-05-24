@@ -18,13 +18,17 @@ export class NestedPartialStateParent extends Component {
         h(`p`, `parent: parentOnlyState: ${state.parentOnlyState}`),
         h(`p`, `parent: childOnlyState: ${state.childOnlyState}`),
         h(`p`, `parent: nonSharedStateExample: ${state.nonSharedStateExample}`),
-        this.child(`nested-partial-state-child`),
+        this.child(`nested-partial-state-child`, {attrs: {'child-animal': `fox`}}),
       ]),
     };
   }
 }
 
 export class NestedPartialStateChild extends Component {
+  static get attrsSchema() {
+    return {'child-animal': `string`};
+  }
+
   get config() {
     return {
       defaultState: {
@@ -35,11 +39,20 @@ export class NestedPartialStateChild extends Component {
 
       template: state => h(`div`, {class: {'nested-partial-child': true}}, [
         h(`p`, `shared title: ${state.$app.title}`),
+        h(`p`, `shared child animal: ${state.$app.childAnimal}`),
         h(`p`, `component-specific title: ${state.title}`),
         h(`p`, `childOnlyState: ${state.childOnlyState}`),
         h(`p`, `child: parentOnlyState: ${state.parentOnlyState}`),
         h(`p`, `child: nonSharedStateExample: ${state.nonSharedStateExample}`),
       ]),
     };
+  }
+
+  attributeChangedCallback(attr, oldVal, newVal) {
+    super.attributeChangedCallback(attr, oldVal, newVal);
+
+    if (attr === `child-animal`) {
+      this.updateApp({childAnimal: newVal});
+    }
   }
 }

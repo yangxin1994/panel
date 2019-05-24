@@ -307,28 +307,19 @@ describe(`Nested Component instance`, function() {
       expect(childEl.findPanelParentByTagName(`nested-app`)).to.equal(el);
     });
 
-    it(`passes state updates from child to parent`, function() {
-      el.connectedCallback();
-      childEl = document.createElement(`nested-child`);
-      childEl.$panelParentID = el.panelID;
-      childEl.$panelParent = childEl.$panelRoot = el;
-      childEl.connectedCallback();
-      childEl.update({animal: `capybara`});
-      expect(el.state.animal).to.equal(`capybara`);
-    });
-
     it(`flushes child state updates to parent`, async function() {
       el.connectedCallback();
-      expect(el.state).to.not.have.all.keys(`animal`, `stateFromChild`);
+      expect(el.state).to.not.have.property(`childAnimal`);
       childEl = document.createElement(`nested-child`);
       childEl.$panelParentID = el.panelID;
       childEl.$panelParent = childEl.$panelRoot = el;
       // state updates happening in child menu should be flushed to parent when connected
-      expect(el.state).to.not.have.all.keys(`animal`, `stateFromChild`);
-      childEl.setAttribute(`animal`, `attribute-animal`);
+      childEl.setAttribute(`child-animal`, `attribute-animal`);
+      childEl.update({animal: `capybara`});
       childEl.connectedCallback();
-      expect(childEl.state).to.include({animal: `attribute-animal`, stateFromChild: `value`});
-      expect(el.state).to.include({animal: `attribute-animal`, stateFromChild: `value`});
+
+      expect(childEl.state).to.include({animal: `capybara`, childAnimal: `attribute-animal`});
+      expect(el.state).to.include({animal: `capybara`, childAnimal: `attribute-animal`});
     });
   });
 
@@ -354,6 +345,10 @@ describe(`Nested Component instance`, function() {
 
     it(`passes parent state to the child component`, function() {
       expect(childEl.textContent).to.include(`parent title: test`);
+    });
+
+    it(`flushes child state to parent state`, async function() {
+      expect(childEl.textContent).to.include(`child animal: fox`);
     });
 
     it(`passes attributes to the child component`, function() {
@@ -402,9 +397,11 @@ describe(`Nested Component instance with partially shared state`, function() {
       childEl = document.createElement(`nested-partial-state-child`);
       childEl.$panelParentID = parentEl.panelID;
       childEl.$panelParent = childEl.$panelRoot = parentEl;
-      childEl.connectedCallback();
+      // app state updates happening in child menu should be flushed to parent when connected
+      childEl.setAttribute(`child-animal`, `attribute-animal`);
       childEl.updateApp({title: `new title!`});
-      expect(parentEl.appState.title).to.equal(`new title!`);
+      childEl.connectedCallback();
+      expect(parentEl.appState).to.include({title: `new title!`, childAnimal: `attribute-animal`});
     });
   });
 
@@ -424,6 +421,10 @@ describe(`Nested Component instance with partially shared state`, function() {
       expect(childEl.textContent).to.include(`shared title: test`);
       expect(childEl.textContent).to.include(`component-specific title: child-specific title`);
       expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
+    });
+
+    it(`flushes shared app state from child to parent`, async function() {
+      expect(childEl.textContent).to.include(`shared child animal: fox`);
     });
 
     it(`passes only shared app state updates from parent to child`, async function() {

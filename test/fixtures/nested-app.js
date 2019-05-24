@@ -14,7 +14,8 @@ export class NestedApp extends Component {
 
       template: state => h(`div`, {class: {'nested-foo': true}}, [
         h(`h1`, `Nested app: ${state.title}`),
-        this.child(`nested-child`, {attrs: {'child-title': `test`, 'state-animal': `llama`}}),
+        h(`h2`, `Nested child: ${state.childAnimal || `Not defined`}`),
+        this.child(`nested-child`, {attrs: {'child-animal': `fox`, 'state-animal': `llama`}}),
       ]),
     };
   }
@@ -22,7 +23,7 @@ export class NestedApp extends Component {
 
 export class NestedChild extends Component {
   static get attrsSchema() {
-    return {'animal': `string`};
+    return {'child-animal': `string`};
   }
 
   get config() {
@@ -30,6 +31,7 @@ export class NestedChild extends Component {
       template: state => h(`div`, {class: {'nested-foo-child': true}}, [
         h(`p`, `parent title: ${state.title}`),
         h(`p`, `animal: ${state.animal}`),
+        h(`p`, `child animal: ${state.childAnimal}`),
       ]),
     };
   }
@@ -37,13 +39,8 @@ export class NestedChild extends Component {
   attributeChangedCallback(attr, oldVal, newVal) {
     super.attributeChangedCallback(attr, oldVal, newVal);
 
-    if (attr === `animal`) {
-      this.update({animal: newVal});
+    if (attr === `child-animal`) {
+      this.update({childAnimal: newVal});
     }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.update({stateFromChild: `value`});
   }
 }
