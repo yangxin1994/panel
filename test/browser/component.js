@@ -312,8 +312,8 @@ describe(`Nested Component instance`, function() {
       childEl = document.createElement(`nested-child`);
       childEl.$panelParentID = el.panelID;
       childEl.$panelParent = childEl.$panelRoot = el;
-      childEl.connectedCallback();
       childEl.update({animal: `capybara`});
+      childEl.connectedCallback();
       expect(el.state.animal).to.equal(`capybara`);
     });
   });
