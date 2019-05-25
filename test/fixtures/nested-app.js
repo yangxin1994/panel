@@ -14,7 +14,6 @@ export class NestedApp extends Component {
 
       template: state => h(`div`, {class: {'nested-foo': true}}, [
         h(`h1`, `Nested app: ${state.title}`),
-        h(`h2`, `Nested child: ${state.childAnimal || `Not defined`}`),
         this.child(`nested-child`, {attrs: {'child-animal': `fox`, 'state-animal': `llama`}}),
       ]),
     };

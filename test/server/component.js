@@ -69,7 +69,7 @@ describe(`Server-side component renderer`, function() {
     const nestedChild = el.childNodes[0].childNodes[1];
     expect(nestedChild.childNodes).to.have.lengthOf(1);
     expect(nestedChild.childNodes[0].className).to.equal(`nested-foo-child`);
-    expect(nestedChild.childNodes[0].childNodes).to.have.lengthOf(2);
+    expect(nestedChild.childNodes[0].childNodes).to.have.lengthOf(3);
 
     // check content/HTML output
     const html = el.innerHTML;
@@ -78,6 +78,7 @@ describe(`Server-side component renderer`, function() {
     expect(html.toLowerCase()).to.contain(`<div class="nested-foo-child">`);
     expect(html).to.contain(`parent title: test`);
     expect(html).to.contain(`animal: llama`);
+    expect(html).to.contain(`child animal: fox`);
   });
 
   it(`updates nested components`, async function() {
