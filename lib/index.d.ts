@@ -122,11 +122,24 @@ export interface AttrSchema {
 
   /** Possible values of an attribute. e.g ['primary', 'secondary'] */
   enum?: Array<string>;
+
+  /** When setAttribute is invoked, console.warn that attr is deprecated e.g 'use xyz instead' */
+  deprecatedMsg?: string;
+
+  /**
+   * For a type: `json` attr, the typescript interface that corresponds to it.
+   * Can be used to auto-generate Attrs interface
+   */
+  interface?: string;
+}
+
+export interface AnyAttrs {
+  [attr: string]: any;
 }
 
 type ConfigOptions<State, AppState> = Component.ConfigOptions<State, AppState>;
 
-export class Component<State, AppState = {}, App = unknown> extends WebComponent {
+export class Component<State, AppState = {}, App = unknown, Attrs = AnyAttrs> extends WebComponent {
   /** The first Panel Component ancestor in the DOM tree; null if this component is the root */
   $panelParent: Component<unknown>;
 
@@ -135,9 +148,6 @@ export class Component<State, AppState = {}, App = unknown> extends WebComponent
    * Panel auto parses attribute changes into this.attrs object and $attrs template helper
    */
   static attrsSchema: {[attr: string]: (string | AttrSchema )};
-
-  /** Attributes parsed from component's html attributes using attrsSchema */
-  attrs: {[attr: string]: any};
 
   /** A reference to the top-level component */
   app: App;
@@ -162,6 +172,12 @@ export class Component<State, AppState = {}, App = unknown> extends WebComponent
    * This getter uses the component's internal config cache.
    */
   helpers: ConfigOptions<State, AppState>['helpers'];
+
+  /** Gets the attribute value. Throws an error if attr not defined in attrsSchema */
+  attr<A extends keyof Attrs>(attr: A): Attrs[A];
+
+  /** Attributes parsed from component's html attributes using attrsSchema */
+  attrs(): Attrs;
 
   /**
    * For use inside view templates, to create a child Panel component nested under this
