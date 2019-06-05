@@ -307,7 +307,7 @@ describe(`Nested Component instance`, function() {
       expect(childEl.findPanelParentByTagName(`nested-app`)).to.equal(el);
     });
 
-    it(`flushes child state updates to parent`, async function() {
+    it(`flushes child state updates to parent`, function() {
       el.connectedCallback();
       expect(el.state).to.not.have.property(`childAnimal`);
       childEl = document.createElement(`nested-child`);
@@ -347,7 +347,7 @@ describe(`Nested Component instance`, function() {
       expect(childEl.textContent).to.include(`parent title: test`);
     });
 
-    it(`flushes child state to parent state`, async function() {
+    it(`flushes child state to parent state`, function() {
       expect(childEl.textContent).to.include(`child animal: fox`);
     });
 
@@ -423,7 +423,7 @@ describe(`Nested Component instance with partially shared state`, function() {
       expect(childEl.textContent).to.include(`child: parentOnlyState: undefined`);
     });
 
-    it(`flushes shared app state from child to parent`, async function() {
+    it(`flushes shared app state from child to parent`, function() {
       expect(childEl.textContent).to.include(`shared child animal: fox`);
     });
 
