@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "types": "lib/index.d.ts",
