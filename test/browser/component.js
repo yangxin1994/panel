@@ -628,11 +628,14 @@ describe(`Nested Component instance with partially shared state`, function() {
 
 describe(`Rendering exception`, function() {
   let el;
+  let renderErrorSpy;
 
   beforeEach(async function() {
     document.body.innerHTML = ``;
     el = document.createElement(`breakable-app`);
-    el.logError = sinon.spy();
+    renderErrorSpy = sinon.spy();
+    el.addEventListener(`renderError`, renderErrorSpy);
+    el._logError = sinon.spy();
     document.body.appendChild(el);
     await nextAnimationFrame();
   });
@@ -641,9 +644,13 @@ describe(`Rendering exception`, function() {
     expect(el.initialized).to.be.ok;
   });
 
-  it(`logs an error`, function() {
-    expect(el.logError.getCall(0).args[0]).to.contain(`Error while rendering`);
-    expect(el.logError.getCall(0).args[0]).to.contain(`breakable-app`);
+  it(`logs error and emits renderError event`, function() {
+    const errorMessage = `Error while rendering breakable-app`;
+    expect(el._logError.getCall(0).args[0]).to.contain(errorMessage);
+
+    const renderErrorEvent = renderErrorSpy.getCall(0).args[0];
+    expect(renderErrorEvent.detail.message).to.contain(errorMessage);
+    expect(renderErrorEvent.detail.error).to.be.instanceof(Error);
   });
 
   it(`does not prevent further updates from rendering`, async function() {
