@@ -8,7 +8,7 @@ const STR_ATTR = {
 };
 
 /** @typedef {{str: string}} State */
-/** @typedef {{'str-attr': string, 'bool-attr': boolean, 'number-attr': number, 'json-attr': any }} Attrs */
+/** @typedef {{'str-attr': string, 'bool-true-attr': boolean, 'bool-attr': boolean, 'number-attr': number, 'json-attr': any }} Attrs */
 /** @typedef {import('../../lib/index.d').ConfigOptions<State, {}, Attrs>} ConfigOptions*/
 
 /** @extends {Component<State, unknown, unknown, Attrs>} */
@@ -16,6 +16,7 @@ export class AttrsReflectionApp extends Component {
   static get attrsSchema() {
     return {
       'str-attr': {type: `string`, default: STR_ATTR.HELLO, enum: Object.values(STR_ATTR)},
+      'bool-defaulted-attr': {type: `boolean`, default: true},
       'bool-attr': `boolean`,
       'number-attr': `number`,
       'json-attr': `json`,
