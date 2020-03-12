@@ -330,6 +330,33 @@ describe(`Simple Component instance with attrsSchema`, function() {
     await nextAnimationFrame();
   });
 
+  it(`handles allows setting a default true prop before being attached to the DOM`, async function() {
+    document.body.innerHTML = ``;
+    el = document.createElement(`attrs-reflection-app`);
+    el.removeAttribute(`bool-defaulted-attr`);
+
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+
+    expect(el.attrs()).to.deep.equal({
+      'str-attr': `hello`,
+      'bool-defaulted-attr': false,
+      'bool-attr': false,
+      'number-attr': 0,
+      'json-attr': null,
+    });
+
+    expect(el.innerHTML).to.equal(compactHtml(`
+    <div class="attrs-reflection-app">
+      <p>str-attr: "hello"</p>
+      <p>bool-defaulted-attr: false</p>
+      <p>bool-attr: false</p>
+      <p>number-attr: 0</p>
+      <p>json-attr: null</p>
+    </div>
+  `));
+  });
+
   it(`renders template`, function() {
     expect(el.innerHTML).to.equal(compactHtml(`
       <div class="attrs-reflection-app">
