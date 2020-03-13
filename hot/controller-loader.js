@@ -3,7 +3,7 @@ const loaderUtils = require(`loader-utils`);
 const helpers = require(`./loader-helpers`);
 
 // Used in non-HMR mode, do nothing
-module.exports = source => source;
+module.exports = (source) => source;
 
 module.exports.pitch = function(request) {
   const options = loaderUtils.getOptions(this) || {};

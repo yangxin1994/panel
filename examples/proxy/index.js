@@ -8,20 +8,18 @@ class AddressCardV1 extends Component {
           h(`ul`, [
             h(`li`, $component.getAttribute(`name`)),
             h(`li`, {on: {click: () => this.registerClick()}}, $component.getAttribute(`city`)),
-          ])
+          ]),
         ]);
-      }
-    }
+      },
+    };
   }
 
-  registerClick(ev) {
+  registerClick(_ev) {
     this.dispatchEvent(new CustomEvent(`clickedCity`));
   }
 
   static get observedAttributes() {
-    return Component.observedAttributes.concat([
-      `name`, `city`,
-    ]);
+    return Component.observedAttributes.concat([`name`, `city`]);
   }
 }
 
@@ -34,20 +32,18 @@ class AddressCardV2 extends Component {
             h(`li`, $component.getAttribute(`name`)),
             h(`li`, `(experimental feature for beta)`),
             h(`li`, {on: {click: () => this.registerClick()}}, $component.getAttribute(`city`)),
-          ])
+          ]),
         ]);
-      }
-    }
+      },
+    };
   }
 
-  registerClick(ev) {
+  registerClick(_ev) {
     this.dispatchEvent(new CustomEvent(`clickedCity`));
   }
 
   static get observedAttributes() {
-    return Component.observedAttributes.concat([
-      `name`, `city`,
-    ]);
+    return Component.observedAttributes.concat([`name`, `city`]);
   }
 }
 
@@ -74,18 +70,21 @@ customElements.define(`address-card-v1`, AddressCardV1);
 customElements.define(`address-card-v2`, AddressCardV2);
 customElements.define(`address-card`, AddressCard);
 
-customElements.define(`proxy-app`, class extends ProxyComponent {
-  get config() {
-    return {
-      template: () => h(`div`, [
-        h(`a`, { attrs: { href: `?` } }, `Try v1 `),
-        h(`a`, { attrs: { href: `?use_experimental_card` } }, `Try v2`),
-        h(`address-card`, {
-          attrs: {name: `Ben`, city: `San Francisco`},
-          on: {clickedCity: () => alert(`it's true!`)}
-        }),
-        ]
-      )
-    };
-  }
-});
+customElements.define(
+  `proxy-app`,
+  class extends ProxyComponent {
+    get config() {
+      return {
+        template: () =>
+          h(`div`, [
+            h(`a`, {attrs: {href: `?`}}, `Try v1 `),
+            h(`a`, {attrs: {href: `?use_experimental_card`}}, `Try v2`),
+            h(`address-card`, {
+              attrs: {name: `Ben`, city: `San Francisco`},
+              on: {clickedCity: () => alert(`it's true!`)},
+            }),
+          ]),
+      };
+    }
+  },
+);

@@ -2,7 +2,6 @@ import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {compactHtml} from '../utils';
 
-
 describe(`Simple Component instance`, function() {
   let el;
 
@@ -19,9 +18,10 @@ describe(`Simple Component instance`, function() {
 
   describe(`panelID`, function() {
     it(`is unique for each component instance`, function() {
-      const ids = Array(5).fill()
+      const ids = Array(5)
+        .fill()
         .map(() => document.createElement(`simple-app`))
-        .map(el => el.panelID);
+        .map((el) => el.panelID);
       expect(ids).to.have.lengthOf(new Set(ids).size);
     });
   });
@@ -112,7 +112,7 @@ describe(`Simple Component instance`, function() {
     it(`re-renders when state is updated with function accessing existing state`, async function() {
       expect(el.textContent).to.contain(`Value of foo: bar`);
       expect(el.textContent).to.contain(`Foo capitalized: Bar`);
-      el.update(state => ({foo: `new ${state.foo}`}));
+      el.update((state) => ({foo: `new ${state.foo}`}));
       await nextAnimationFrame();
       expect(el.textContent).to.contain(`Value of foo: new bar`);
       expect(el.textContent).to.contain(`Foo capitalized: New bar`);
@@ -166,7 +166,7 @@ describe(`Simple Component instance`, function() {
       document.body.appendChild(el);
       await nextAnimationFrame();
 
-      for (let i = 0 ; i < 5; ++i) {
+      for (let i = 0; i < 5; ++i) {
         document.body.removeChild(el);
         await nextAnimationFrame();
         document.body.appendChild(el);
@@ -174,11 +174,7 @@ describe(`Simple Component instance`, function() {
       }
 
       expect(document.querySelector(`simple-app`)).to.equal(el);
-      expect(el.textContent).to.equal([
-        `Value of foo: bar`,
-        `Value of baz: qux`,
-        `Foo capitalized: Bar`,
-      ].join(``));
+      expect(el.textContent).to.equal([`Value of foo: bar`, `Value of baz: qux`, `Foo capitalized: Bar`].join(``));
     });
   });
 
@@ -192,33 +188,17 @@ describe(`Simple Component instance`, function() {
     });
 
     it(`renders its template after children change position`, async function() {
-      expect(el.textContent).to.equal([
-        `alpha`,
-        `bravo`,
-        `charlie`,
-        `delta`,
-        `echo`,
-      ].join(``));
+      expect(el.textContent).to.equal([`alpha`, `bravo`, `charlie`, `delta`, `echo`].join(``));
 
       el.setAttribute(`letters`, JSON.stringify([`e`, `c`, `a`, `d`, `b`]));
       await nextAnimationFrame();
 
-      expect(el.textContent).to.equal([
-        `echo`,
-        `charlie`,
-        `alpha`,
-        `delta`,
-        `bravo`,
-      ].join(``));
+      expect(el.textContent).to.equal([`echo`, `charlie`, `alpha`, `delta`, `bravo`].join(``));
 
       el.setAttribute(`letters`, JSON.stringify([`d`, `b`, `a`]));
       await nextAnimationFrame();
 
-      expect(el.textContent).to.equal([
-        `delta`,
-        `bravo`,
-        `alpha`,
-      ].join(``));
+      expect(el.textContent).to.equal([`delta`, `bravo`, `alpha`].join(``));
     });
 
     it(`doesn't clear parent references if immediately added back`, async function() {
@@ -331,14 +311,16 @@ describe(`Simple Component instance with attrsSchema`, function() {
   });
 
   it(`renders template`, function() {
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "world"</p>
         <p>bool-attr: false</p>
         <p>number-attr: 0</p>
         <p>json-attr: null</p>
       </div>
-    `));
+    `),
+    );
   });
 
   it(`updates attrs`, function() {
@@ -365,20 +347,22 @@ describe(`Simple Component instance with attrsSchema`, function() {
 
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
     <div class="attrs-reflection-app">
       <p>str-attr: "💩🤒🤢☠️ -&gt; 👻🎉💐🎊😱😍"</p>
       <p>bool-attr: false</p>
       <p>number-attr: 500843</p>
       <p>json-attr: {"foo":"bae"}</p>
     </div>
-  `));
+  `),
+    );
   });
 
   it(`can query schema from customElements registry`, async function() {
     const component = customElements.get(`attrs-reflection-app`);
     expect(component.attrsSchema).to.deep.equal({
-      'str-attr': {type: `string`, default: `hello`, enum: [ `hello`, `world`, `💩🤒🤢☠️ -> 👻🎉💐🎊😱😍` ]},
+      'str-attr': {type: `string`, default: `hello`, enum: [`hello`, `world`, `💩🤒🤢☠️ -> 👻🎉💐🎊😱😍`]},
       'bool-attr': `boolean`,
       'number-attr': `number`,
       'json-attr': `json`,
@@ -510,7 +494,6 @@ describe(`Nested Component instance`, function() {
   });
 });
 
-
 describe(`Nested Component instance with partially shared state`, function() {
   let parentEl, childEl;
 
@@ -624,7 +607,6 @@ describe(`Nested Component instance with partially shared state`, function() {
     });
   });
 });
-
 
 describe(`Rendering exception`, function() {
   let el;

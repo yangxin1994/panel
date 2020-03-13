@@ -1,6 +1,5 @@
 import {nextAnimationFrame} from 'domsuite';
 
-
 describe(`Controlled App`, function() {
   let el;
 

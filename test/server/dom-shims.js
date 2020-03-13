@@ -20,8 +20,10 @@ describe(`customElements registry`, function() {
 
   describe(`.define()`, function() {
     it(`throws an error if called twice with the same tag name`, function() {
-      expect(() => customElements.define(`my-app`, SimpleApp))
-        .to.throw(`Registration failed for type 'my-app'. A type with that name is already registered.`); });
+      expect(() => customElements.define(`my-app`, SimpleApp)).to.throw(
+        `Registration failed for type 'my-app'. A type with that name is already registered.`,
+      );
+    });
   });
 });
 

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: `mixpanel`,
+  extends: [`mixpanel`, `prettier`],
   env: {
     mocha: true,
   },
@@ -8,6 +8,6 @@ module.exports = {
     sinon: true,
   },
   rules: {
-    'no-unused-expressions': `off`,  // for Chai assertions such as expect(x).to.be.ok
+    'no-unused-expressions': `off`, // for Chai assertions such as expect(x).to.be.ok
   },
 };

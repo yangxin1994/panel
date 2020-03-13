@@ -10,7 +10,7 @@ import nextAnimationFrame from './nextAnimationFrame';
 describe(`dom-patcher`, function() {
   context(`when first initialized`, function() {
     const fooState = {foo: `bar`};
-    const domPatcher = new DOMPatcher(fooState, state => h(`div`, `Value of foo: ${state.foo}`));
+    const domPatcher = new DOMPatcher(fooState, (state) => h(`div`, `Value of foo: ${state.foo}`));
 
     it(`applies initial state`, function() {
       expect(domPatcher.state).to.eql(fooState);
@@ -79,11 +79,9 @@ describe(`dom-patcher`, function() {
 
   context(`in sync mode`, function() {
     it(`renders updates immediately`, function() {
-      const domPatcher = new DOMPatcher(
-        {foo: `bar`},
-        state => h(`div`, `Value of foo: ${state.foo}`),
-        {updateMode: `sync`}
-      );
+      const domPatcher = new DOMPatcher({foo: `bar`}, (state) => h(`div`, `Value of foo: ${state.foo}`), {
+        updateMode: `sync`,
+      });
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
       domPatcher.update({foo: `moo`});
       expect(domPatcher.el.textContent).to.eql(`Value of foo: moo`);
@@ -96,11 +94,9 @@ describe(`dom-patcher`, function() {
     let domPatcher;
 
     beforeEach(function() {
-      domPatcher = new DOMPatcher(
-        {foo: `bar`},
-        state => h(`div`, `Value of foo: ${state.foo}`),
-        {updateMode: `async`}
-      );
+      domPatcher = new DOMPatcher({foo: `bar`}, (state) => h(`div`, `Value of foo: ${state.foo}`), {
+        updateMode: `async`,
+      });
     });
 
     it(`does not render updates immediately`, function() {

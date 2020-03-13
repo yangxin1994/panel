@@ -2,7 +2,6 @@ import {nextAnimationFrame, retryable} from 'domsuite';
 
 import {Component, h} from '../../lib';
 
-
 export class RouterApp extends Component {
   get config() {
     return {
@@ -11,7 +10,7 @@ export class RouterApp extends Component {
         additionalText: ``,
       },
       routes: {
-        'foo': () => ({text: `Foobar!`}),
+        foo: () => ({text: `Foobar!`}),
         'widget/:id': (stateUpdate, id) => Object.assign({text: `Widget ${id}`}, stateUpdate),
         'multiparam/:param1/lala:param2': (stateUpdate, param1, param2) => ({
           text: `param1: ${param1} param2: ${param2}`,
@@ -21,10 +20,10 @@ export class RouterApp extends Component {
         }),
         'alias-to-foo': `foo`,
         'alias-with-params/:param1/:param2': `multiparam/:param1/lala:param2`,
-        'numeric/:num': (stateUpdate, num) => isNaN(num) ? false : ({text: `Number: ${num}`}),
+        'numeric/:num': (stateUpdate, num) => (isNaN(num) ? false : {text: `Number: ${num}`}),
         '': () => ({text: `Default route!`}),
       },
-      template: state => h(`p`, [`${state.text}${state.additionalText}`]),
+      template: (state) => h(`p`, [`${state.text}${state.additionalText}`]),
     };
   }
 }

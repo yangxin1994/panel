@@ -108,14 +108,16 @@ describe(`Server-side component renderer`, function() {
     el.connectedCallback();
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "hello"</p>
         <p>bool-attr: false</p>
         <p>number-attr: 0</p>
         <p>json-attr: null</p>
       </div>
-    `));
+    `),
+    );
   });
 
   it(`reacts to attribute updates`, async function() {
@@ -135,14 +137,16 @@ describe(`Server-side component renderer`, function() {
 
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "world"</p>
         <p>bool-attr: false</p>
         <p>number-attr: 500843</p>
         <p>json-attr: {"foo":"bae"}</p>
       </div>
-    `));
+    `),
+    );
   });
 
   it(`handles malformed attribute updates`, async function() {
@@ -162,36 +166,36 @@ describe(`Server-side component renderer`, function() {
 
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "💩🤒🤢☠️ -&gt; 👻🎉💐🎊😱😍"</p>
         <p>bool-attr: true</p>
         <p>number-attr: null</p>
         <p>json-attr: null</p>
       </div>
-    `));
+    `),
+    );
   });
 
   it(`throws error for invalid attr access`, async function() {
     const el = document.createElement(`attrs-reflection-app`);
     el.connectedCallback();
 
-    expect(() => el.attr(`bad-attr`)).to.throw(
-      `${el}: attr 'bad-attr' is not defined in attrsSchema`
-    );
+    expect(() => el.attr(`bad-attr`)).to.throw(`${el}: attr 'bad-attr' is not defined in attrsSchema`);
   });
 
   it(`throws error for invalid value in an enum attr`, function() {
     const el = new AttrsReflectionApp();
 
     expect(() => el.setAttribute(`str-attr`, `boo!`)).to.throw(
-      `Invalid value: 'boo!' for attr: str-attr. Only ('hello' | 'world' | '💩🤒🤢☠️ -> 👻🎉💐🎊😱😍') is valid.`
+      `Invalid value: 'boo!' for attr: str-attr. Only ('hello' | 'world' | '💩🤒🤢☠️ -> 👻🎉💐🎊😱😍') is valid.`,
     );
   });
 
   it(`throws error if there is a malformed attrsSchema type`, function() {
     expect(() => new BadAttrsSchemaApp()).to.throw(
-      `Invalid type: bool for attr: bad-attr in attrsSchema. Only ('string' | 'boolean' | 'number' | 'json') is valid.`
+      `Invalid type: bool for attr: bad-attr in attrsSchema. Only ('string' | 'boolean' | 'number' | 'json') is valid.`,
     );
   });
 });

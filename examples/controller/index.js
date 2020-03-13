@@ -23,17 +23,21 @@ class CounterController extends StateController {
   }
 }
 
-document.registerElement(`counter-app`, class extends ControlledComponent {
-  get config() {
-    return {
-      controller: new CounterController(),
-      template: () => h(`div.counter`, [
-        h(`div.val`, `Counter: ${this.controller.getCount()}`),
-        h(`div.controls`, [
-          h(`button.decr`, {on: {click: () => this.controller.decrCounter()}}, `-`),
-          h(`button.incr`, {on: {click: () => this.controller.incrCounter()}}, `+`),
-        ]),
-      ]),
-    };
-  }
-});
+document.registerElement(
+  `counter-app`,
+  class extends ControlledComponent {
+    get config() {
+      return {
+        controller: new CounterController(),
+        template: () =>
+          h(`div.counter`, [
+            h(`div.val`, `Counter: ${this.controller.getCount()}`),
+            h(`div.controls`, [
+              h(`button.decr`, {on: {click: () => this.controller.decrCounter()}}, `-`),
+              h(`button.incr`, {on: {click: () => this.controller.incrCounter()}}, `+`),
+            ]),
+          ]),
+      };
+    }
+  },
+);

@@ -1,6 +1,5 @@
 import {nextAnimationFrame} from 'domsuite';
 
-
 describe(`ProxyComponent`, function() {
   let el;
 

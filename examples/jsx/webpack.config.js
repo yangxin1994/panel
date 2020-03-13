@@ -1,7 +1,8 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+/* eslint-env node */
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
-var webpackConfig = {
+const webpackConfig = {
   entry: './index.jsx',
   module: {
     loaders: [
@@ -18,9 +19,7 @@ var webpackConfig = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          plugins: [
-            ['transform-react-jsx', {'pragma': 'html'}],
-          ],
+          plugins: [['transform-react-jsx', {pragma: 'html'}]],
           presets: ['es2015'],
         },
       },

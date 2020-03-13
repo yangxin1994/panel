@@ -41,7 +41,9 @@ const manifestPath = `${devtoolsDir}/manifest.json`;
     // Authenticate with webstore
     console.log(`NOTE: Only users of mixpanel-chrome-extensions@googlegroups.com can publish this item.`);
     console.log(`Paste following url in browser, authenticate and paste generate code\n`);
-    console.log(`${googleOauthUrl}/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=${webstoreClientId}&redirect_uri=${redirectUri}`);
+    console.log(
+      `${googleOauthUrl}/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&client_id=${webstoreClientId}&redirect_uri=${redirectUri}`,
+    );
     const oauthCode = readlineSync.question(`\ncode: `);
     const api = new WebstoreApi(new TokenManager(oauthCode, webstoreClientId, webstoreClientSecret));
 
@@ -51,9 +53,7 @@ const manifestPath = `${devtoolsDir}/manifest.json`;
     await api.publish(webstoreExtensionId);
     console.log(`Published. Item should be available in a few minutes`);
     console.log(`Check status at https://chrome.google.com/webstore/developer/dashboard`);
-
   } catch (err) {
     console.error(err);
   }
 })();
-

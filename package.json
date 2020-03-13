@@ -22,7 +22,10 @@
     "test-browser-sauce": "wct --plugin sauce test/browser/index.html",
     "test-server": "NODE_ENV=test mocha --require babel-core/register test/server",
     "tslint": "tslint -c tslint.json -t stylish 'lib/index.d.ts'",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:eslint": "eslint ./ --fix",
+    "lint:prettier": "prettier \"./**/*.js\" --write"
   },
   "repository": {
     "type": "git",
@@ -64,11 +67,15 @@
     "chai": "3.5.0",
     "chrome-store-api": "1.0.5",
     "domsuite": "0.2.0",
-    "eslint": "4.18.2",
-    "eslint-config-mixpanel": "3.5.0",
+    "eslint": "6.8.0",
+    "eslint-config-mixpanel": "3.5.7",
+    "eslint-config-prettier": "6.10.0",
+    "husky": "4.2.3",
     "jsdoc": "3.5.5",
+    "lint-staged": "10.0.8",
     "minami": "1.1.1",
     "mocha": "2.5.3",
+    "prettier": "1.19.1",
     "promisify-node": "0.4.0",
     "readline-sync": "1.4.7",
     "tslint": "5.18.0",
@@ -77,5 +84,18 @@
     "web-component-tester": "6.9.2",
     "webpack": "1.13.0",
     "zip-folder": "1.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,css}": [
+      "prettier --write"
+    ],
+    "**/*.js": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

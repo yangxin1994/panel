@@ -18,8 +18,7 @@ function getPanelElementState() {
     if (!panelElem.panelID) {
       // using getRootNode().host to jump through shadow dom boundaries as well
       panelElem = panelElem.parentElement || panelElem.getRootNode().host;
-    }
-    else {
+    } else {
       window[`__$panelDevToolsLastElem`] = panelElem;
       const debugInfo = Object.create(null); // Don't show extra __proto__ key in extension tab
       debugInfo.$component = panelElem; // so it appears first
@@ -31,8 +30,7 @@ function getPanelElementState() {
         panelElem.controller._update();
         debugInfo.state = panelElem.controller.state;
         debugInfo.controller = panelElem.controller;
-      }
-      else if (panelElem.update) {
+      } else if (panelElem.update) {
         panelElem.update();
         debugInfo.state = panelElem.state;
       }

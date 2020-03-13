@@ -1,7 +1,8 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+/* eslint-env node */
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
-var webpackConfig = {
+const webpackConfig = {
   entry: './index.js',
   module: {
     loaders: [

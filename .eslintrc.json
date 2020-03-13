@@ -1,3 +1,29 @@
 {
-  "extends": "mixpanel"
+  "extends": [
+    "mixpanel",
+    "prettier"
+  ],
+  "rules": {
+    "no-prototype-builtins": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false
+      }
+    ],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
 }

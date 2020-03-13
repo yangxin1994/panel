@@ -13,15 +13,15 @@ async function renderAppHTML() {
 
   await RAF();
 
-  console.log('Initial HTML:');
-  console.log(counterApp.outerHTML);
+  console.log('Initial HTML:'); // eslint-disable-line no-console
+  console.log(counterApp.outerHTML); // eslint-disable-line no-console
 
-  console.log('Update counter to 5:');
-  counterApp.update({count: 5});
+  console.log('Update counter to 5:'); // eslint-disable-line no-console
+  counterApp.update({count: 5}); // eslint-disable-line no-console
 
   await RAF();
 
-  console.log(counterApp.outerHTML);
+  console.log(counterApp.outerHTML); // eslint-disable-line no-console
 }
 
 renderAppHTML();

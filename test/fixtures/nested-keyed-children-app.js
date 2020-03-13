@@ -2,7 +2,7 @@ import {Component, h} from '../../lib';
 
 export class NestedKeyedChildrenApp extends Component {
   static get attrsSchema() {
-    return {'letters': `json`};
+    return {letters: `json`};
   }
 
   get config() {
@@ -17,37 +17,40 @@ export class NestedKeyedChildrenApp extends Component {
         },
       },
 
-      template: ({$attr}) => h(`div`, {class: {'letter-lookup-app': true}}, $attr(`letters`).map(letter => (
-        this.child(`nested-keyed-child1`, {key: letter, attrs: {letter}})
-      ))),
+      template: ({$attr}) =>
+        h(
+          `div`,
+          {class: {'letter-lookup-app': true}},
+          $attr(`letters`).map((letter) => this.child(`nested-keyed-child1`, {key: letter, attrs: {letter}})),
+        ),
     };
   }
 }
 
 export class NestedKeyedChild1 extends Component {
   static get attrsSchema() {
-    return {'letter': `string`};
+    return {letter: `string`};
   }
 
   get config() {
     return {
-      template: ({$attr}) => h(`div`, {class: {'letter-kookup-child1': true}}, [
-        this.child(`nested-keyed-child2`, {attrs: {letter: $attr(`letter`)}}),
-      ]),
+      template: ({$attr}) =>
+        h(`div`, {class: {'letter-kookup-child1': true}}, [
+          this.child(`nested-keyed-child2`, {attrs: {letter: $attr(`letter`)}}),
+        ]),
     };
   }
 }
 
 export class NestedKeyedChild2 extends Component {
   static get attrsSchema() {
-    return {'letter': `string`};
+    return {letter: `string`};
   }
 
   get config() {
     return {
-      template: ({$attr}) => h(`div`, {class: {'letter-kookup-child2': true}}, [
-        h(`p`, this.appState.letterToWord[$attr(`letter`)]),
-      ]),
+      template: ({$attr}) =>
+        h(`div`, {class: {'letter-kookup-child2': true}}, [h(`p`, this.appState.letterToWord[$attr(`letter`)])]),
     };
   }
 }
