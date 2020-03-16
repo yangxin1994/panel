@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "Web Components with Virtual DOM: lightweight composable web apps",
   "main": "build/index.js",
   "types": "lib/index.d.ts",
@@ -47,7 +47,7 @@
     "lodash.pick": "4.4.0",
     "raf": "3.2.0",
     "schema-utils": "1.0.0",
-    "snabbdom": "0.7.4",
+    "snabbdom": "0.6.9",
     "snabbdom-delayed-class": "0.1.1",
     "webcomponent": "1.2.1"
   },

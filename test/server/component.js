@@ -111,7 +111,6 @@ describe(`Server-side component renderer`, function() {
     expect(el.innerHTML).to.equal(compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "hello"</p>
-        <p>bool-defaulted-attr: true</p>
         <p>bool-attr: false</p>
         <p>number-attr: 0</p>
         <p>json-attr: null</p>
@@ -125,13 +124,11 @@ describe(`Server-side component renderer`, function() {
     await nextAnimationFrame();
 
     el.setAttribute(`str-attr`, `world`);
-    el.removeAttribute(`bool-defaulted-attr`);
     el.setAttribute(`bool-attr`, ``);
     el.setAttribute(`number-attr`, `500843`);
     el.setAttribute(`json-attr`, `{"foo": "bae"}`);
 
     expect(el.attr(`str-attr`)).to.equal(`world`);
-    expect(el.attr(`bool-defaulted-attr`), `Default true changed to false`).to.equal(false);
     expect(el.attr(`bool-attr`), `Default false changed to true`).to.equal(true);
     expect(el.attr(`number-attr`)).to.equal(500843);
     expect(el.attr(`json-attr`)).to.deep.equal({foo: `bae`});
@@ -141,7 +138,6 @@ describe(`Server-side component renderer`, function() {
     expect(el.innerHTML).to.equal(compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "world"</p>
-        <p>bool-defaulted-attr: false</p>
         <p>bool-attr: true</p>
         <p>number-attr: 500843</p>
         <p>json-attr: {"foo":"bae"}</p>
@@ -159,7 +155,6 @@ describe(`Server-side component renderer`, function() {
 
     expect(el.attrs()).to.deep.equal({
       'str-attr': `💩🤒🤢☠️ -> 👻🎉💐🎊😱😍`,
-      'bool-defaulted-attr': true,
       'bool-attr': true,
       'number-attr': null,
       'json-attr': null,
@@ -170,7 +165,6 @@ describe(`Server-side component renderer`, function() {
     expect(el.innerHTML).to.equal(compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "💩🤒🤢☠️ -&gt; 👻🎉💐🎊😱😍"</p>
-        <p>bool-defaulted-attr: true</p>
         <p>bool-attr: true</p>
         <p>number-attr: null</p>
         <p>json-attr: null</p>
