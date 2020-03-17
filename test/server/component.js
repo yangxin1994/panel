@@ -124,12 +124,12 @@ describe(`Server-side component renderer`, function() {
     await nextAnimationFrame();
 
     el.setAttribute(`str-attr`, `world`);
-    el.setAttribute(`bool-attr`, ``);
+    el.setAttribute(`bool-attr`, `false`);
     el.setAttribute(`number-attr`, `500843`);
     el.setAttribute(`json-attr`, `{"foo": "bae"}`);
 
     expect(el.attr(`str-attr`)).to.equal(`world`);
-    expect(el.attr(`bool-attr`), `Default false changed to true`).to.equal(true);
+    expect(el.attr(`bool-attr`)).to.equal(false);
     expect(el.attr(`number-attr`)).to.equal(500843);
     expect(el.attr(`json-attr`)).to.deep.equal({foo: `bae`});
 
@@ -138,7 +138,7 @@ describe(`Server-side component renderer`, function() {
     expect(el.innerHTML).to.equal(compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "world"</p>
-        <p>bool-attr: true</p>
+        <p>bool-attr: false</p>
         <p>number-attr: 500843</p>
         <p>json-attr: {"foo":"bae"}</p>
       </div>
