@@ -13,8 +13,10 @@
     "build": "rm -rf build && babel lib -d build && cp -r build/isorender .",
     "build-test": "webpack --config test/browser/webpack.config.js",
     "docs": "rm -rf docs && jsdoc lib lib/component-utils lib/isorender -t node_modules/minami -R README-API.md -d docs",
-    "lint": "eslint devtools hot lib scripts test --ignore-pattern 'test/browser/build/' && npm run tslint",
+    "lint": "eslint . && prettier -c \"./**/*.{ts,tsx,js}\" && npm run tslint",
     "prepublishOnly": "npm run build",
+    "prettier:fix": "prettier --write \"./**/*.{js,ts,tsx}\"",
+    "eslint:fix": "eslint --fix .",
     "publish-devtools": "node scripts/publish-devtools.js",
     "test": "npm run build-test && npm run test-server && npm run test-browser-local",
     "test-browser-local": "wct --plugin local test/browser/index.html",
@@ -64,11 +66,14 @@
     "chai": "3.5.0",
     "chrome-store-api": "1.0.5",
     "domsuite": "0.2.0",
-    "eslint": "4.18.2",
-    "eslint-config-mixpanel": "3.5.0",
+    "eslint": "6.8.0",
+    "eslint-config-mixpanel": "4.0.0",
+    "husky": "4.2.3",
     "jsdoc": "3.5.5",
+    "lint-staged": "10.1.1",
     "minami": "1.1.1",
     "mocha": "2.5.3",
+    "prettier": "2.0.2",
     "promisify-node": "0.4.0",
     "readline-sync": "1.4.7",
     "tslint": "5.18.0",
@@ -77,5 +82,16 @@
     "web-component-tester": "6.9.2",
     "webpack": "1.13.0",
     "zip-folder": "1.0.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

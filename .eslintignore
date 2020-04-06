@@ -1,0 +1,5 @@
+test/browser/build/
+docs/
+build/
+*.ts
+isorender/

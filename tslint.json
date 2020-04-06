@@ -1,10 +1,51 @@
 {
-  "extends": "eslint-config-mixpanel/tslint-config",
+  "extends": "tslint:recommended",
+  "defaultSeverity": "error",
   "rules": {
-    "ban-types": [false, "Function"],
+    "array-type": [
+      true,
+      "array-simple"
+    ],
+    "arrow-parens": false,
+    "arrow-return-shorthand": true,
+    "ban-types": [
+      false,
+      "Function"
+    ],
+    "import-spacing": true,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "max-line-length": [
+      true,
+      140
+    ],
     "member-access": false,
     "member-ordering": false,
+    "no-angle-bracket-type-assertion": false,
+    "no-conditional-assignment": true,
+    "no-consecutive-blank-lines": [
+      true,
+      1
+    ],
+    "no-console": false,
+    "no-duplicate-variable": true,
+    "no-invalid-template-strings": true,
     "no-namespace": false,
-    "max-classes-per-file": false
+    "object-literal-sort-keys": false,
+    "only-arrow-functions": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ],
+    "switch-default": true
   }
 }
