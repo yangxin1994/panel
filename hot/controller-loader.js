@@ -3,9 +3,9 @@ const loaderUtils = require(`loader-utils`);
 const helpers = require(`./loader-helpers`);
 
 // Used in non-HMR mode, do nothing
-module.exports = source => source;
+module.exports = (source) => source;
 
-module.exports.pitch = function(request) {
+module.exports.pitch = function (request) {
   const options = loaderUtils.getOptions(this) || {};
   const moduleId = loaderUtils.stringifyRequest(this, `!!${request}`);
   const elemName = helpers.getElemName(this.resourcePath, options);

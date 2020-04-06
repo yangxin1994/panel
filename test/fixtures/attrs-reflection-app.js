@@ -15,7 +15,11 @@ const STR_ATTR = {
 export class AttrsReflectionApp extends Component {
   static get attrsSchema() {
     return {
-      'str-attr': {type: `string`, default: STR_ATTR.HELLO, enum: Object.values(STR_ATTR)},
+      'str-attr': {
+        type: `string`,
+        default: STR_ATTR.HELLO,
+        enum: Object.values(STR_ATTR),
+      },
       'bool-attr': `boolean`,
       'number-attr': `number`,
       'json-attr': `json`,
@@ -25,12 +29,15 @@ export class AttrsReflectionApp extends Component {
   /** @returns {ConfigOptions} */
   get config() {
     return {
-      template: scope => h(`div`, {class: {'attrs-reflection-app': true}},
-        Object.keys(scope.$component.attrs()).map(
-          /** @param attr {keyof Attrs} */
-          attr => h(`p`, `${attr}: ${JSON.stringify(scope.$attr(attr))}`)
+      template: (scope) =>
+        h(
+          `div`,
+          {class: {'attrs-reflection-app': true}},
+          Object.keys(scope.$component.attrs()).map(
+            /** @param attr {keyof Attrs} */
+            (attr) => h(`p`, `${attr}: ${JSON.stringify(scope.$attr(attr))}`),
+          ),
         ),
-      ),
       defaultState: {
         // Typescript will infer attr(`str-attr`) returns a string.
         // Changing to 'bad-attr' will fail npm run type-check

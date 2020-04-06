@@ -16,18 +16,18 @@ customElements.define(`nested-child`, NestedChild);
 customElements.define(`simple-app`, SimpleApp);
 customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
 
-describe(`Server-side component renderer`, function() {
-  it(`can register and create components with document.createElement`, function() {
+describe(`Server-side component renderer`, function () {
+  it(`can register and create components with document.createElement`, function () {
     const el = document.createElement(`simple-app`);
     expect(el.state).to.eql({foo: `bar`, baz: `qux`});
   });
 
-  it(`supports class instantiation`, function() {
+  it(`supports class instantiation`, function () {
     const el = new SimpleApp();
     expect(el.state).to.eql({foo: `bar`, baz: `qux`});
   });
 
-  it(`renders a simple component`, async function() {
+  it(`renders a simple component`, async function () {
     const el = new SimpleApp();
     el.connectedCallback();
 
@@ -39,7 +39,7 @@ describe(`Server-side component renderer`, function() {
     expect(html).to.contain(`Foo capitalized: Bar`);
   });
 
-  it(`renders updates`, async function() {
+  it(`renders updates`, async function () {
     const el = new SimpleApp();
     el.connectedCallback();
 
@@ -55,7 +55,7 @@ describe(`Server-side component renderer`, function() {
     expect(el.textContent).to.contain(`Foo capitalized: New value`);
   });
 
-  it(`renders nested components`, async function() {
+  it(`renders nested components`, async function () {
     const el = new NestedApp();
     el.connectedCallback();
 
@@ -81,7 +81,7 @@ describe(`Server-side component renderer`, function() {
     expect(html).to.contain(`child animal: fox`);
   });
 
-  it(`updates nested components`, async function() {
+  it(`updates nested components`, async function () {
     const el = new NestedApp();
     el.connectedCallback();
 
@@ -103,22 +103,24 @@ describe(`Server-side component renderer`, function() {
     expect(nestedChild.innerHTML).to.contain(`parent title: something else`);
   });
 
-  it(`renders attributes`, async function() {
+  it(`renders attributes`, async function () {
     const el = new AttrsReflectionApp();
     el.connectedCallback();
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "hello"</p>
         <p>bool-attr: false</p>
         <p>number-attr: 0</p>
         <p>json-attr: null</p>
       </div>
-    `));
+    `),
+    );
   });
 
-  it(`reacts to attribute updates`, async function() {
+  it(`reacts to attribute updates`, async function () {
     const el = new AttrsReflectionApp();
     el.connectedCallback();
     await nextAnimationFrame();
@@ -135,17 +137,19 @@ describe(`Server-side component renderer`, function() {
 
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "world"</p>
         <p>bool-attr: false</p>
         <p>number-attr: 500843</p>
         <p>json-attr: {"foo":"bae"}</p>
       </div>
-    `));
+    `),
+    );
   });
 
-  it(`handles malformed attribute updates`, async function() {
+  it(`handles malformed attribute updates`, async function () {
     const el = new AttrsReflectionApp();
     el.setAttribute(`str-attr`, `💩🤒🤢☠️ -> 👻🎉💐🎊😱😍`);
     el.setAttribute(`bool-attr`, ``);
@@ -162,36 +166,36 @@ describe(`Server-side component renderer`, function() {
 
     await nextAnimationFrame();
 
-    expect(el.innerHTML).to.equal(compactHtml(`
+    expect(el.innerHTML).to.equal(
+      compactHtml(`
       <div class="attrs-reflection-app">
         <p>str-attr: "💩🤒🤢☠️ -&gt; 👻🎉💐🎊😱😍"</p>
         <p>bool-attr: true</p>
         <p>number-attr: null</p>
         <p>json-attr: null</p>
       </div>
-    `));
+    `),
+    );
   });
 
-  it(`throws error for invalid attr access`, async function() {
+  it(`throws error for invalid attr access`, async function () {
     const el = document.createElement(`attrs-reflection-app`);
     el.connectedCallback();
 
-    expect(() => el.attr(`bad-attr`)).to.throw(
-      `${el}: attr 'bad-attr' is not defined in attrsSchema`
-    );
+    expect(() => el.attr(`bad-attr`)).to.throw(`${el}: attr 'bad-attr' is not defined in attrsSchema`);
   });
 
-  it(`throws error for invalid value in an enum attr`, function() {
+  it(`throws error for invalid value in an enum attr`, function () {
     const el = new AttrsReflectionApp();
 
     expect(() => el.setAttribute(`str-attr`, `boo!`)).to.throw(
-      `Invalid value: 'boo!' for attr: str-attr. Only ('hello' | 'world' | '💩🤒🤢☠️ -> 👻🎉💐🎊😱😍') is valid.`
+      `Invalid value: 'boo!' for attr: str-attr. Only ('hello' | 'world' | '💩🤒🤢☠️ -> 👻🎉💐🎊😱😍') is valid.`,
     );
   });
 
-  it(`throws error if there is a malformed attrsSchema type`, function() {
+  it(`throws error if there is a malformed attrsSchema type`, function () {
     expect(() => new BadAttrsSchemaApp()).to.throw(
-      `Invalid type: bool for attr: bad-attr in attrsSchema. Only ('string' | 'boolean' | 'number' | 'json') is valid.`
+      `Invalid type: bool for attr: bad-attr in attrsSchema. Only ('string' | 'boolean' | 'number' | 'json') is valid.`,
     );
   });
 });

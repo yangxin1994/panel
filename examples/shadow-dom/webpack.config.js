@@ -1,41 +1,42 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+/* eslint-env node */
+const HtmlWebpackPlugin = require(`html-webpack-plugin`);
+const path = require(`path`);
 
-var webpackConfig = {
-  entry: './index.js',
+const webpackConfig = {
+  entry: `./index.js`,
   module: {
     loaders: [
       {
         test: /\.jade$/,
         exclude: /node_modules/,
-        loaders: ['babel?presets[]=es2015', 'virtual-jade'],
+        loaders: [`babel?presets[]=es2015`, `virtual-jade`],
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: `babel`,
         query: {
-          presets: ['es2015'],
+          presets: [`es2015`],
         },
       },
       {
         test: /\.styl$/,
         exclude: /node_modules/,
-        loader: 'css!autoprefixer!stylus',
+        loader: `css!autoprefixer!stylus`,
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      inject: 'head',
-      template: 'index.template.html',
+      inject: `head`,
+      template: `index.template.html`,
     }),
   ],
   resolveLoader: {
-    root: path.join(__dirname, 'node_modules'),
+    root: path.join(__dirname, `node_modules`),
   },
   virtualJadeLoader: {
-    vdom: 'snabbdom',
+    vdom: `snabbdom`,
   },
 };
 

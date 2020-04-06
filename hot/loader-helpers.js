@@ -23,7 +23,7 @@ const OPTIONS_SCHEMA = {
 //
 // this means multiple element definitions in a single file won't work
 
-module.exports.getElemName = function(resourcePath, options) {
+module.exports.getElemName = function (resourcePath, options) {
   const pathInfo = path.parse(resourcePath);
   let elemName = pathInfo.name;
   if (/^(index|template|styles?|controller)$/.test(pathInfo.name)) {
@@ -39,7 +39,7 @@ module.exports.getElemName = function(resourcePath, options) {
   return elemName;
 };
 
-module.exports.getOptions = function(context) {
+module.exports.getOptions = function (context) {
   const options = loaderUtils.getOptions(context) || {};
 
   validateOptions(OPTIONS_SCHEMA, options, `Panel HMR`);

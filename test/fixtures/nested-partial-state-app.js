@@ -12,14 +12,17 @@ export class NestedPartialStateParent extends Component {
         title: `parent-specific title`,
       },
 
-      template: state => h(`div`, {class: {'nested-partial-parent': true}}, [
-        h(`h1`, `Nested partial shared state app title: ${state.$app.title}`),
-        h(`p`, `component-specific title: ${state.title}`),
-        h(`p`, `parent: parentOnlyState: ${state.parentOnlyState}`),
-        h(`p`, `parent: childOnlyState: ${state.childOnlyState}`),
-        h(`p`, `parent: nonSharedStateExample: ${state.nonSharedStateExample}`),
-        this.child(`nested-partial-state-child`, {attrs: {'child-animal': `fox`}}),
-      ]),
+      template: (state) =>
+        h(`div`, {class: {'nested-partial-parent': true}}, [
+          h(`h1`, `Nested partial shared state app title: ${state.$app.title}`),
+          h(`p`, `component-specific title: ${state.title}`),
+          h(`p`, `parent: parentOnlyState: ${state.parentOnlyState}`),
+          h(`p`, `parent: childOnlyState: ${state.childOnlyState}`),
+          h(`p`, `parent: nonSharedStateExample: ${state.nonSharedStateExample}`),
+          this.child(`nested-partial-state-child`, {
+            attrs: {'child-animal': `fox`},
+          }),
+        ]),
     };
   }
 }
@@ -37,14 +40,15 @@ export class NestedPartialStateChild extends Component {
         title: `child-specific title`,
       },
 
-      template: state => h(`div`, {class: {'nested-partial-child': true}}, [
-        h(`p`, `shared title: ${state.$app.title}`),
-        h(`p`, `shared child animal: ${state.$app.childAnimal}`),
-        h(`p`, `component-specific title: ${state.title}`),
-        h(`p`, `childOnlyState: ${state.childOnlyState}`),
-        h(`p`, `child: parentOnlyState: ${state.parentOnlyState}`),
-        h(`p`, `child: nonSharedStateExample: ${state.nonSharedStateExample}`),
-      ]),
+      template: (state) =>
+        h(`div`, {class: {'nested-partial-child': true}}, [
+          h(`p`, `shared title: ${state.$app.title}`),
+          h(`p`, `shared child animal: ${state.$app.childAnimal}`),
+          h(`p`, `component-specific title: ${state.title}`),
+          h(`p`, `childOnlyState: ${state.childOnlyState}`),
+          h(`p`, `child: parentOnlyState: ${state.parentOnlyState}`),
+          h(`p`, `child: nonSharedStateExample: ${state.nonSharedStateExample}`),
+        ]),
     };
   }
 

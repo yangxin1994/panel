@@ -1,39 +1,38 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+/* eslint-env node */
+const HtmlWebpackPlugin = require(`html-webpack-plugin`);
+const path = require(`path`);
 
-var webpackConfig = {
-  entry: './index.jsx',
+const webpackConfig = {
+  entry: `./index.jsx`,
   module: {
     loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: `babel`,
         query: {
-          presets: ['es2015'],
+          presets: [`es2015`],
         },
       },
       {
         test: /\.jsx$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: `babel`,
         query: {
-          plugins: [
-            ['transform-react-jsx', {'pragma': 'html'}],
-          ],
-          presets: ['es2015'],
+          plugins: [[`transform-react-jsx`, {pragma: `html`}]],
+          presets: [`es2015`],
         },
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      inject: 'head',
-      template: 'index.template.html',
+      inject: `head`,
+      template: `index.template.html`,
     }),
   ],
   resolveLoader: {
-    root: path.join(__dirname, 'node_modules'),
+    root: path.join(__dirname, `node_modules`),
   },
 };
 

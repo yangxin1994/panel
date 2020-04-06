@@ -7,7 +7,7 @@ import {WebComponent} from 'webcomponent';
 export {h} from 'snabbdom/h';
 
 export class StateStore<State> {
-  constructor(options: { store?: StateStore<State> });
+  constructor(options: {store?: StateStore<State>});
 
   /** A readonly version of controller's state */
   readonly state: State;
@@ -128,7 +128,7 @@ export interface AttrSchema {
   description?: string;
 
   /** Possible values of an attribute. e.g ['primary', 'secondary'] */
-  enum?: Array<string>;
+  enum?: string[];
 
   /** When setAttribute is invoked, console.warn that attr is deprecated e.g 'use xyz instead' */
   deprecatedMsg?: string;
@@ -158,7 +158,7 @@ export class Component<State, AppState = {}, App = unknown, Attrs = AnyAttrs> ex
    * Attributes schema that defines the component's html attributes and their types
    * Panel auto parses attribute changes into this.attrs object and $attrs template helper
    */
-  static attrsSchema: {[attr: string]: (string | AttrSchema )};
+  static attrsSchema: {[attr: string]: string | AttrSchema};
 
   /** A reference to the top-level component */
   app: App;
@@ -217,7 +217,7 @@ export class Component<State, AppState = {}, App = unknown, Attrs = AnyAttrs> ex
   /** Run a user-defined hook with the given parameters */
   runHook: (
     hookName: keyof ConfigOptions<State, AppState>['hooks'],
-    options: {cascade: boolean, exclude: Component<any, any>},
+    options: {cascade: boolean; exclude: Component<any, any>},
     params: any,
   ) => void;
 

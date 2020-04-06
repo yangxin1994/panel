@@ -7,42 +7,42 @@ import {expect} from 'chai';
 import {DOMPatcher, h} from '../../lib/dom-patcher';
 import nextAnimationFrame from './nextAnimationFrame';
 
-describe(`dom-patcher`, function() {
-  context(`when first initialized`, function() {
+describe(`dom-patcher`, function () {
+  context(`when first initialized`, function () {
     const fooState = {foo: `bar`};
-    const domPatcher = new DOMPatcher(fooState, state => h(`div`, `Value of foo: ${state.foo}`));
+    const domPatcher = new DOMPatcher(fooState, (state) => h(`div`, `Value of foo: ${state.foo}`));
 
-    it(`applies initial state`, function() {
+    it(`applies initial state`, function () {
       expect(domPatcher.state).to.eql(fooState);
     });
 
-    it(`copies the initial state`, function() {
+    it(`copies the initial state`, function () {
       expect(domPatcher.state).to.eql(fooState);
       expect(domPatcher.state).not.to.equal(fooState);
     });
 
-    it(`defaults to async mode`, function() {
+    it(`defaults to async mode`, function () {
       expect(domPatcher.updateMode).to.eql(`async`);
     });
 
-    it(`creates a target DOM element`, function() {
+    it(`creates a target DOM element`, function () {
       expect(domPatcher.el).to.be.ok;
       expect(domPatcher.el).to.be.an.instanceOf(Node);
     });
 
-    it(`applies the first patch immediately`, function() {
+    it(`applies the first patch immediately`, function () {
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
     });
   });
 
-  describe(`target DOM element`, function() {
+  describe(`target DOM element`, function () {
     let el;
 
     function patcherEl(renderFunc) {
       return new DOMPatcher({}, renderFunc).el;
     }
 
-    it(`matches the tag type of the vtree root`, function() {
+    it(`matches the tag type of the vtree root`, function () {
       el = patcherEl(() => h(`div`));
       expect(el.tagName).to.eql(`div`);
 
@@ -50,7 +50,7 @@ describe(`dom-patcher`, function() {
       expect(el.tagName).to.eql(`span`);
     });
 
-    it(`applies classes from the vtree root`, function() {
+    it(`applies classes from the vtree root`, function () {
       el = patcherEl(() => h(`span.foo`));
       expect(el.className).to.eql(`foo`);
 
@@ -58,7 +58,7 @@ describe(`dom-patcher`, function() {
       expect(el.className).to.eql(`foo bar`);
     });
 
-    it(`applies id from the vtree root`, function() {
+    it(`applies id from the vtree root`, function () {
       el = patcherEl(() => h(`span`));
       expect(el.id).to.be.empty;
 
@@ -66,7 +66,7 @@ describe(`dom-patcher`, function() {
       expect(el.id).to.eql(`foo`);
     });
 
-    it(`combines classes and id from the vtree root`, function() {
+    it(`combines classes and id from the vtree root`, function () {
       el = patcherEl(() => h(`span#foo.bar`));
       expect(el.id).to.eql(`foo`);
       expect(el.className).to.eql(`bar`);
@@ -77,13 +77,11 @@ describe(`dom-patcher`, function() {
     });
   });
 
-  context(`in sync mode`, function() {
-    it(`renders updates immediately`, function() {
-      const domPatcher = new DOMPatcher(
-        {foo: `bar`},
-        state => h(`div`, `Value of foo: ${state.foo}`),
-        {updateMode: `sync`}
-      );
+  context(`in sync mode`, function () {
+    it(`renders updates immediately`, function () {
+      const domPatcher = new DOMPatcher({foo: `bar`}, (state) => h(`div`, `Value of foo: ${state.foo}`), {
+        updateMode: `sync`,
+      });
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
       domPatcher.update({foo: `moo`});
       expect(domPatcher.el.textContent).to.eql(`Value of foo: moo`);
@@ -92,25 +90,23 @@ describe(`dom-patcher`, function() {
     });
   });
 
-  context(`in async mode`, function() {
+  context(`in async mode`, function () {
     let domPatcher;
 
-    beforeEach(function() {
-      domPatcher = new DOMPatcher(
-        {foo: `bar`},
-        state => h(`div`, `Value of foo: ${state.foo}`),
-        {updateMode: `async`}
-      );
+    beforeEach(function () {
+      domPatcher = new DOMPatcher({foo: `bar`}, (state) => h(`div`, `Value of foo: ${state.foo}`), {
+        updateMode: `async`,
+      });
     });
 
-    it(`does not render updates immediately`, function() {
+    it(`does not render updates immediately`, function () {
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
       domPatcher.update({foo: `moo`});
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
       expect(domPatcher.pending).to.be.true;
     });
 
-    it(`renders updates on the next animation frame`, async function() {
+    it(`renders updates on the next animation frame`, async function () {
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
       domPatcher.update({foo: `moo`});
 
@@ -119,7 +115,7 @@ describe(`dom-patcher`, function() {
       expect(domPatcher.el.textContent).to.eql(`Value of foo: moo`);
     });
 
-    it(`applies only the last state in a given frame`, async function() {
+    it(`applies only the last state in a given frame`, async function () {
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
       domPatcher.update({foo: `moo`});
       expect(domPatcher.el.textContent).to.eql(`Value of foo: bar`);
@@ -132,8 +128,8 @@ describe(`dom-patcher`, function() {
     });
   });
 
-  context(`when disconnected`, function() {
-    it(`cleans up references to be GC friendly`, function() {
+  context(`when disconnected`, function () {
+    it(`cleans up references to be GC friendly`, function () {
       const domPatcher = new DOMPatcher({foo: `bar`}, () => h(`div`));
       domPatcher.disconnect();
 

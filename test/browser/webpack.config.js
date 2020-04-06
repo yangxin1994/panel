@@ -15,10 +15,7 @@ const webpackConfig = {
         exclude: /node_modules/,
         loader: `babel`,
         query: {
-          plugins: [
-            `syntax-async-functions`,
-            `transform-regenerator`,
-          ],
+          plugins: [`syntax-async-functions`, `transform-regenerator`],
           presets: [`es2015`],
         },
       },
@@ -27,10 +24,7 @@ const webpackConfig = {
         include: /domsuite/,
         loader: `babel`,
         query: {
-          plugins: [
-            `syntax-async-functions`,
-            `transform-regenerator`,
-          ],
+          plugins: [`syntax-async-functions`, `transform-regenerator`],
           presets: [`es2015`],
         },
       },
