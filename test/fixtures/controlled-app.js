@@ -13,8 +13,7 @@ class CounterController extends StateController {
   }
 
   decrCounter() {
-    const count = this.state.count - 1;
-    this._update({count});
+    this._update((state) => ({count: state.count - 1}));
   }
 
   getCount() {
