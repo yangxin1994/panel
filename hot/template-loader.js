@@ -19,8 +19,9 @@ module.exports.pitch = function (request) {
   // this means components that use the template don't need to change their function reference
   // we just need to call their .update()
   return `
+    const templateModule = require(${moduleId});
     const getTemplateFn = (mod) => mod.__esModule ? mod.template : mod;
-    let templateFn = getTemplateFn(require(${moduleId}));
+    let templateFn = getTemplateFn(templateModule);
     module.hot.accept(${moduleId}, () => {
       templateFn = getTemplateFn(require(${moduleId}))
       const updatePanelElems = require('panel/hot/update-panel-elems');
