@@ -2,12 +2,7 @@ import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
-import {
-  ContextAlpha,
-  ContextAlphaImpl,
-  ContextBravo,
-  ContextBravoImpl,
-} from '../fixtures/simple-contexts';
+import {ContextAlpha, ContextAlphaImpl, ContextBravo, ContextBravoImpl} from '../fixtures/simple-contexts';
 
 describe(`Simple Component instance`, function () {
   let el;
@@ -896,8 +891,8 @@ context(`contexts`, function () {
     it(`returns context of root component while wrapped by a context parent`, function () {
       const parent = document.createElement(`context-grandparent`);
       document.body.appendChild(parent);
-      const widgetContext = parent
-        .el.querySelector(`immediate-context-parent`)
+      const widgetContext = parent.el
+        .querySelector(`immediate-context-parent`)
         .el.querySelector(`context-alpha-widget`)
         .getContext(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
@@ -923,8 +918,8 @@ context(`contexts`, function () {
     it(`returns context of root component while wrapped by contextless component`, function () {
       const parent = document.createElement(`context-parent-with-contextless-component-wrapper`);
       document.body.appendChild(parent);
-      const widgetContext = parent
-        .el.querySelector(`contextless-component-wrapper`)
+      const widgetContext = parent.el
+        .querySelector(`contextless-component-wrapper`)
         .el.querySelector(`context-alpha-widget`)
         .getContext(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);

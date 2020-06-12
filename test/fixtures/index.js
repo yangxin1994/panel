@@ -56,4 +56,7 @@ customElements.define(`context-bravo-parent-with-nested-alpha-widgets`, ContextB
 customElements.define(`contextless-slotted-wrapper`, ContextlessSlottedWrapper);
 customElements.define(`context-parent-with-contextless-slotted-wrapper`, ContextParentWithContextlessSlottedWrapper);
 customElements.define(`contextless-component-wrapper`, ContextlessComponentWrapper);
-customElements.define(`context-parent-with-contextless-component-wrapper`, ContextParentWithContextlessComponentWrapper);
+customElements.define(
+  `context-parent-with-contextless-component-wrapper`,
+  ContextParentWithContextlessComponentWrapper,
+);
