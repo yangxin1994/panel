@@ -5,7 +5,6 @@ import {compactHtml} from '../utils';
 import {
   ContextAlpha,
   ContextAlphaImpl,
-  ContextAlphaAltImpl,
   ContextBravo,
   ContextBravoImpl,
 } from '../fixtures/simple-contexts';

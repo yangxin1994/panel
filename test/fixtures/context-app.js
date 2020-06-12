@@ -10,7 +10,7 @@ import {
 export class ContextAlphaWidget extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}),
       defaultContexts: new Map([
         [ContextAlpha, new ContextAlphaImpl(`default-alpha`)],
@@ -22,7 +22,7 @@ export class ContextAlphaWidget extends Component {
 export class ImmediateContextParent extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`context-alpha-widget`, {class: {foo: true}}),
       defaultContexts: new Map([
         [ContextAlpha, new ContextAlphaImpl(`immediate-parent-alpha`)],
@@ -34,7 +34,7 @@ export class ImmediateContextParent extends Component {
 export class ImmediateContextParentWithWrapper extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
           h(`div`, {class: {foo: true}}, [
@@ -55,7 +55,7 @@ export class ImmediateContextParentWithWrapper extends Component {
 export class ShadowDomContextParent extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
           h(`div`, {class: {foo: true}}, [
@@ -77,7 +77,7 @@ export class ShadowDomContextParent extends Component {
 export class ContextAlphaSlottedWidget extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`slot`),
       defaultContexts: new Map([
         [ContextAlpha, new ContextAlphaImpl(`slotted-alpha`)],
@@ -89,7 +89,7 @@ export class ContextAlphaSlottedWidget extends Component {
 export class ContextAlphaAltSlottedWidget extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`slot`),
       defaultContexts: new Map([
         [ContextAlpha, new ContextAlphaAltImpl()],
@@ -101,7 +101,7 @@ export class ContextAlphaAltSlottedWidget extends Component {
 export class NestedSlottedContextWidgets extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
           h(`context-alpha-slotted-widget`, {class: {foo: true}}, [
@@ -121,7 +121,7 @@ export class NestedSlottedContextWidgets extends Component {
 export class ContextGrandparent extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`immediate-context-parent`, {class: {foo: true}}),
       defaultContexts: new Map([
         [ContextAlpha, new ContextAlphaImpl(`grandparent-alpha`)],
@@ -133,7 +133,7 @@ export class ContextGrandparent extends Component {
 export class ContextBravoWidget extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}),
       defaultContexts: new Map([
         [ContextBravo, new ContextBravoImpl(`default-bravo`)],
@@ -145,7 +145,7 @@ export class ContextBravoWidget extends Component {
 export class ContextBravoParentWithNestedAlphaWidgets extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
           h(`context-alpha-slotted-widget`, {class: {foo: true}}, [
@@ -169,7 +169,7 @@ export class ContextBravoParentWithNestedAlphaWidgets extends Component {
 export class ContextlessSlottedWrapper extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`slot`),
     };
   }
@@ -178,7 +178,7 @@ export class ContextlessSlottedWrapper extends Component {
 export class ContextParentWithContextlessSlottedWrapper extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
           h(`contextless-slotted-wrapper`, {class: {foo: true}}, [
@@ -196,7 +196,7 @@ export class ContextParentWithContextlessSlottedWrapper extends Component {
 export class ContextlessComponentWrapper extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`context-alpha-widget`),
     };
   }
@@ -205,7 +205,7 @@ export class ContextlessComponentWrapper extends Component {
 export class ContextParentWithContextlessComponentWrapper extends Component {
   get config() {
     return {
-      template: (state) =>
+      template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`contextless-component-wrapper`),
         ]),

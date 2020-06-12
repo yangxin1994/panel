@@ -12,7 +12,7 @@ export class ContextAlphaImpl extends ContextAlpha {
 }
 export class ContextAlphaAltImpl extends ContextAlpha {
   getTestName() {
-    return "alt-alpha";
+    return `alt-alpha`;
   }
 }
 
