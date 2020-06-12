@@ -10,8 +10,16 @@ import {BadBooleanRequiredAttrsSchemaApp, RequiredAttrsSchemaApp} from './requir
 import {ShadowDomApp} from './shadow-dom-app';
 import {SimpleApp} from './simple-app';
 import {
-	ContextAlphaWidget,
-	ImmediateContextParent,
+  ContextAlphaWidget,
+  ImmediateContextParent,
+  ImmediateContextParentWithWrapper,
+  ShadowDomContextParent,
+  ContextAlphaSlottedWidget,
+  ContextAlphaAltSlottedWidget,
+  NestedSlottedContextWidgets,
+  ContextGrandparent,
+  ContextBravoWidget,
+  ContextBravoParentWithNestedAlphaWidgets,
 } from './context-app';
 
 customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
@@ -33,3 +41,11 @@ customElements.define(`simple-app`, SimpleApp);
 
 customElements.define(`context-alpha-widget`, ContextAlphaWidget);
 customElements.define(`immediate-context-parent`, ImmediateContextParent);
+customElements.define(`immediate-context-parent-with-wrapper`, ImmediateContextParentWithWrapper);
+customElements.define(`shadow-dom-context-parent`, ShadowDomContextParent);
+customElements.define(`context-alpha-slotted-widget`, ContextAlphaSlottedWidget);
+customElements.define(`context-alpha-alt-slotted-widget`, ContextAlphaAltSlottedWidget);
+customElements.define(`nested-slotted-context-widgets`, NestedSlottedContextWidgets);
+customElements.define(`context-grandparent`, ContextGrandparent);
+customElements.define(`context-bravo-widget`, ContextBravoWidget);
+customElements.define(`context-bravo-parent-with-nested-alpha-widgets`, ContextBravoParentWithNestedAlphaWidgets);

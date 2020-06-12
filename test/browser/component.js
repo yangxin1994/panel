@@ -2,7 +2,13 @@ import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
-import {ContextAlpha, ContextAlphaImpl, ContextAlphaAltImpl} from '../fixtures/simple-contexts';
+import {
+  ContextAlpha,
+  ContextAlphaImpl,
+  ContextAlphaAltImpl,
+  ContextBravo,
+  ContextBravoImpl,
+} from '../fixtures/simple-contexts';
 
 describe(`Simple Component instance`, function () {
   let el;
@@ -852,13 +858,67 @@ context(`contexts`, function () {
       await nextAnimationFrame();
     });
 
-    it(`returns context of component parent`, function () {
+    it(`returns context of immediate component parent`, function () {
       const parent = document.createElement(`immediate-context-parent`);
       document.body.appendChild(parent);
       const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha`);
+    });
+
+    it(`returns context of immediate component parent with non-panel wrappers`, function () {
+      const parent = document.createElement(`immediate-context-parent-with-wrapper`);
+      document.body.appendChild(parent);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
+      expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha-with-wrapper`);
+    });
+
+    it(`returns context of shadow DOM component parent`, function () {
+      const parent = document.createElement(`shadow-dom-context-parent`);
+      document.body.appendChild(parent);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
+      expect(widgetContext.getTestName()).to.equal(`shadow-dom-parent-alpha`);
+    });
+
+    it(`returns context of slotted DOM parent`, function () {
+      const parent = document.createElement(`nested-slotted-context-widgets`);
+      document.body.appendChild(parent);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
+      expect(widgetContext.getTestName()).to.equal(`slotted-alpha`);
+    });
+
+    it(`returns context of component grandparent`, function () {
+      const parent = document.createElement(`context-grandparent`);
+      document.body.appendChild(parent);
+      const widgetContext = parent
+        .el.querySelector(`immediate-context-parent`)
+        .el.querySelector(`context-alpha-widget`)
+        .getContext(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
+      expect(widgetContext.getTestName()).to.equal(`grandparent-alpha`);
+    });
+
+    it(`returns different contexts in a widget tree containing multiple contexts`, function () {
+      const parent = document.createElement(`context-bravo-parent-with-nested-alpha-widgets`);
+      document.body.appendChild(parent);
+
+      const alphaWidgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      expect(alphaWidgetContext).to.be.an.instanceof(ContextAlpha);
+      expect(alphaWidgetContext).to.be.an.instanceof(ContextAlphaImpl);
+      expect(alphaWidgetContext.getTestName()).to.equal(`slotted-alpha`);
+
+      const bravoWidgetContext = parent.el.querySelector(`context-bravo-widget`).getContext(ContextBravo);
+      expect(bravoWidgetContext).to.be.an.instanceof(ContextBravo);
+      expect(bravoWidgetContext).to.be.an.instanceof(ContextBravoImpl);
+      expect(bravoWidgetContext.getTestName()).to.equal(`parent-bravo`);
     });
   });
 });
