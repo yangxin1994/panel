@@ -12,6 +12,7 @@
   "scripts": {
     "build": "rm -rf build && babel lib -d build && cp -r build/isorender .",
     "build-test": "webpack --config test/browser/webpack.config.js",
+    "build-test-p": "webpack --config test/browser/webpack.config.js --watch",
     "docs": "rm -rf docs && jsdoc lib lib/component-utils lib/isorender -t node_modules/minami -R README-API.md -d docs",
     "lint": "eslint . && prettier -c \"./**/*.{ts,tsx,js}\" && npm run tslint",
     "prepublishOnly": "npm run build",
