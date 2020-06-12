@@ -9,6 +9,10 @@ import {NestedPartialStateParent, NestedPartialStateChild} from './nested-partia
 import {BadBooleanRequiredAttrsSchemaApp, RequiredAttrsSchemaApp} from './required-attrs-schema-apps';
 import {ShadowDomApp} from './shadow-dom-app';
 import {SimpleApp} from './simple-app';
+import {
+	ContextAlphaWidget,
+	ImmediateContextParent,
+} from './context-app';
 
 customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
 customElements.define(`bad-attrs-schema-app`, BadAttrsSchemaApp);
@@ -26,3 +30,6 @@ customElements.define(`nested-partial-state-child`, NestedPartialStateChild);
 customElements.define(`required-attrs-schema-app`, RequiredAttrsSchemaApp);
 customElements.define(`shadow-dom-app`, ShadowDomApp);
 customElements.define(`simple-app`, SimpleApp);
+
+customElements.define(`context-alpha-widget`, ContextAlphaWidget);
+customElements.define(`immediate-context-parent`, ImmediateContextParent);

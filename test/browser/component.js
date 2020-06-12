@@ -2,6 +2,7 @@ import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
+import {ContextAlpha, ContextAlphaImpl, ContextAlphaAltImpl} from '../fixtures/simple-contexts';
 
 describe(`Simple Component instance`, function () {
   let el;
@@ -841,5 +842,23 @@ describe(`Component with required attrs`, function () {
     await nextAnimationFrame();
 
     expect(el.innerHTML).to.equal(compactHtml(`<div>Shouldn't render with missing attribute!</div>`));
+  });
+});
+
+context(`contexts`, function () {
+  describe(`getContext()`, function () {
+    beforeEach(async function () {
+      document.body.innerHTML = ``;
+      await nextAnimationFrame();
+    });
+
+    it(`returns context of component parent`, function () {
+      const parent = document.createElement(`immediate-context-parent`);
+      document.body.appendChild(parent);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
+      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
+      expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha`);
+    });
   });
 });
