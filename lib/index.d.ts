@@ -73,6 +73,9 @@ export interface ConfigOptions<StateT, AppStateT = unknown> {
   /** An initial default value for the component's state property */
   defaultState?: StateT;
 
+  /** Expected contexts and their default values to share with descendant panel components */
+  defaultContexts?: Map<{ new(): any }, any>;
+
   /**
    * A state object to share with nested descendant components. If not set, root component
    * shares entire state object with all descendants. Only applicable to app root components.
@@ -243,4 +246,6 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
    */
   onDisconnected(callback: () => void): void;
+
+  getContext<BaseContext>(contextBaseClass: { new(): BaseContext }): BaseContext;
 }
