@@ -648,7 +648,7 @@ describe(`Rendering exception`, function () {
 
   it(`logs error and emits renderError event`, function () {
     const errorMessage = `Error while rendering`;
-    expect(el._logError.getCall(0).args[0]).to.contain(errorMessage);
+    expect(el._logError.getCall(0).args[0]).to.equal(errorMessage);
 
     const renderErrorEvent = renderErrorSpy.getCall(0).args[0];
     expect(renderErrorEvent.detail.message).to.contain(errorMessage);
