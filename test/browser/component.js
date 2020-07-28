@@ -686,3 +686,68 @@ context(`$hooks`, function () {
     });
   });
 });
+
+describe.only(`Lifecycle Helpers`, function () {
+  let el;
+  let spy;
+
+  beforeEach(function () {
+    document.body.innerHTML = ``;
+    el = document.createElement(`simple-app`);
+    spy = sinon.spy();
+  });
+
+  it(`onConnected doesn't fire until connectedCallback`, async function () {
+    el.onConnected(spy);
+
+    expect(spy.callCount).to.equal(0);
+
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+    expect(spy.callCount).to.equal(1);
+  });
+
+  it(`onConnected immediately fires if connectedCallback has run`, async function () {
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+
+    el.onConnected(spy);
+    expect(spy.callCount).to.equal(1);
+  });
+
+  it(`onDisconnect fires on disconnectedCallback`, async function () {
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+
+    el.onDisconnected(spy);
+    expect(spy.callCount).to.equal(0);
+
+    document.body.innerHTML = ``;
+    await nextAnimationFrame();
+    expect(spy.callCount).to.equal(1);
+  });
+
+  it(`onConnect can return a function to run on disconnectedCallback`, async function () {
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+
+    el.onConnected(() => spy);
+    expect(spy.callCount).to.equal(0);
+
+    document.body.innerHTML = ``;
+    await nextAnimationFrame();
+    expect(spy.callCount).to.equal(1);
+  });
+
+  it(`onConnect function context is bound to the component`, async function () {
+    document.body.appendChild(el);
+    await nextAnimationFrame();
+
+    el.onConnected(function () {
+      this.update({baz: 42});
+    });
+    await nextAnimationFrame();
+
+    expect(el.textContent).to.contain(`baz: 42`);
+  });
+});

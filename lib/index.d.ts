@@ -222,4 +222,23 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    * means of updating the DOM in a Panel application.
    */
   update(stateUpdate?: Partial<StateT> | ((state: StateT) => Partial<StateT>)): void;
+
+  /**
+   * Helper function which will queue a function to be run once the component has been
+   * initialized and added to the DOM. If the component has already had it's connectedCallback
+   * run, the function will run immediately.
+   *
+   * It can optionally return a function to be queue'd to be run just before the component is
+   * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
+   * @param callback Function to be run after the component has been added to the DOM
+   */
+  onConnected(callback: () => void | (() => void)): void;
+
+  /**
+   * Helper function which will queue a function to be run just before the component is
+   * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
+   *
+   * @param callback Function to be run just before the component is removed from the DOM
+   */
+  onDisconnected(callback: () => void): void;
 }
