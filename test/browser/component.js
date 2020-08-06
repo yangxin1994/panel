@@ -687,7 +687,7 @@ context(`$hooks`, function () {
   });
 });
 
-describe.only(`Lifecycle Helpers`, function () {
+describe(`Lifecycle Helpers`, function () {
   let el;
   let spy;
 
