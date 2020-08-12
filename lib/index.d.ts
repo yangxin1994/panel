@@ -225,10 +225,10 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
 
   /**
    * Helper function which will queue a function to be run once the component has been
-   * initialized and added to the DOM. If the component has already had it's connectedCallback
+   * initialized and added to the DOM. If the component has already had its connectedCallback
    * run, the function will run immediately.
    *
-   * It can optionally return a function to be queue'd to be run just before the component is
+   * It can optionally return a function to be enqueued to be run just before the component is
    * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
    * @param callback Function to be run after the component has been added to the DOM
    */
