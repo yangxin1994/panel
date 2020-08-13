@@ -63,12 +63,13 @@ export interface PanelHooks<State> {
   [hookName: string]: (params: any) => void;
 }
 
-export interface PanelContext {
+// this type is not checked in the Component ContextRegistry, the Component JS manually checks for these properties instead
+export interface PanelLifecycleContext {
   attachedCallback?(component: Component<any>): void;
   unattachedCallback?(component: Component<any>): void;
 }
 
-export interface ConfigOptions<StateT, AppStateT = unknown, ContextRegistry extends {[key: string]: PanelContext;} = unknown> {
+export interface ConfigOptions<StateT, AppStateT = unknown, ContextRegistry = unknown> {
   /** Function transforming state object to virtual dom tree */
   template(scope?: StateT): VNode;
 
@@ -198,10 +199,10 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    * Fetches a value from the component's configuration map (a combination of
    * values supplied in the config() getter and defaults applied automatically).
    */
-  getConfig<K extends keyof ConfigOptions<StateT, AppStateT>>(key: K): this['config'][K];
+  getConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistry>>(key: K): this['config'][K];
 
   /** Sets a value in the component's configuration map after element initialization */
-  setConfig<K extends keyof ConfigOptions<StateT, AppStateT>>(key: K, val: ConfigOptions<StateT, AppStateT>[K]): void;
+  setConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistry>>(key: K, val: ConfigOptions<StateT, AppStateT, ContextRegistry>[K]): void;
 
   /**
    * Executes the route handler matching the given URL fragment, and updates
@@ -211,7 +212,7 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
 
   /** Run a user-defined hook with the given parameters */
   runHook: (
-    hookName: keyof ConfigOptions<StateT, AppStateT>['hooks'],
+    hookName: keyof ConfigOptions<StateT, AppStateT, ContextRegistry>['hooks'],
     options: {cascade: boolean; exclude: Component<any, any>},
     params: any,
   ) => void;
@@ -255,5 +256,5 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    */
   onDisconnected(callback: () => void): void;
 
-  getContext(contextName: keyof ContextRegistry): ContextRegistry[keyof ContextRegistry];
+  getContext<ContextKey extends keyof ContextRegistry>(contextName: ContextKey): ContextRegistry[ContextKey];
 }
