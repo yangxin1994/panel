@@ -143,7 +143,13 @@ export interface AnyAttrs {
   [attr: string]: any;
 }
 
-export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = unknown, ContextRegistry = unknown> extends WebComponent {
+export class Component<
+  StateT,
+  AttrsT = AnyAttrs,
+  AppStateT = unknown,
+  AppT = unknown,
+  ContextRegistry = unknown
+> extends WebComponent {
   /** The first Panel Component ancestor in the DOM tree; null if this component is the root */
   $panelParent: Component<unknown>;
 
@@ -202,7 +208,10 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
   getConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistry>>(key: K): this['config'][K];
 
   /** Sets a value in the component's configuration map after element initialization */
-  setConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistry>>(key: K, val: ConfigOptions<StateT, AppStateT, ContextRegistry>[K]): void;
+  setConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistry>>(
+    key: K,
+    val: ConfigOptions<StateT, AppStateT, ContextRegistry>[K],
+  ): void;
 
   /**
    * Executes the route handler matching the given URL fragment, and updates

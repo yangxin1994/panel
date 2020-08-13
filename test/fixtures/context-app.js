@@ -1,5 +1,5 @@
 import {Component, h} from '../../lib';
-import {ContextAlpha, ContextAlphaImpl, ContextAlphaAltImpl, ContextBravo, ContextBravoImpl} from './simple-contexts';
+import {ContextAlphaImpl, ContextAlphaAltImpl, ContextBravoImpl} from './simple-contexts';
 
 export class ContextAlphaWidget extends Component {
   get config() {

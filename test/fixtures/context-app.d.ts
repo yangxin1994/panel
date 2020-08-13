@@ -7,7 +7,11 @@ interface TestContextRegistry {
 }
 
 export class ContextAlphaWidget extends Component<any, any, any, any, TestContextRegistry> {
-  config: ConfigOptions<any, any, {
-    alpha: ContextAlphaImpl;
-  }>;
+  config: ConfigOptions<
+    any,
+    any,
+    {
+      alpha: ContextAlphaImpl;
+    }
+  >;
 }
