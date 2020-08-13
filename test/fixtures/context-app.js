@@ -5,7 +5,7 @@ export class ContextAlphaWidget extends Component {
   get config() {
     return {
       template: () => h(`div`, {class: {foo: true}}),
-      defaultContexts: {alpha: new ContextAlphaImpl(`default-alpha`)},
+      attachedContexts: [`alpha`],
     };
   }
 }
@@ -97,7 +97,7 @@ export class ContextBravoWidget extends Component {
   get config() {
     return {
       template: () => h(`div`, {class: {foo: true}}),
-      defaultContexts: {bravo: new ContextBravoImpl(`default-bravo`)},
+      attachedContexts: [`bravo`],
     };
   }
 }
