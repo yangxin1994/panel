@@ -63,7 +63,12 @@ export interface PanelHooks<State> {
   [hookName: string]: (params: any) => void;
 }
 
-export interface ConfigOptions<StateT, AppStateT = unknown> {
+export interface PanelContext {
+  attachedCallback?(component: Component<any>): void;
+  unattachedCallback?(component: Component<any>): void;
+}
+
+export interface ConfigOptions<StateT, AppStateT = unknown, ContextRegistry extends {[key: string]: PanelContext;} = unknown> {
   /** Function transforming state object to virtual dom tree */
   template(scope?: StateT): VNode;
 
@@ -73,8 +78,11 @@ export interface ConfigOptions<StateT, AppStateT = unknown> {
   /** An initial default value for the component's state property */
   defaultState?: StateT;
 
-  /** Expected contexts and their default values to share with descendant panel components */
-  defaultContexts?: Map<new () => any, any>;
+  /** Default contexts for the component and its descendants to use if no context parent provides them */
+  defaultContexts?: Partial<ContextRegistry>;
+
+  /** Names of contexts for the component to attach and depend upon */
+  attachedContexts?: Array<keyof ContextRegistry>;
 
   /**
    * A state object to share with nested descendant components. If not set, root component
@@ -134,7 +142,7 @@ export interface AnyAttrs {
   [attr: string]: any;
 }
 
-export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = unknown> extends WebComponent {
+export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = unknown, ContextRegistry = unknown> extends WebComponent {
   /** The first Panel Component ancestor in the DOM tree; null if this component is the root */
   $panelParent: Component<unknown>;
 
@@ -160,7 +168,7 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
   state: StateT;
 
   /** Defines standard component configuration */
-  get config(): ConfigOptions<StateT, AppStateT>;
+  get config(): ConfigOptions<StateT, AppStateT, ContextRegistry>;
 
   /**
    * Template helper functions defined in config object, and exposed to template code as $helpers.
@@ -247,5 +255,5 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    */
   onDisconnected(callback: () => void): void;
 
-  getContext<BaseContext>(contextBaseClass: new () => BaseContext): BaseContext;
+  getContext(contextName: keyof ContextRegistry): ContextRegistry[keyof ContextRegistry];
 }

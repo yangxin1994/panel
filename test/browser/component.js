@@ -855,7 +855,7 @@ context(`contexts`, function () {
     it(`returns context of immediate component parent`, function () {
       const parent = document.createElement(`immediate-context-parent`);
       document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha`);
@@ -864,7 +864,7 @@ context(`contexts`, function () {
     it(`returns context of immediate component parent with non-panel wrappers`, function () {
       const parent = document.createElement(`immediate-context-parent-with-wrapper`);
       document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha-with-wrapper`);
@@ -873,7 +873,7 @@ context(`contexts`, function () {
     it(`returns context of shadow DOM component parent`, function () {
       const parent = document.createElement(`shadow-dom-context-parent`);
       document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`shadow-dom-parent-alpha`);
@@ -882,7 +882,7 @@ context(`contexts`, function () {
     it(`returns context of slotted DOM parent`, function () {
       const parent = document.createElement(`nested-slotted-context-widgets`);
       document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`slotted-alpha`);
@@ -894,7 +894,7 @@ context(`contexts`, function () {
       const widgetContext = parent.el
         .querySelector(`immediate-context-parent`)
         .el.querySelector(`context-alpha-widget`)
-        .getContext(ContextAlpha);
+        .getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`grandparent-alpha`);
@@ -904,12 +904,12 @@ context(`contexts`, function () {
       const parent = document.createElement(`context-bravo-parent-with-nested-alpha-widgets`);
       document.body.appendChild(parent);
 
-      const alphaWidgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      const alphaWidgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
       expect(alphaWidgetContext).to.be.an.instanceof(ContextAlpha);
       expect(alphaWidgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(alphaWidgetContext.getTestName()).to.equal(`slotted-alpha`);
 
-      const bravoWidgetContext = parent.el.querySelector(`context-bravo-widget`).getContext(ContextBravo);
+      const bravoWidgetContext = parent.el.querySelector(`context-bravo-widget`).getContext(`bravo`);
       expect(bravoWidgetContext).to.be.an.instanceof(ContextBravo);
       expect(bravoWidgetContext).to.be.an.instanceof(ContextBravoImpl);
       expect(bravoWidgetContext.getTestName()).to.equal(`parent-bravo`);
@@ -921,7 +921,7 @@ context(`contexts`, function () {
       const widgetContext = parent.el
         .querySelector(`contextless-component-wrapper`)
         .el.querySelector(`context-alpha-widget`)
-        .getContext(ContextAlpha);
+        .getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`parent-alpha`);
@@ -930,7 +930,7 @@ context(`contexts`, function () {
     it(`returns context of root component while slotted in a contextless component`, function () {
       const parent = document.createElement(`context-parent-with-contextless-slotted-wrapper`);
       document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(ContextAlpha);
+      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
       expect(widgetContext).to.be.an.instanceof(ContextAlpha);
       expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
       expect(widgetContext.getTestName()).to.equal(`parent-alpha`);
