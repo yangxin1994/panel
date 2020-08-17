@@ -777,7 +777,7 @@ describe(`Lifecycle Helpers`, function () {
       expect(spy.callCount).to.equal(2);
     });
 
-    it(`returned function is called each time the component is removed from the DOM`, async function () {
+    it(`calls the returned function each time the component is removed from the DOM`, async function () {
       document.body.appendChild(el);
       await nextAnimationFrame();
 
