@@ -230,15 +230,12 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    *
    * It can optionally return a function to be enqueued to be run just before the component is
    * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
-   * @param callback Function to be run after the component has been added to the DOM
    */
   onConnected(callback: () => void | (() => void)): void;
 
   /**
    * Helper function which will queue a function to be run just before the component is
    * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
-   *
-   * @param callback Function to be run just before the component is removed from the DOM
    */
   onDisconnected(callback: () => void): void;
 }
