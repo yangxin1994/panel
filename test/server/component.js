@@ -7,6 +7,11 @@ import {SimpleApp} from '../fixtures/simple-app';
 import {NestedApp, NestedChild} from '../fixtures/nested-app';
 import {AttrsReflectionApp} from '../fixtures/attrs-reflection-app';
 import {BadAttrsSchemaApp} from '../fixtures/bad-attrs-schema-app';
+import {
+  BadBooleanRequiredAttrsSchemaApp,
+  BadDefaultRequiredAttrsSchemaApp,
+  RequiredAttrsSchemaApp,
+} from '../fixtures/required-attrs-schema-apps';
 import nextAnimationFrame from './nextAnimationFrame';
 import {compactHtml} from '../utils';
 
@@ -15,6 +20,9 @@ customElements.define(`nested-app`, NestedApp);
 customElements.define(`nested-child`, NestedChild);
 customElements.define(`simple-app`, SimpleApp);
 customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
+customElements.define(`required-attrs-schema-app`, RequiredAttrsSchemaApp);
+customElements.define(`bad-boolean-required-attrs-schema-app`, BadBooleanRequiredAttrsSchemaApp);
+customElements.define(`bad-default-required-attrs-schema-app`, BadDefaultRequiredAttrsSchemaApp);
 
 describe(`Server-side component renderer`, function () {
   it(`can register and create components with document.createElement`, function () {
@@ -197,5 +205,32 @@ describe(`Server-side component renderer`, function () {
     expect(() => new BadAttrsSchemaApp()).to.throw(
       `Invalid type: bool for attr: bad-attr in attrsSchema. Only ('string' | 'boolean' | 'number' | 'json') is valid.`,
     );
+  });
+
+  it(`renders when required attrs are provided`, async function () {
+    const el = new RequiredAttrsSchemaApp();
+    el.setAttribute(`str-attr`, `a value`);
+    el.connectedCallback();
+    await nextAnimationFrame();
+
+    expect(el.innerHTML).to.equal(`<div>Shouldn't render with missing attribute!</div>`);
+  });
+
+  it(`throws error for missing required attrs`, async function () {
+    const el = document.createElement(`required-attrs-schema-app`);
+
+    expect(() => el.connectedCallback()).to.throw(`${el}: is missing required attr 'str-attr'`);
+  });
+
+  it(`throws error for invalid default required attrs`, async function () {
+    expect(() => {
+      document.createElement(`bad-default-required-attrs-schema-app`);
+    }).to.throw(/attr 'greeting-attr' cannot have both required and default/);
+  });
+
+  it(`throws error for invalid boolean required attrs`, async function () {
+    expect(() => {
+      document.createElement(`bad-boolean-required-attrs-schema-app`);
+    }).to.throw(/boolean attr 'bool-attr' cannot have required or default/);
   });
 });
