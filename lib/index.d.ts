@@ -266,7 +266,8 @@ export class Component<
   onDisconnected(callback: () => void): void;
 
   /**
-   * Returns the default context of the highest (ie. closest to the document root) ancestor component that has configured a default context for the context name,
+   * Returns the default context of the highest (ie. closest to the document root) ancestor component
+   * that has configured a default context for the context name,
    * or it will return the component's own default context if no ancestor context was found.
    */
   getContext<ContextKey extends keyof ContextRegistryT>(contextName: ContextKey): ContextRegistryT[ContextKey];
