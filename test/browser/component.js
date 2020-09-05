@@ -852,34 +852,183 @@ context(`Component with contexts`, function () {
       await nextAnimationFrame();
     });
 
-    it(`returns own default context without context ancestor`, function () {
+    it(`returns own default context without context ancestor`, async function () {
       const widget = document.createElement(`default-light-themed-widget`);
       document.body.appendChild(widget);
-      const theme = widget.getContext(`theme`);
-      expect(theme).to.be.an.instanceof(LightTheme);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
     });
 
-    it(`returns default context from wrapper component`, function () {
+    it(`returns default context from wrapper component`, async function () {
       const darkApp = document.createElement(`dark-app`);
       document.body.appendChild(darkApp);
+
+      await nextAnimationFrame();
       const theme = darkApp.el.querySelector(`default-light-themed-widget`).getContext(`theme`);
       expect(theme).to.be.an.instanceof(DarkTheme);
     });
 
-    it(`returns default context from shadow DOM wrapper component`, function () {
+    it(`returns default context from shadow DOM wrapper component`, async function () {
       const darkApp = document.createElement(`shadow-dom-dark-app`);
       document.body.appendChild(darkApp);
+
+      await nextAnimationFrame();
       const theme = darkApp.el.querySelector(`default-light-themed-widget`).getContext(`theme`);
       expect(theme).to.be.an.instanceof(DarkTheme);
     });
 
-    it(`returns default context from slotted wrapper component`, function () {
+    it(`returns default context from slotted wrapper component`, async function () {
       const darkApp = document.createElement(`slotted-dark-app`);
       document.body.appendChild(darkApp);
+
       const widget = document.createElement(`default-light-themed-widget`);
       darkApp.appendChild(widget);
-      const theme = widget.getContext(`theme`);
-      expect(theme).to.be.an.instanceof(DarkTheme);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+    });
+
+    it(`returns default context from root component`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const lightApp = document.createElement(`slotted-light-app`);
+      darkApp.appendChild(lightApp);
+
+      const widget = document.createElement(`themed-widget`);
+      lightApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+    });
+
+    it(`returns different default context from different context ancestors`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const invertedLightApp = document.createElement(`slotted-inverted-light-app`);
+      darkApp.appendChild(invertedLightApp);
+
+      const widget = document.createElement(`multi-themed-widget`);
+      invertedLightApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.getContext(`invertedTheme`)).to.be.an.instanceof(LightTheme);
+    });
+
+    it(`returns same context as other components sharing the same root component`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const widget = document.createElement(`themed-widget`);
+      darkApp.appendChild(widget);
+
+      const siblingWidget = document.createElement(`slotted-light-app`);
+      darkApp.appendChild(siblingWidget);
+
+      const nephewWidget = document.createElement(`themed-widget`);
+      siblingWidget.appendChild(nephewWidget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.getContext(`theme`)).to.equal(siblingWidget.getContext(`theme`));
+      expect(widget.getContext(`theme`)).to.equal(nephewWidget.getContext(`theme`));
+    });
+
+    it(`throws error when context name is not declared in config`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const widget = document.createElement(`default-light-themed-widget`);
+      darkApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(() => widget.getContext(`asdf`)).to.throw();
+    });
+
+    it(`throws error when context name is null or empty`, async function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+      document.body.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(() => widget.getContext(``)).to.throw();
+      expect(() => widget.getContext()).to.throw();
+      expect(() => widget.getContext(null)).to.throw();
+    });
+
+    it(`throws error when called before component is connected`, async function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+
+      await nextAnimationFrame();
+      expect(() => widget.getContext(`theme`)).to.throw();
+    });
+  });
+
+  describe(`lifecycle`, function () {
+    beforeEach(async function () {
+      document.body.innerHTML = ``;
+      await nextAnimationFrame();
+    });
+
+    it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
+      const errors = [];
+      window.uncaughtErrorFilter = (errorEvent) => {
+        errors.push(errorEvent.message);
+        return errorEvent.message.includes(`context is not available`);
+      };
+
+      const widget = document.createElement(`themed-widget`);
+      document.body.appendChild(widget);
+      await nextAnimationFrame();
+
+      expect(errors).to.have.lengthOf(1);
+      delete window.uncaughtErrorFilter;
+    });
+
+    it(`executes bindToComponent callback when connected`, async function () {
+      const widget1 = document.createElement(`slotted-load-counter-widget`);
+      document.body.appendChild(widget1);
+      await nextAnimationFrame();
+      expect(widget1.getContext(`loadCounter`).getCount()).to.equal(1);
+
+      const widget2 = document.createElement(`slotted-load-counter-widget`);
+      widget1.appendChild(widget2);
+      await nextAnimationFrame();
+      expect(widget1.getContext(`loadCounter`).getCount()).to.equal(2);
+
+      const widget3 = document.createElement(`slotted-load-counter-widget`);
+      widget2.appendChild(widget3);
+      await nextAnimationFrame();
+      expect(widget1.getContext(`loadCounter`).getCount()).to.equal(3);
+    });
+
+    it(`executes unbindFromComponent callback when disconnected`, async function () {
+      const widget1 = document.createElement(`slotted-load-counter-widget`);
+      document.body.appendChild(widget1);
+
+      const widget2 = document.createElement(`slotted-load-counter-widget`);
+      widget1.appendChild(widget2);
+
+      const widget3 = document.createElement(`slotted-load-counter-widget`);
+      widget2.appendChild(widget3);
+
+      await nextAnimationFrame();
+      const counter = widget1.getContext(`loadCounter`);
+      expect(counter.getCount()).to.equal(3);
+
+      widget3.remove();
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+
+      widget2.remove();
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+
+      widget1.remove();
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(0);
     });
   });
 });

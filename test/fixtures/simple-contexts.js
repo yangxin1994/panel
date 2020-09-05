@@ -14,11 +14,11 @@ export class LoadCounter {
   constructor() {
     this.count = 0;
   }
-  bindToComponent(component) {
+  bindToComponent() {
     this.count += 1;
   }
-  unbindFromComponent(component) {
-    this.count += 1;
+  unbindFromComponent() {
+    this.count -= 1;
   }
   getCount() {
     return this.count;
