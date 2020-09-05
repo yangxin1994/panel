@@ -1,4 +1,4 @@
-import {nextAnimationFrame, sleep} from 'domsuite';
+import {condition, nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
@@ -981,9 +981,7 @@ context(`Component with contexts`, function () {
 
       const widget = document.createElement(`themed-widget`);
       document.body.appendChild(widget);
-      await nextAnimationFrame();
-
-      expect(errors).to.have.lengthOf(1);
+      await condition(() => errors.length === 1);
       delete window.uncaughtErrorFilter;
     });
 
