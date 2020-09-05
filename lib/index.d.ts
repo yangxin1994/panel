@@ -65,8 +65,8 @@ export interface PanelHooks<State> {
 
 // this type is not checked in the Component ContextRegistry, the Component JS manually checks for these properties instead
 export interface PanelLifecycleContext {
-  attachedCallback?(component: Component<any>): void;
-  unattachedCallback?(component: Component<any>): void;
+  bindToComponent?(component: Component<any>): void;
+  unbindFromComponent?(component: Component<any>): void;
 }
 
 export interface ConfigOptions<StateT, AppStateT = unknown, ContextRegistry = unknown> {
@@ -83,7 +83,7 @@ export interface ConfigOptions<StateT, AppStateT = unknown, ContextRegistry = un
   defaultContexts?: Partial<ContextRegistry>;
 
   /** Names of contexts for the component to attach and depend upon */
-  attachedContexts?: Array<keyof ContextRegistry>;
+  contexts?: Array<keyof ContextRegistry>;
 
   /**
    * A state object to share with nested descendant components. If not set, root component

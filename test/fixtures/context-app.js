@@ -1,164 +1,82 @@
 import {Component, h} from '../../lib';
-import {ContextAlphaImpl, ContextAlphaAltImpl, ContextBravoImpl} from './simple-contexts';
+import {LightTheme, DarkTheme} from './simple-contexts';
 
-export class ContextAlphaWidget extends Component {
+export class DefaultLightThemedWidget extends Component {
   get config() {
     return {
       template: () => h(`div`, {class: {foo: true}}),
-      attachedContexts: [`alpha`],
+      contexts: [`theme`],
+      defaultContexts: {
+        theme: new LightTheme(),
+      },
     };
   }
 }
 
-export class ImmediateContextParent extends Component {
+export class ThemedWidget extends Component {
   get config() {
     return {
-      template: () => h(`context-alpha-widget`, {class: {foo: true}}),
-      defaultContexts: {alpha: new ContextAlphaImpl(`immediate-parent-alpha`)},
+      template: () => h(`div`, {class: {foo: true}}),
+      contexts: [`theme`],
     };
   }
 }
 
-export class ImmediateContextParentWithWrapper extends Component {
-  get config() {
-    return {
-      template: () =>
-        h(`div`, {class: {foo: true}}, [
-          h(`p`, `asdf`),
-          h(`div`, {class: {foo: true}}, [h(`div`, {class: {foo: true}}, [h(`context-alpha-widget`)]), h(`p`, `asdf`)]),
-          h(`p`, `asdf`),
-        ]),
-      defaultContexts: {alpha: new ContextAlphaImpl(`immediate-parent-alpha-with-wrapper`)},
-    };
-  }
-}
-
-export class ShadowDomContextParent extends Component {
+export class DarkApp extends Component {
   get config() {
     return {
       template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
-          h(`div`, {class: {foo: true}}, [h(`div`, {class: {foo: true}}, [h(`context-alpha-widget`)]), h(`p`, `asdf`)]),
+          h(`div`, {class: {foo: true}}, [
+            h(`div`, {class: {foo: true}}, [
+              h(`default-light-themed-widget`),
+            ]),
+            h(`p`, `asdf`),
+          ]),
           h(`p`, `asdf`),
         ]),
-      defaultContexts: {alpha: new ContextAlphaImpl(`shadow-dom-parent-alpha`)},
+      defaultContexts: {theme: new DarkTheme()},
+    };
+  }
+}
+
+export class ShadowDomDarkApp extends Component {
+  get config() {
+    return {
+      template: () =>
+        h(`div`, {class: {foo: true}}, [
+          h(`p`, `asdf`),
+          h(`div`, {class: {foo: true}}, [
+            h(`div`, {class: {foo: true}}, [
+              h(`default-light-themed-widget`),
+            ]),
+            h(`p`, `asdf`),
+          ]),
+          h(`p`, `asdf`),
+        ]),
+      defaultContexts: {theme: new DarkTheme()},
       useShadowDom: true,
     };
   }
 }
 
-export class ContextAlphaSlottedWidget extends Component {
-  get config() {
-    return {
-      template: () => h(`slot`),
-      defaultContexts: {alpha: new ContextAlphaImpl(`slotted-alpha`)},
-    };
-  }
-}
-
-export class ContextAlphaAltSlottedWidget extends Component {
-  get config() {
-    return {
-      template: () => h(`slot`),
-      defaultContexts: {alpha: new ContextAlphaAltImpl()},
-    };
-  }
-}
-
-export class NestedSlottedContextWidgets extends Component {
+export class SlottedDarkApp extends Component {
   get config() {
     return {
       template: () =>
         h(`div`, {class: {foo: true}}, [
           h(`p`, `asdf`),
-          h(`context-alpha-slotted-widget`, {class: {foo: true}}, [
-            h(`span`, {class: {foo: true}}, [
-              h(`context-alpha-alt-slotted-widget`, {class: {foo: true}}, [h(`context-alpha-widget`)]),
+          h(`div`, {class: {foo: true}}, [
+            h(`div`, {class: {foo: true}}, [
+              h(`slot`),
             ]),
             h(`p`, `asdf`),
           ]),
           h(`p`, `asdf`),
         ]),
-    };
-  }
-}
-
-export class ContextGrandparent extends Component {
-  get config() {
-    return {
-      template: () => h(`immediate-context-parent`, {class: {foo: true}}),
-      defaultContexts: {alpha: new ContextAlphaImpl(`grandparent-alpha`)},
-    };
-  }
-}
-
-export class ContextBravoWidget extends Component {
-  get config() {
-    return {
-      template: () => h(`div`, {class: {foo: true}}),
-      attachedContexts: [`bravo`],
-    };
-  }
-}
-
-export class ContextBravoParentWithNestedAlphaWidgets extends Component {
-  get config() {
-    return {
-      template: () =>
-        h(`div`, {class: {foo: true}}, [
-          h(`p`, `asdf`),
-          h(`context-alpha-slotted-widget`, {class: {foo: true}}, [
-            h(`span`, {class: {foo: true}}, [
-              h(`context-alpha-alt-slotted-widget`, {class: {foo: true}}, [
-                h(`context-alpha-widget`),
-                h(`context-bravo-widget`),
-              ]),
-            ]),
-            h(`p`, `asdf`),
-          ]),
-          h(`p`, `asdf`),
-        ]),
-      defaultContexts: {bravo: new ContextBravoImpl(`parent-bravo`)},
-    };
-  }
-}
-
-export class ContextlessSlottedWrapper extends Component {
-  get config() {
-    return {
-      template: () => h(`slot`),
-    };
-  }
-}
-
-export class ContextParentWithContextlessSlottedWrapper extends Component {
-  get config() {
-    return {
-      template: () =>
-        h(`div`, {class: {foo: true}}, [
-          h(`p`, `asdf`),
-          h(`contextless-slotted-wrapper`, {class: {foo: true}}, [h(`context-alpha-widget`)]),
-          h(`p`, `asdf`),
-        ]),
-      defaultContexts: {alpha: new ContextAlphaImpl(`parent-alpha`)},
-    };
-  }
-}
-
-export class ContextlessComponentWrapper extends Component {
-  get config() {
-    return {
-      template: () => h(`context-alpha-widget`),
-    };
-  }
-}
-
-export class ContextParentWithContextlessComponentWrapper extends Component {
-  get config() {
-    return {
-      template: () => h(`div`, {class: {foo: true}}, [h(`contextless-component-wrapper`)]),
-      defaultContexts: {alpha: new ContextAlphaImpl(`parent-alpha`)},
+      defaultContexts: {theme: new DarkTheme()},
+      useShadowDom: true,
     };
   }
 }

@@ -1,14 +1,54 @@
 import {Component, ConfigOptions} from '../../lib';
-import {ContextAlpha, ContextAlphaImpl, ContextBravo} from './simple-contexts';
+import {Theme, LightTheme, DarkTheme, LoadCounter} from './simple-contexts';
 
 interface TestContextRegistry {
-  alpha: ContextAlpha;
-  bravo: ContextBravo;
+  theme: Theme;
+  energySavingTheme: Theme;
+  loadCounter: LoadCounter;
 }
 
-export class ContextAlphaWidget extends Component<any, any, any, any, TestContextRegistry> {
-  config: {
+export class DefaultLightThemedWidget extends Component<any, any, any, any, TestContextRegistry> {
+  get config(): {
     template: any;
-    attachedContexts: ['alpha'];
+    contexts: ['theme'];
+    defaultContexts: {
+      theme: LightTheme;
+    };
+  };
+}
+
+export class ThemedWidget extends Component<any, any, any, any, TestContextRegistry> {
+  get config(): {
+    template: any;
+    contexts: ['theme'];
+  };
+}
+
+export class DarkApp extends Component<any, any, any, any, TestContextRegistry> {
+  get config(): {
+    template: any;
+    defaultContexts: {
+      theme: DarkTheme;
+    };
+  };
+}
+
+export class ShadowDomDarkApp extends Component<any, any, any, any, TestContextRegistry> {
+  get config(): {
+    template: any;
+    defaultContexts: {
+      theme: DarkTheme;
+    };
+    useShadowDom: boolean;
+  };
+}
+
+export class SlottedDarkApp extends Component<any, any, any, any, TestContextRegistry> {
+  get config(): {
+    template: any;
+    defaultContexts: {
+      theme: DarkTheme;
+    };
+    useShadowDom: boolean;
   };
 }

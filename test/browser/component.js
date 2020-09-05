@@ -2,7 +2,7 @@ import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
-import {ContextAlpha, ContextAlphaImpl, ContextBravo, ContextBravoImpl} from '../fixtures/simple-contexts';
+import {LightTheme, DarkTheme} from '../fixtures/simple-contexts';
 
 describe(`Simple Component instance`, function () {
   let el;
@@ -845,95 +845,41 @@ describe(`Component with required attrs`, function () {
   });
 });
 
-context(`contexts`, function () {
+context(`Component with contexts`, function () {
   describe(`getContext()`, function () {
     beforeEach(async function () {
       document.body.innerHTML = ``;
       await nextAnimationFrame();
     });
 
-    it(`returns context of immediate component parent`, function () {
-      const parent = document.createElement(`immediate-context-parent`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha`);
+    it(`returns own default context without context ancestor`, function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+      document.body.appendChild(widget);
+      const theme = widget.getContext(`theme`);
+      expect(theme).to.be.an.instanceof(LightTheme);
     });
 
-    it(`returns context of immediate component parent with non-panel wrappers`, function () {
-      const parent = document.createElement(`immediate-context-parent-with-wrapper`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`immediate-parent-alpha-with-wrapper`);
+    it(`returns default context from wrapper component`, function () {
+      const darkApp = document.createElement(`dark-app`);
+      document.body.appendChild(darkApp);
+      const theme = darkApp.el.querySelector(`default-light-themed-widget`).getContext(`theme`);
+      expect(theme).to.be.an.instanceof(DarkTheme);
     });
 
-    it(`returns context of shadow DOM component parent`, function () {
-      const parent = document.createElement(`shadow-dom-context-parent`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`shadow-dom-parent-alpha`);
+    it(`returns default context from shadow DOM wrapper component`, function () {
+      const darkApp = document.createElement(`shadow-dom-dark-app`);
+      document.body.appendChild(darkApp);
+      const theme = darkApp.el.querySelector(`default-light-themed-widget`).getContext(`theme`);
+      expect(theme).to.be.an.instanceof(DarkTheme);
     });
 
-    it(`returns context of slotted DOM parent`, function () {
-      const parent = document.createElement(`nested-slotted-context-widgets`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`slotted-alpha`);
-    });
-
-    it(`returns context of root component while wrapped by a context parent`, function () {
-      const parent = document.createElement(`context-grandparent`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el
-        .querySelector(`immediate-context-parent`)
-        .el.querySelector(`context-alpha-widget`)
-        .getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`grandparent-alpha`);
-    });
-
-    it(`returns appropriate contexts in a widget tree containing multiple different contexts`, function () {
-      const parent = document.createElement(`context-bravo-parent-with-nested-alpha-widgets`);
-      document.body.appendChild(parent);
-
-      const alphaWidgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
-      expect(alphaWidgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(alphaWidgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(alphaWidgetContext.getTestName()).to.equal(`slotted-alpha`);
-
-      const bravoWidgetContext = parent.el.querySelector(`context-bravo-widget`).getContext(`bravo`);
-      expect(bravoWidgetContext).to.be.an.instanceof(ContextBravo);
-      expect(bravoWidgetContext).to.be.an.instanceof(ContextBravoImpl);
-      expect(bravoWidgetContext.getTestName()).to.equal(`parent-bravo`);
-    });
-
-    it(`returns context of root component while wrapped by contextless component`, function () {
-      const parent = document.createElement(`context-parent-with-contextless-component-wrapper`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el
-        .querySelector(`contextless-component-wrapper`)
-        .el.querySelector(`context-alpha-widget`)
-        .getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`parent-alpha`);
-    });
-
-    it(`returns context of root component while slotted in a contextless component`, function () {
-      const parent = document.createElement(`context-parent-with-contextless-slotted-wrapper`);
-      document.body.appendChild(parent);
-      const widgetContext = parent.el.querySelector(`context-alpha-widget`).getContext(`alpha`);
-      expect(widgetContext).to.be.an.instanceof(ContextAlpha);
-      expect(widgetContext).to.be.an.instanceof(ContextAlphaImpl);
-      expect(widgetContext.getTestName()).to.equal(`parent-alpha`);
+    it(`returns default context from slotted wrapper component`, function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+      const widget = document.createElement(`default-light-themed-widget`);
+      darkApp.appendChild(widget);
+      const theme = widget.getContext(`theme`);
+      expect(theme).to.be.an.instanceof(DarkTheme);
     });
   });
 });
