@@ -1,4 +1,4 @@
-import {condition, nextAnimationFrame, sleep} from 'domsuite';
+import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
@@ -973,15 +973,23 @@ context(`Component with contexts`, function () {
     });
 
     it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
+      // modern browsers with native Custom Elements support will emit a global error event
       const errors = [];
       window.uncaughtErrorFilter = (errorEvent) => {
         errors.push(errorEvent.message);
         return errorEvent.message.includes(`context is not available`);
       };
 
-      const widget = document.createElement(`themed-widget`);
-      document.body.appendChild(widget);
-      await condition(() => errors.length === 1);
+      try {
+        const widget = document.createElement(`themed-widget`);
+        document.body.appendChild(widget);
+      } catch (err) {
+        // older browsers that rely on a Custom Elements polyfill will throw an error directly
+        errors.push(err.message);
+      }
+      await nextAnimationFrame();
+
+      expect(errors).to.have.lengthOf(1);
       delete window.uncaughtErrorFilter;
     });
 
@@ -1038,6 +1046,8 @@ context(`Component with contexts`, function () {
       await nextAnimationFrame();
       expect(counter.getCount()).to.equal(0);
       expect(unbindFromComponentSpy.getCall(2).args[0]).to.equal(widget1);
+
+      unbindFromComponentSpy.restore();
     });
   });
 });
