@@ -989,19 +989,26 @@ context(`Component with contexts`, function () {
 
     it(`executes bindToComponent callback when connected`, async function () {
       const widget1 = document.createElement(`slotted-load-counter-widget`);
+      const counter = widget1.getConfig(`defaultContexts`).loadCounter;
+      const bindToComponentSpy = sinon.spy(counter, `bindToComponent`);
       document.body.appendChild(widget1);
       await nextAnimationFrame();
-      expect(widget1.getContext(`loadCounter`).getCount()).to.equal(1);
+      expect(counter.getCount()).to.equal(1);
+      expect(bindToComponentSpy.getCall(0).args[0]).to.equal(widget1);
 
       const widget2 = document.createElement(`slotted-load-counter-widget`);
       widget1.appendChild(widget2);
       await nextAnimationFrame();
-      expect(widget1.getContext(`loadCounter`).getCount()).to.equal(2);
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy.getCall(1).args[0]).to.equal(widget2);
 
       const widget3 = document.createElement(`slotted-load-counter-widget`);
       widget2.appendChild(widget3);
       await nextAnimationFrame();
-      expect(widget1.getContext(`loadCounter`).getCount()).to.equal(3);
+      expect(counter.getCount()).to.equal(3);
+      expect(bindToComponentSpy.getCall(2).args[0]).to.equal(widget3);
+
+      bindToComponentSpy.restore();
     });
 
     it(`executes unbindFromComponent callback when disconnected`, async function () {
@@ -1016,19 +1023,23 @@ context(`Component with contexts`, function () {
 
       await nextAnimationFrame();
       const counter = widget1.getContext(`loadCounter`);
+      const unbindFromComponentSpy = sinon.spy(counter, `unbindFromComponent`);
       expect(counter.getCount()).to.equal(3);
 
       widget3.remove();
       await nextAnimationFrame();
       expect(counter.getCount()).to.equal(2);
+      expect(unbindFromComponentSpy.getCall(0).args[0]).to.equal(widget3);
 
       widget2.remove();
       await nextAnimationFrame();
       expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy.getCall(1).args[0]).to.equal(widget2);
 
       widget1.remove();
       await nextAnimationFrame();
       expect(counter.getCount()).to.equal(0);
+      expect(unbindFromComponentSpy.getCall(2).args[0]).to.equal(widget1);
     });
   });
 });
