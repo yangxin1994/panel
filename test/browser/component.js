@@ -977,7 +977,7 @@ context(`Component with contexts`, function () {
       const errors = [];
       window.uncaughtErrorFilter = (errorEvent) => {
         errors.push(errorEvent.message);
-        return errorEvent.message.includes(`context is not available`);
+        return true;
       };
 
       try {
@@ -990,6 +990,8 @@ context(`Component with contexts`, function () {
       await nextAnimationFrame();
 
       expect(errors).to.have.lengthOf(1);
+      expect(errors[0]).to.contain(`context is not available`);
+
       delete window.uncaughtErrorFilter;
     });
 
