@@ -903,7 +903,7 @@ context(`Component with contexts`, function () {
       expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
     });
 
-    it(`returns different default context from different context ancestors`, async function () {
+    it(`returns differently named contexts from different context ancestors`, async function () {
       const darkApp = document.createElement(`slotted-dark-app`);
       document.body.appendChild(darkApp);
 
