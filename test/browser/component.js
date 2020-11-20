@@ -1019,6 +1019,38 @@ context(`Component with contexts`, function () {
       bindToComponentSpy.restore();
     });
 
+    it(`executes bindToComponent callback each time the same component is repeatedly connected`, async function () {
+      const app = document.createElement(`slotted-load-counter-widget`);
+      const counter = app.getConfig(`defaultContexts`).loadCounter;
+      const bindToComponentSpy = sinon.spy(counter, `bindToComponent`);
+      document.body.appendChild(app);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(bindToComponentSpy.getCall(0).args[0]).to.equal(app);
+
+      const widget = document.createElement(`slotted-load-counter-widget`);
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy.getCall(1).args[0]).to.equal(widget);
+
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy.getCall(2).args[0]).to.equal(widget);
+
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy.getCall(3).args[0]).to.equal(widget);
+
+      bindToComponentSpy.restore();
+    });
+
     it(`executes unbindFromComponent callback when disconnected`, async function () {
       const widget1 = document.createElement(`slotted-load-counter-widget`);
       document.body.appendChild(widget1);
@@ -1048,6 +1080,38 @@ context(`Component with contexts`, function () {
       await nextAnimationFrame();
       expect(counter.getCount()).to.equal(0);
       expect(unbindFromComponentSpy.getCall(2).args[0]).to.equal(widget1);
+
+      unbindFromComponentSpy.restore();
+    });
+
+    it(`executes unbindFromComponent callback each time the same component is repeatedly disconnected`, async function () {
+      const app = document.createElement(`slotted-load-counter-widget`);
+      const counter = app.getConfig(`defaultContexts`).loadCounter;
+      const unbindFromComponentSpy = sinon.spy(counter, `unbindFromComponent`);
+      document.body.appendChild(app);
+      await nextAnimationFrame();
+
+      const widget = document.createElement(`slotted-load-counter-widget`);
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy.getCall(0).args[0]).to.equal(widget);
+
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy.getCall(1).args[0]).to.equal(widget);
+
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy.getCall(2).args[0]).to.equal(widget);
 
       unbindFromComponentSpy.restore();
     });
