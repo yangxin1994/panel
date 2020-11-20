@@ -990,7 +990,7 @@ context(`Component with contexts`, function () {
       await nextAnimationFrame();
 
       expect(errors).to.have.lengthOf(1);
-      expect(errors[0]).to.contain(`context is not available`);
+      expect(errors[0]).to.contain(`A "theme" context is not available`);
 
       delete window.uncaughtErrorFilter;
     });
