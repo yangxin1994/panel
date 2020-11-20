@@ -4,7 +4,7 @@ import {LightTheme, DarkTheme, LoadCounter} from './simple-contexts';
 export class DefaultLightThemedWidget extends Component {
   get config() {
     return {
-      template: () => h(`div`, {class: {foo: true}}),
+      template: () => h(`div`, {class: {[this.getContext(`theme`).getName()]: true}}),
       contexts: [`theme`],
       defaultContexts: {
         theme: new LightTheme(),
@@ -16,7 +16,7 @@ export class DefaultLightThemedWidget extends Component {
 export class ThemedWidget extends Component {
   get config() {
     return {
-      template: () => h(`div`, {class: {foo: true}}),
+      template: () => h(`div`, {class: {[this.getContext(`theme`).getName()]: true}}),
       contexts: [`theme`],
     };
   }
@@ -25,7 +25,10 @@ export class ThemedWidget extends Component {
 export class MultiThemedWidget extends Component {
   get config() {
     return {
-      template: () => h(`div`, {class: {foo: true}}),
+      template: () =>
+        h(`div`, {
+          class: {[this.getContext(`theme`).getName()]: true, [this.getContext(`invertedTheme`).getName()]: true},
+        }),
       contexts: [`theme`, `invertedTheme`],
     };
   }
@@ -85,7 +88,7 @@ export class SlottedLightApp extends Component {
   get config() {
     return {
       template: () =>
-        h(`div`, {class: {foo: true}}, [
+        h(`div`, {class: {[this.getContext(`theme`).getName()]: true}}, [
           h(`p`, `asdf`),
           h(`div`, {class: {foo: true}}, [h(`div`, {class: {foo: true}}, [h(`slot`)]), h(`p`, `asdf`)]),
           h(`p`, `asdf`),

@@ -858,6 +858,7 @@ context(`Component with contexts`, function () {
 
       await nextAnimationFrame();
       expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`light`);
     });
 
     it(`returns default context from wrapper component`, async function () {
@@ -874,8 +875,9 @@ context(`Component with contexts`, function () {
       document.body.appendChild(darkApp);
 
       await nextAnimationFrame();
-      const theme = darkApp.el.querySelector(`default-light-themed-widget`).getContext(`theme`);
-      expect(theme).to.be.an.instanceof(DarkTheme);
+      const widget = darkApp.el.querySelector(`default-light-themed-widget`);
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
     });
 
     it(`returns default context from slotted wrapper component`, async function () {
@@ -887,6 +889,7 @@ context(`Component with contexts`, function () {
 
       await nextAnimationFrame();
       expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
     });
 
     it(`returns default context from root component`, async function () {
@@ -901,6 +904,7 @@ context(`Component with contexts`, function () {
 
       await nextAnimationFrame();
       expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
     });
 
     it(`returns differently named contexts from different context ancestors`, async function () {
@@ -916,6 +920,7 @@ context(`Component with contexts`, function () {
       await nextAnimationFrame();
       expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
       expect(widget.getContext(`invertedTheme`)).to.be.an.instanceof(LightTheme);
+      expect(Array.from(widget.el.lastElementChild.classList)).to.have.members([`light`, `dark`]);
     });
 
     it(`returns same context as other components sharing the same root component`, async function () {
@@ -935,6 +940,9 @@ context(`Component with contexts`, function () {
       expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
       expect(widget.getContext(`theme`)).to.equal(siblingWidget.getContext(`theme`));
       expect(widget.getContext(`theme`)).to.equal(nephewWidget.getContext(`theme`));
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
+      expect(siblingWidget.el.lastElementChild.className).to.equal(`dark`);
+      expect(nephewWidget.el.lastElementChild.className).to.equal(`dark`);
     });
 
     it(`throws error when context name is not declared in config`, async function () {
