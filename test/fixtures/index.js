@@ -9,6 +9,17 @@ import {NestedPartialStateParent, NestedPartialStateChild} from './nested-partia
 import {BadBooleanRequiredAttrsSchemaApp, RequiredAttrsSchemaApp} from './required-attrs-schema-apps';
 import {ShadowDomApp} from './shadow-dom-app';
 import {SimpleApp} from './simple-app';
+import {
+  DefaultLightThemedWidget,
+  ThemedWidget,
+  MultiThemedWidget,
+  DarkApp,
+  ShadowDomDarkApp,
+  SlottedDarkApp,
+  SlottedLightApp,
+  SlottedInvertedLightApp,
+  SlottedLoadCounterWidget,
+} from './context-app';
 
 customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
 customElements.define(`bad-attrs-schema-app`, BadAttrsSchemaApp);
@@ -26,3 +37,13 @@ customElements.define(`nested-partial-state-child`, NestedPartialStateChild);
 customElements.define(`required-attrs-schema-app`, RequiredAttrsSchemaApp);
 customElements.define(`shadow-dom-app`, ShadowDomApp);
 customElements.define(`simple-app`, SimpleApp);
+
+customElements.define(`default-light-themed-widget`, DefaultLightThemedWidget);
+customElements.define(`themed-widget`, ThemedWidget);
+customElements.define(`multi-themed-widget`, MultiThemedWidget);
+customElements.define(`dark-app`, DarkApp);
+customElements.define(`shadow-dom-dark-app`, ShadowDomDarkApp);
+customElements.define(`slotted-dark-app`, SlottedDarkApp);
+customElements.define(`slotted-light-app`, SlottedLightApp);
+customElements.define(`slotted-inverted-light-app`, SlottedInvertedLightApp);
+customElements.define(`slotted-load-counter-widget`, SlottedLoadCounterWidget);

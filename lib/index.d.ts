@@ -63,7 +63,15 @@ export interface PanelHooks<State> {
   [hookName: string]: (params: any) => void;
 }
 
-export interface ConfigOptions<StateT, AppStateT = unknown> {
+// this type is not checked in the Component ContextRegistryT, the Component JS manually checks for these properties instead
+export interface PanelLifecycleContext {
+  // optional callback that executes each time the component is connected to the DOM
+  bindToComponent?(component: Component<any>): void;
+  // optional callback that executes each time the component is disconnected from the DOM
+  unbindFromComponent?(component: Component<any>): void;
+}
+
+export interface ConfigOptions<StateT, AppStateT = unknown, ContextRegistryT = unknown> {
   /** Function transforming state object to virtual dom tree */
   template(scope?: StateT): VNode;
 
@@ -72,6 +80,12 @@ export interface ConfigOptions<StateT, AppStateT = unknown> {
 
   /** An initial default value for the component's state property */
   defaultState?: StateT;
+
+  /** Default contexts for the component and its descendants to use if no context parent provides them */
+  defaultContexts?: Partial<ContextRegistryT>;
+
+  /** Names of contexts for the component to attach and depend upon */
+  contexts?: Array<keyof ContextRegistryT>;
 
   /**
    * A state object to share with nested descendant components. If not set, root component
@@ -131,7 +145,13 @@ export interface AnyAttrs {
   [attr: string]: any;
 }
 
-export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = unknown> extends WebComponent {
+export class Component<
+  StateT,
+  AttrsT = AnyAttrs,
+  AppStateT = unknown,
+  AppT = unknown,
+  ContextRegistryT = unknown
+> extends WebComponent {
   /** The first Panel Component ancestor in the DOM tree; null if this component is the root */
   $panelParent: Component<unknown>;
 
@@ -157,7 +177,7 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
   state: StateT;
 
   /** Defines standard component configuration */
-  get config(): ConfigOptions<StateT, AppStateT>;
+  get config(): ConfigOptions<StateT, AppStateT, ContextRegistryT>;
 
   /**
    * Template helper functions defined in config object, and exposed to template code as $helpers.
@@ -187,10 +207,13 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    * Fetches a value from the component's configuration map (a combination of
    * values supplied in the config() getter and defaults applied automatically).
    */
-  getConfig<K extends keyof ConfigOptions<StateT, AppStateT>>(key: K): this['config'][K];
+  getConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistryT>>(key: K): this['config'][K];
 
   /** Sets a value in the component's configuration map after element initialization */
-  setConfig<K extends keyof ConfigOptions<StateT, AppStateT>>(key: K, val: ConfigOptions<StateT, AppStateT>[K]): void;
+  setConfig<K extends keyof ConfigOptions<StateT, AppStateT, ContextRegistryT>>(
+    key: K,
+    val: ConfigOptions<StateT, AppStateT, ContextRegistryT>[K],
+  ): void;
 
   /**
    * Executes the route handler matching the given URL fragment, and updates
@@ -200,7 +223,7 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
 
   /** Run a user-defined hook with the given parameters */
   runHook: (
-    hookName: keyof ConfigOptions<StateT, AppStateT>['hooks'],
+    hookName: keyof ConfigOptions<StateT, AppStateT, ContextRegistryT>['hooks'],
     options: {cascade: boolean; exclude: Component<any, any>},
     params: any,
   ) => void;
@@ -243,4 +266,11 @@ export class Component<StateT, AttrsT = AnyAttrs, AppStateT = unknown, AppT = un
    * removed from the DOM. This occurs during the disconnectedCallback lifecycle.
    */
   onDisconnected(callback: () => void): void;
+
+  /**
+   * Returns the default context of the highest (ie. closest to the document root) ancestor component
+   * that has configured a default context for the context name,
+   * or it will return the component's own default context if no ancestor context was found.
+   */
+  getContext<ContextKey extends keyof ContextRegistryT>(contextName: ContextKey): ContextRegistryT[ContextKey];
 }

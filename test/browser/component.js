@@ -2,6 +2,7 @@ import {nextAnimationFrame, sleep} from 'domsuite';
 
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
+import {LightTheme, DarkTheme} from '../fixtures/simple-contexts';
 
 describe(`Simple Component instance`, function () {
   let el;
@@ -841,5 +842,299 @@ describe(`Component with required attrs`, function () {
     await nextAnimationFrame();
 
     expect(el.innerHTML).to.equal(compactHtml(`<div>Shouldn't render with missing attribute!</div>`));
+  });
+});
+
+context(`Component with contexts`, function () {
+  describe(`getContext()`, function () {
+    beforeEach(async function () {
+      document.body.innerHTML = ``;
+      await nextAnimationFrame();
+    });
+
+    it(`returns own default context without context ancestor`, async function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+      document.body.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`light`);
+    });
+
+    it(`returns default context from wrapper component`, async function () {
+      const darkApp = document.createElement(`dark-app`);
+      document.body.appendChild(darkApp);
+
+      await nextAnimationFrame();
+      const theme = darkApp.el.querySelector(`default-light-themed-widget`).getContext(`theme`);
+      expect(theme).to.be.an.instanceof(DarkTheme);
+    });
+
+    it(`returns default context from shadow DOM wrapper component`, async function () {
+      const darkApp = document.createElement(`shadow-dom-dark-app`);
+      document.body.appendChild(darkApp);
+
+      await nextAnimationFrame();
+      const widget = darkApp.el.querySelector(`default-light-themed-widget`);
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
+    });
+
+    it(`returns default context from slotted wrapper component`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const widget = document.createElement(`default-light-themed-widget`);
+      darkApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
+    });
+
+    it(`returns default context from root component`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const lightApp = document.createElement(`slotted-light-app`);
+      darkApp.appendChild(lightApp);
+
+      const widget = document.createElement(`themed-widget`);
+      lightApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
+    });
+
+    it(`returns differently named contexts from different context ancestors`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const invertedLightApp = document.createElement(`slotted-inverted-light-app`);
+      darkApp.appendChild(invertedLightApp);
+
+      const widget = document.createElement(`multi-themed-widget`);
+      invertedLightApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.getContext(`invertedTheme`)).to.be.an.instanceof(LightTheme);
+      expect(Array.from(widget.el.lastElementChild.classList)).to.have.members([`light`, `dark`]);
+    });
+
+    it(`returns same context as other components sharing the same root component`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const widget = document.createElement(`themed-widget`);
+      darkApp.appendChild(widget);
+
+      const siblingWidget = document.createElement(`slotted-light-app`);
+      darkApp.appendChild(siblingWidget);
+
+      const nephewWidget = document.createElement(`themed-widget`);
+      siblingWidget.appendChild(nephewWidget);
+
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(DarkTheme);
+      expect(widget.getContext(`theme`)).to.equal(siblingWidget.getContext(`theme`));
+      expect(widget.getContext(`theme`)).to.equal(nephewWidget.getContext(`theme`));
+      expect(widget.el.lastElementChild.className).to.equal(`dark`);
+      expect(siblingWidget.el.lastElementChild.className).to.equal(`dark`);
+      expect(nephewWidget.el.lastElementChild.className).to.equal(`dark`);
+    });
+
+    it(`throws error when context name is not declared in config`, async function () {
+      const darkApp = document.createElement(`slotted-dark-app`);
+      document.body.appendChild(darkApp);
+
+      const widget = document.createElement(`default-light-themed-widget`);
+      darkApp.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(() => widget.getContext(`asdf`)).to.throw();
+    });
+
+    it(`throws error when context name is null or empty`, async function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+      document.body.appendChild(widget);
+
+      await nextAnimationFrame();
+      expect(() => widget.getContext(``)).to.throw();
+      expect(() => widget.getContext()).to.throw();
+      expect(() => widget.getContext(null)).to.throw();
+    });
+
+    it(`throws error when called before component is connected`, async function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+
+      await nextAnimationFrame();
+      expect(() => widget.getContext(`theme`)).to.throw();
+    });
+  });
+
+  describe(`lifecycle`, function () {
+    beforeEach(async function () {
+      document.body.innerHTML = ``;
+      await nextAnimationFrame();
+    });
+
+    it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
+      // modern browsers with native Custom Elements support will emit a global error event
+      const errors = [];
+      window.uncaughtErrorFilter = (errorEvent) => {
+        errors.push(errorEvent.message);
+        return true;
+      };
+
+      try {
+        const widget = document.createElement(`themed-widget`);
+        document.body.appendChild(widget);
+      } catch (err) {
+        // older browsers that rely on a Custom Elements polyfill will throw an error directly
+        errors.push(err.message);
+      }
+      await nextAnimationFrame();
+
+      expect(errors).to.have.lengthOf(1);
+      expect(errors[0]).to.contain(`A "theme" context is not available`);
+
+      delete window.uncaughtErrorFilter;
+    });
+
+    it(`executes bindToComponent callback when connected`, async function () {
+      const widget1 = document.createElement(`slotted-load-counter-widget`);
+      const counter = widget1.getConfig(`defaultContexts`).loadCounter;
+      const bindToComponentSpy = sinon.spy(counter, `bindToComponent`);
+      document.body.appendChild(widget1);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(bindToComponentSpy).to.have.callCount(1);
+      expect(bindToComponentSpy.getCall(0).args[0]).to.equal(widget1);
+
+      const widget2 = document.createElement(`slotted-load-counter-widget`);
+      widget1.appendChild(widget2);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy).to.have.callCount(2);
+      expect(bindToComponentSpy.getCall(1).args[0]).to.equal(widget2);
+
+      const widget3 = document.createElement(`slotted-load-counter-widget`);
+      widget2.appendChild(widget3);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(3);
+      expect(bindToComponentSpy).to.have.callCount(3);
+      expect(bindToComponentSpy.getCall(2).args[0]).to.equal(widget3);
+
+      bindToComponentSpy.restore();
+    });
+
+    it(`executes bindToComponent callback each time the same component is repeatedly connected`, async function () {
+      const app = document.createElement(`slotted-load-counter-widget`);
+      const counter = app.getConfig(`defaultContexts`).loadCounter;
+      const bindToComponentSpy = sinon.spy(counter, `bindToComponent`);
+      document.body.appendChild(app);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(bindToComponentSpy).to.have.callCount(1);
+      expect(bindToComponentSpy.getCall(0).args[0]).to.equal(app);
+
+      const widget = document.createElement(`slotted-load-counter-widget`);
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy).to.have.callCount(2);
+      expect(bindToComponentSpy.getCall(1).args[0]).to.equal(widget);
+
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy).to.have.callCount(3);
+      expect(bindToComponentSpy.getCall(2).args[0]).to.equal(widget);
+
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(bindToComponentSpy).to.have.callCount(4);
+      expect(bindToComponentSpy.getCall(3).args[0]).to.equal(widget);
+
+      bindToComponentSpy.restore();
+    });
+
+    it(`executes unbindFromComponent callback when disconnected`, async function () {
+      const widget1 = document.createElement(`slotted-load-counter-widget`);
+      document.body.appendChild(widget1);
+
+      const widget2 = document.createElement(`slotted-load-counter-widget`);
+      widget1.appendChild(widget2);
+
+      const widget3 = document.createElement(`slotted-load-counter-widget`);
+      widget2.appendChild(widget3);
+
+      await nextAnimationFrame();
+      const counter = widget1.getContext(`loadCounter`);
+      const unbindFromComponentSpy = sinon.spy(counter, `unbindFromComponent`);
+      expect(counter.getCount()).to.equal(3);
+
+      widget3.remove();
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(2);
+      expect(unbindFromComponentSpy).to.have.callCount(1);
+      expect(unbindFromComponentSpy.getCall(0).args[0]).to.equal(widget3);
+
+      widget2.remove();
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy).to.have.callCount(2);
+      expect(unbindFromComponentSpy.getCall(1).args[0]).to.equal(widget2);
+
+      widget1.remove();
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(0);
+      expect(unbindFromComponentSpy).to.have.callCount(3);
+      expect(unbindFromComponentSpy.getCall(2).args[0]).to.equal(widget1);
+
+      unbindFromComponentSpy.restore();
+    });
+
+    it(`executes unbindFromComponent callback each time the same component is repeatedly disconnected`, async function () {
+      const app = document.createElement(`slotted-load-counter-widget`);
+      const counter = app.getConfig(`defaultContexts`).loadCounter;
+      const unbindFromComponentSpy = sinon.spy(counter, `unbindFromComponent`);
+      document.body.appendChild(app);
+      await nextAnimationFrame();
+
+      const widget = document.createElement(`slotted-load-counter-widget`);
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy).to.have.callCount(1);
+      expect(unbindFromComponentSpy.getCall(0).args[0]).to.equal(widget);
+
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy).to.have.callCount(2);
+      expect(unbindFromComponentSpy.getCall(1).args[0]).to.equal(widget);
+
+      app.appendChild(widget);
+      await nextAnimationFrame();
+      app.removeChild(widget);
+      await nextAnimationFrame();
+      expect(counter.getCount()).to.equal(1);
+      expect(unbindFromComponentSpy).to.have.callCount(3);
+      expect(unbindFromComponentSpy.getCall(2).args[0]).to.equal(widget);
+
+      unbindFromComponentSpy.restore();
+    });
   });
 });
