@@ -1,7 +1,8 @@
 /* eslint-env mocha */
-
+/* eslint-disable no-unused-expressions */ // complains about .to.be.ok
 import '../../lib/isorender/dom-shims';
 
+import sinon from 'sinon';
 import {expect} from 'chai';
 
 import nextAnimationFrame from './nextAnimationFrame';
@@ -39,5 +40,18 @@ describe(`customElement with shadowDom`, function () {
     await nextAnimationFrame();
 
     expect(elem.el.innerHTML).to.equal(`<style>color: blue;</style><div class="foo"><p>Hello</p></div>`);
+  });
+});
+
+describe(`appending customElements to DOM`, function () {
+  it(`calls connectedCallback on customElements when using appendChild`, async function () {
+    const elem = document.createElement(`my-app`);
+    const connectedCallbackStub = sinon.stub(elem, `connectedCallback`);
+
+    document.createElement(`div`).appendChild(elem);
+
+    await nextAnimationFrame();
+    expect(connectedCallbackStub.called).to.be.true;
+    expect(elem.isConnected).to.be.true;
   });
 });
