@@ -11,9 +11,11 @@ import {
   BadDefaultRequiredAttrsSchemaApp,
   RequiredAttrsSchemaApp,
 } from '../fixtures/required-attrs-schema-apps';
+import {DefaultLightThemedWidget, DarkApp, ThemedWidget} from '../fixtures/context-app';
+import {LightTheme} from '../fixtures/simple-contexts';
+
 import nextAnimationFrame from './nextAnimationFrame';
 import {compactHtml} from '../utils';
-
 config.truncateThreshold = 0; // nicer deep equal errors
 customElements.define(`nested-app`, NestedApp);
 customElements.define(`nested-child`, NestedChild);
@@ -22,6 +24,9 @@ customElements.define(`attrs-reflection-app`, AttrsReflectionApp);
 customElements.define(`required-attrs-schema-app`, RequiredAttrsSchemaApp);
 customElements.define(`bad-boolean-required-attrs-schema-app`, BadBooleanRequiredAttrsSchemaApp);
 customElements.define(`bad-default-required-attrs-schema-app`, BadDefaultRequiredAttrsSchemaApp);
+customElements.define(`default-light-themed-widget`, DefaultLightThemedWidget);
+customElements.define(`dark-app`, DarkApp);
+customElements.define(`themed-widget`, ThemedWidget);
 
 describe(`Server-side component renderer`, function () {
   it(`can register and create components with document.createElement`, function () {
@@ -231,5 +236,36 @@ describe(`Server-side component renderer`, function () {
     expect(() => {
       document.createElement(`bad-boolean-required-attrs-schema-app`);
     }).to.throw(/boolean attr 'bool-attr' cannot have required or default/);
+  });
+});
+
+// TODO: add more server-side context test cases
+describe(`Component with contexts`, function () {
+  context(`getContext()`, function () {
+    it(`returns own default context without context ancestor`, async function () {
+      const widget = document.createElement(`default-light-themed-widget`);
+      document.createElement(`div`).appendChild(widget);
+      await nextAnimationFrame();
+      expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
+      expect(widget.el.childNodes[0].className).to.equal(`light`);
+    });
+  });
+
+  context(`lifecycle`, function () {
+    it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
+      const errors = [];
+      const widget = document.createElement(`themed-widget`);
+      document.createElement(`div`).appendChild(widget);
+      await nextAnimationFrame();
+
+      try {
+        widget.getContext(`theme`);
+      } catch (err) {
+        errors.push(err.message);
+      }
+
+      expect(errors).to.have.lengthOf(1);
+      expect(errors[0]).to.contain(`A "theme" context is not available`);
+    });
   });
 });
