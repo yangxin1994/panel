@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import {nextAnimationFrame, retryable} from 'domsuite';
 
 import {Component, h} from '../../lib';

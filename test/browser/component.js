@@ -1,5 +1,6 @@
+import sinon from 'sinon';
+import {expect} from 'chai';
 import {nextAnimationFrame, sleep} from 'domsuite';
-
 import {BreakableApp} from '../fixtures/breakable-app';
 import {compactHtml} from '../utils';
 import {LightTheme, DarkTheme} from '../fixtures/simple-contexts';

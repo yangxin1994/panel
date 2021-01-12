@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-/* eslint-disable no-unused-expressions */ // complains about .to.be.ok
 import '../../lib/isorender/dom-shims';
 
 import {expect} from 'chai';
