@@ -58,7 +58,7 @@ describe(`dom-patcher`, function () {
 
     it(`applies id from the vtree root`, function () {
       el = patcherEl(() => h(`span`));
-      expect(el.id).to.be.empty;
+      expect(el.id).to.not.exist;
 
       el = patcherEl(() => h(`span#foo`));
       expect(el.id).to.eql(`foo`);

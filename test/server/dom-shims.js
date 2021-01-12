@@ -48,7 +48,7 @@ describe(`customElement callbacks`, function () {
     const connectedCallbackSpy = sinon.spy(elem, `connectedCallback`);
     const disconnectedCallbackSpy = sinon.spy(elem, `disconnectedCallback`);
 
-    expect(elem.isConnected).to.be.falsy;
+    expect(elem.isConnected).to.not.exist;
 
     // fake adding to DOM
     const parent = document.createElement(`div`);
