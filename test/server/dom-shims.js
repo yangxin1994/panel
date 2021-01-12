@@ -32,6 +32,7 @@ describe(`customElement with shadowDom`, function () {
   it(`el contains shadow-root`, function () {
     const elem = document.createElement(`shadow-dom-app`);
     expect(elem.el.tagName).to.equal(`shadow-root`);
+    expect(elem.el).to.equal(elem.shadowRoot);
   });
 
   it(`renders component`, async function () {
@@ -43,15 +44,38 @@ describe(`customElement with shadowDom`, function () {
   });
 });
 
-describe(`appending customElements to DOM`, function () {
-  it(`calls connectedCallback on customElements when using appendChild`, async function () {
+describe(`customElement callbacks`, function () {
+  it(`calls connectedCallback and disconnectedCallback when adding/removing from DOM`, async function () {
     const elem = document.createElement(`my-app`);
-    const connectedCallbackStub = sinon.stub(elem, `connectedCallback`);
+    const connectedCallbackSpy = sinon.spy(elem, `connectedCallback`);
+    const disconnectedCallbackSpy = sinon.spy(elem, `disconnectedCallback`);
 
-    document.createElement(`div`).appendChild(elem);
+    expect(elem.isConnected).to.be.falsy;
+
+    // fake adding to DOM
+    const parent = document.createElement(`div`);
+    parent.appendChild(elem);
 
     await nextAnimationFrame();
-    expect(connectedCallbackStub.called).to.be.true;
+    expect(connectedCallbackSpy.called).to.be.true;
     expect(elem.isConnected).to.be.true;
+
+    parent.removeChild(elem);
+    expect(disconnectedCallbackSpy.called).to.be.true;
+  });
+
+  it(`calls attributeChangedCallback when adding/removing attributes`, function () {
+    const elem = document.createElement(`attrs-reflection-app`);
+    const attributeChangedCallbackSpy = sinon.spy(elem, `attributeChangedCallback`);
+
+    elem.connectedCallback();
+
+    elem.setAttribute(`str-attr`, `hello`);
+    expect(elem.hasAttribute(`str-attr`)).to.be.true;
+    expect(attributeChangedCallbackSpy.calledWith(`str-attr`, null, `hello`)).to.be.true;
+
+    elem.removeAttribute(`str-attr`);
+    expect(elem.hasAttribute(`str-attr`)).to.be.false;
+    expect(attributeChangedCallbackSpy.calledWith(`str-attr`, `hello`, null)).to.be.true;
   });
 });
