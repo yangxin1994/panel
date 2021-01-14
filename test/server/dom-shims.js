@@ -1,7 +1,10 @@
 import '../../lib/isorender/dom-shims';
 
+import chai, {expect} from 'chai';
 import sinon from 'sinon';
-import {expect} from 'chai';
+
+import sinonChai from 'sinon-chai';
+chai.use(sinonChai);
 
 import nextAnimationFrame from './nextAnimationFrame';
 import {SimpleApp} from '../fixtures/simple-app';
@@ -55,11 +58,11 @@ describe(`customElement callbacks`, function () {
     parent.appendChild(elem);
 
     await nextAnimationFrame();
-    expect(connectedCallbackSpy.called).to.be.true;
+    expect(connectedCallbackSpy).to.have.been.called;
     expect(elem.isConnected).to.be.true;
 
     parent.removeChild(elem);
-    expect(disconnectedCallbackSpy.called).to.be.true;
+    expect(disconnectedCallbackSpy).to.have.been.called;
   });
 
   it(`calls attributeChangedCallback when adding/removing attributes`, function () {
@@ -70,10 +73,10 @@ describe(`customElement callbacks`, function () {
 
     elem.setAttribute(`str-attr`, `hello`);
     expect(elem.hasAttribute(`str-attr`)).to.be.true;
-    expect(attributeChangedCallbackSpy.calledWith(`str-attr`, null, `hello`)).to.be.true;
+    expect(attributeChangedCallbackSpy).to.have.been.calledWith(`str-attr`, null, `hello`);
 
     elem.removeAttribute(`str-attr`);
     expect(elem.hasAttribute(`str-attr`)).to.be.false;
-    expect(attributeChangedCallbackSpy.calledWith(`str-attr`, `hello`, null)).to.be.true;
+    expect(attributeChangedCallbackSpy).to.have.been.calledWith(`str-attr`, `hello`, null);
   });
 });
