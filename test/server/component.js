@@ -68,8 +68,9 @@ describe(`Server-side component renderer`, function () {
   });
 
   it(`renders nested components`, async function () {
+    document.body = document.createElement(`body`);
     const el = new NestedApp();
-    el.connectedCallback();
+    document.body.appendChild(el);
 
     await nextAnimationFrame();
 
@@ -94,8 +95,9 @@ describe(`Server-side component renderer`, function () {
   });
 
   it(`updates nested components`, async function () {
+    document.body = document.createElement(`body`);
     const el = new NestedApp();
-    el.connectedCallback();
+    document.body.appendChild(el);
 
     await nextAnimationFrame();
 
@@ -243,8 +245,9 @@ describe(`Server-side component renderer`, function () {
 describe(`Component with contexts`, function () {
   context(`getContext()`, function () {
     it(`returns own default context without context ancestor`, async function () {
+      document.body = document.createElement(`body`);
       const widget = document.createElement(`default-light-themed-widget`);
-      document.createElement(`div`).appendChild(widget);
+      document.body.appendChild(widget);
       await nextAnimationFrame();
       expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
       expect(widget.el.childNodes[0].className).to.equal(`light`);
@@ -253,13 +256,13 @@ describe(`Component with contexts`, function () {
 
   context(`lifecycle`, function () {
     it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
+      document.body = document.createElement(`body`);
       const errors = [];
       const widget = document.createElement(`themed-widget`);
-      document.createElement(`div`).appendChild(widget);
-      await nextAnimationFrame();
 
       try {
-        widget.getContext(`theme`);
+        document.body.appendChild(widget);
+        await nextAnimationFrame();
       } catch (err) {
         errors.push(err.message);
       }
