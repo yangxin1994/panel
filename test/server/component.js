@@ -29,6 +29,10 @@ customElements.define(`dark-app`, DarkApp);
 customElements.define(`themed-widget`, ThemedWidget);
 
 describe(`Server-side component renderer`, function () {
+  beforeEach(function () {
+    document.body = document.createElement(`body`);
+  });
+
   it(`can register and create components with document.createElement`, function () {
     const el = document.createElement(`simple-app`);
     expect(el.state).to.eql({foo: `bar`, baz: `qux`});
@@ -69,7 +73,7 @@ describe(`Server-side component renderer`, function () {
 
   it(`renders nested components`, async function () {
     const el = new NestedApp();
-    el.connectedCallback();
+    document.body.appendChild(el);
 
     await nextAnimationFrame();
 
@@ -95,7 +99,7 @@ describe(`Server-side component renderer`, function () {
 
   it(`updates nested components`, async function () {
     const el = new NestedApp();
-    el.connectedCallback();
+    document.body.appendChild(el);
 
     await nextAnimationFrame();
 
@@ -237,35 +241,34 @@ describe(`Server-side component renderer`, function () {
       document.createElement(`bad-boolean-required-attrs-schema-app`);
     }).to.throw(/boolean attr 'bool-attr' cannot have required or default/);
   });
-});
 
-// TODO: add more server-side context test cases
-describe(`Component with contexts`, function () {
-  context(`getContext()`, function () {
-    it(`returns own default context without context ancestor`, async function () {
-      const widget = document.createElement(`default-light-themed-widget`);
-      document.createElement(`div`).appendChild(widget);
-      await nextAnimationFrame();
-      expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
-      expect(widget.el.childNodes[0].className).to.equal(`light`);
+  // TODO: add more server-side context test cases
+  describe(`Component with contexts`, function () {
+    context(`getContext()`, function () {
+      it(`returns own default context without context ancestor`, async function () {
+        const widget = document.createElement(`default-light-themed-widget`);
+        document.body.appendChild(widget);
+        await nextAnimationFrame();
+        expect(widget.getContext(`theme`)).to.be.an.instanceof(LightTheme);
+        expect(widget.el.childNodes[0].className).to.equal(`light`);
+      });
     });
-  });
 
-  context(`lifecycle`, function () {
-    it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
-      const errors = [];
-      const widget = document.createElement(`themed-widget`);
-      document.createElement(`div`).appendChild(widget);
-      await nextAnimationFrame();
+    context(`lifecycle`, function () {
+      it(`fails to connect when a context declared in config does not have a default context by itself or from any context ancestor`, async function () {
+        const errors = [];
+        const widget = document.createElement(`themed-widget`);
 
-      try {
-        widget.getContext(`theme`);
-      } catch (err) {
-        errors.push(err.message);
-      }
+        try {
+          document.body.appendChild(widget);
+          await nextAnimationFrame();
+        } catch (err) {
+          errors.push(err.message);
+        }
 
-      expect(errors).to.have.lengthOf(1);
-      expect(errors[0]).to.contain(`A "theme" context is not available`);
+        expect(errors).to.have.lengthOf(1);
+        expect(errors[0]).to.contain(`A "theme" context is not available`);
+      });
     });
   });
 });

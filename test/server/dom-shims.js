@@ -54,14 +54,14 @@ describe(`customElement callbacks`, function () {
     expect(elem.isConnected).to.not.exist;
 
     // fake adding to DOM
-    const parent = document.createElement(`div`);
-    parent.appendChild(elem);
+    document.body = document.createElement(`body`);
+    document.body.appendChild(elem);
 
     await nextAnimationFrame();
     expect(connectedCallbackSpy).to.have.been.called;
     expect(elem.isConnected).to.be.true;
 
-    parent.removeChild(elem);
+    document.body.removeChild(elem);
     expect(disconnectedCallbackSpy).to.have.been.called;
   });
 
