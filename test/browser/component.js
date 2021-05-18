@@ -146,12 +146,21 @@ describe(`Simple Component instance`, function () {
       expect(el.postFoo).to.equal(`llamas`);
     });
 
-    describe(`Snabbdom insert hook`, function () {
-      it(`fires when the root element gets patched in place instead of inserted`, function () {
+    context(`root element special cases`, function () {
+      it(`fires Snabbdom insert hook when the root element gets patched in place instead of inserted`, function () {
         el = document.createElement(`insert-hook-without-key`);
         expect(el.insertHookCalled).not.to.be.ok;
         document.body.appendChild(el);
         expect(el.insertHookCalled).to.be.true;
+      });
+
+      it(`uses Snabbdom's new root element if the patch process creates one`, async function () {
+        el = document.createElement(`insert-hook-with-key`);
+        expect(el.insertHookCalled).not.to.be.ok;
+        document.body.appendChild(el);
+        expect(el.insertHookCalled).to.be.true;
+        await nextAnimationFrame();
+        expect(el.textContent).to.contain(`Hello I'm in a keyed root element`);
       });
     });
   });
