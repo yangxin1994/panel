@@ -145,6 +145,15 @@ describe(`Simple Component instance`, function () {
       expect(el.preFoo).to.equal(`bar`);
       expect(el.postFoo).to.equal(`llamas`);
     });
+
+    describe(`Snabbdom insert hook`, function () {
+      it(`fires when the root element gets patched in place instead of inserted`, function () {
+        el = document.createElement(`insert-hook-without-key`);
+        expect(el.insertHookCalled).not.to.be.ok;
+        document.body.appendChild(el);
+        expect(el.insertHookCalled).to.be.true;
+      });
+    });
   });
 
   context(`when detached from DOM`, function () {

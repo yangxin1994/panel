@@ -9,6 +9,7 @@ import {NestedPartialStateParent, NestedPartialStateChild} from './nested-partia
 import {BadBooleanRequiredAttrsSchemaApp, RequiredAttrsSchemaApp} from './required-attrs-schema-apps';
 import {ShadowDomApp} from './shadow-dom-app';
 import {SimpleApp} from './simple-app';
+import {InsertHookWithoutKey, InsertHookWithKey} from './snabbdom-hooks-components';
 import {
   DefaultLightThemedWidget,
   ThemedWidget,
@@ -27,6 +28,8 @@ customElements.define(`bad-required-attrs-schema-app`, BadBooleanRequiredAttrsSc
 customElements.define(`breakable-app`, BreakableApp);
 customElements.define(`css-no-shadow-app`, CssNoShadowApp);
 customElements.define(`delayed-attr-remove-app`, DelayedAttrRemoveApp);
+customElements.define(`insert-hook-without-key`, InsertHookWithoutKey);
+customElements.define(`insert-hook-with-key`, InsertHookWithKey);
 customElements.define(`nested-app`, NestedApp);
 customElements.define(`nested-child`, NestedChild);
 customElements.define(`nested-keyed-children-app`, NestedKeyedChildrenApp);
